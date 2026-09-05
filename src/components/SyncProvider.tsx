@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { db } from '@/lib/db';
 import { syncAll } from '@/lib/sync/engine';
 import { resolveSyncClient } from '@/lib/sync/client';
+import { maybePullE2ESeed } from '@/lib/e2e-seed';
 import { useSyncStore } from '@/lib/sync/store';
 
 export function runSyncNow(): void {
@@ -63,8 +64,8 @@ export default function SyncProvider({
     window.addEventListener('online', goOnline);
     window.addEventListener('offline', goOffline);
 
-    // Sync on app open
-    runSyncNow();
+    // E2E hydration (no-op without the armed flag), then sync on app open
+    void maybePullE2ESeed().then(() => runSyncNow());
 
     // Periodic retry while rows are queued (also covers failed pushes)
     const interval = setInterval(() => {

@@ -1,11 +1,15 @@
 'use client';
 
 // FINISH recap modal: duration, total sets, total volume, PR count —
-// computed from the session's sets at finish time.
+// computed from the session'"'"'s sets at finish time. Program mode adds the
+// progression engine'"'"'s feedback ("Next week: 195 × 8 (+5 lb — exceeded)").
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { sessionVolume } from '@/lib/volume';
 import { formatVolume, formatDuration } from '@/lib/format';
+import { db } from '@/lib/db';
+import { exerciseName } from '@/lib/wger';
+import type { SessionFeedback } from '@/lib/coach/run';
 import type { WorkoutSet } from '@/lib/types';
 
 export interface FinishRecap {
@@ -29,11 +33,18 @@ export function computeRecap(
   };
 }
 
+interface FeedbackRow {
+  name: string;
+  line: string;
+}
+
 export default function FinishWorkoutModal({
   recap,
+  feedback,
   onClose,
 }: {
   recap: FinishRecap;
+  feedback?: SessionFeedback | null;
   onClose: () => void;
 }) {
   const rows = useMemo(
@@ -45,6 +56,46 @@ export default function FinishWorkoutModal({
     ],
     [recap],
   );
+
+  const [feedbackRows, setFeedbackRows] = useState<FeedbackRow[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (!feedback || feedback.items.length === 0) {
+        setFeedbackRows([]);
+        return;
+      }
+      const exercises = await db.exercises.toArray();
+      const byId = new Map(exercises.map((e) => [e.id, e]));
+      const out: FeedbackRow[] = feedback.items.map((item) => {
+        const name = exerciseName(
+          byId.get(item.exerciseId) ?? {
+            id: item.exerciseId,
+            wger_id: null,
+            custom_name: null,
+            category: null,
+            primary_muscle: null,
+            is_custom: false,
+            created_at: '',
+          },
+        );
+        const next =
+          item.nextWeight !== null
+            ? `${item.nextWeight} lb${item.nextReps ? ` × ${item.nextReps}` : ''}`
+            : 'unchanged';
+        const delta =
+          item.deltaLb !== null && item.deltaLb !== 0
+            ? ` (${item.deltaLb > 0 ? '+' : ''}${item.deltaLb} lb — ${item.outcome})`
+            : '';
+        return { name, line: `Next week: ${next}${delta}` };
+      });
+      if (!cancelled) setFeedbackRows(out);
+    })().catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [feedback?.plannedSessionId]);
+
   return (
     <div
       data-testid="finish-modal"
@@ -72,6 +123,29 @@ export default function FinishWorkoutModal({
             </div>
           ))}
         </dl>
+        {feedback && feedbackRows.length > 0 && (
+          <section
+            data-testid="progression-feedback"
+            className="mb-6 rounded-xl bg-zinc-800 border border-zinc-700 p-4"
+          >
+            <h3 className="text-xs uppercase tracking-widest text-emerald-400 mb-2">
+              NEXT WEEK
+            </h3>
+            <ul className="space-y-1.5">
+              {feedbackRows.map((r) => (
+                <li key={r.name} className="text-sm">
+                  <span className="text-zinc-300 font-semibold">{r.name}</span>
+                  <span className="text-zinc-400"> — {r.line}</span>
+                </li>
+              ))}
+            </ul>
+            {feedback.deloadSuggested.length > 0 && (
+              <p className="mt-2 text-xs text-amber-300">
+                3+ consecutive misses — deload suggested
+              </p>
+            )}
+          </section>
+        )}
         <button
           type="button"
           data-testid="finish-done"

@@ -19,6 +19,9 @@ import FinishWorkoutModal, {
   computeRecap,
   type FinishRecap,
 } from '@/components/FinishWorkoutModal';
+import SwapExerciseModal from '@/components/SwapExerciseModal';
+import { getProgramSessionContext, type ProgramSessionContext } from '@/lib/coach/ui';
+import { onSessionFinished, type SessionFeedback } from '@/lib/coach/run';
 import type { CardioEntry, Exercise, SessionExercise } from '@/lib/types';
 
 const CARDIO_ACTIVITIES = ['row', 'ski', 'bike', 'run', 'walk'] as const;
@@ -60,7 +63,42 @@ export default function WorkoutPage() {
   );
 
   const [recap, setRecap] = useState<FinishRecap | null>(null);
+  const [feedback, setFeedback] = useState<SessionFeedback | null>(null);
   const [finishing, setFinishing] = useState(false);
+  const [swapFor, setSwapFor] = useState<string | null>(null);
+
+  // Program mode: this workout is linked to a planned session.
+  const programCtx = useLiveQuery(
+    async (): Promise<ProgramSessionContext | null> => {
+      if (!session) return null;
+      return getProgramSessionContext(session.id);
+    },
+    [session?.id],
+  );
+
+  // Last logged top-set weight per exercise (for "last: 185 × 8").
+  const lastWeights = useLiveQuery(
+    async (): Promise<Map<string, number>> => {
+      if (!session) return new Map();
+      const all = await db.workout_sets.toArray();
+      const byEx = new Map<string, { weight: number; ts: string; workout: string }[]>();
+      for (const s of all) {
+        if (s.set_type !== 'working' || s.weight == null) continue;
+        const list = byEx.get(s.exercise_id) ?? [];
+        list.push({ weight: s.weight, ts: s.timestamp, workout: s.workout_id });
+        byEx.set(s.exercise_id, list);
+      }
+      const out = new Map<string, number>();
+      for (const [exId, list] of byEx) {
+        const prior = list.filter((s) => s.workout !== session!.id);
+        if (prior.length === 0) continue;
+        prior.sort((a, b) => b.ts.localeCompare(a.ts));
+        out.set(exId, prior[0].weight);
+      }
+      return out;
+    },
+    [session?.id],
+  );
 
   const setsByExercise = useMemo(() => {
     const m = new Map<string, typeof sets>();
@@ -96,8 +134,44 @@ export default function WorkoutPage() {
     await db.workout_sessions.update(session.id, {
       end_time: endTime,
     });
+    const fb = await onSessionFinished(session.id, allSets);
+    setFeedback(fb);
     setRecap(r);
     setFinishing(false);
+  };
+
+  const applySwap = async (originalId: string, to: Exercise) => {
+    if (!session || !programCtx) return;
+    // Planned sets for this slot point at the substitute; original preserved.
+    const slotSets = (programCtx.plannedSets ?? []).filter(
+      (s) => s.exercise_id === originalId,
+    );
+    await db.planned_sets.bulkPut(
+      slotSets.map((s) => ({
+        ...s,
+        exercise_id: to.id,
+        substituted_from: s.substituted_from ?? originalId,
+      })),
+    );
+    // Move already-logged sets too (this session's log follows the slot).
+    const logged = await db.workout_sets
+      .where('workout_id')
+      .equals(session.id)
+      .filter((s) => s.exercise_id === originalId)
+      .toArray();
+    await db.workout_sets.bulkPut(
+      logged.map((s) => ({ ...s, exercise_id: to.id })),
+    );
+    // Session exercise list follows the slot as well.
+    const link = await db.session_exercises
+      .where('sessionId')
+      .equals(session.id)
+      .filter((l) => l.exerciseId === originalId)
+      .first();
+    if (link) {
+      await db.session_exercises.put({ ...link, exerciseId: to.id });
+    }
+    setSwapFor(null);
   };
 
   // Once the recap is computed, show only the modal — the session is already
@@ -106,6 +180,7 @@ export default function WorkoutPage() {
     return (
       <FinishWorkoutModal
         recap={recap}
+        feedback={feedback}
         onClose={() => {
           setRecap(null);
           router.push('/');
@@ -149,19 +224,51 @@ export default function WorkoutPage() {
       </header>
 
       <div className="p-4 space-y-4">
-        {(sessionExercises ?? []).map(({ link, exercise }) => (
-          <SetLogger
-            key={link.exerciseId}
-            workoutId={session.id}
-            exercise={exercise}
-            sets={setsByExercise.get(exercise.id) ?? []}
-          />
-        ))}
+        {programCtx && (
+          <p className="text-xs uppercase tracking-widest text-emerald-400">
+            WEEK {programCtx.plannedSession.week_number}
+            {programCtx.plannedSession.is_deload ? ' · DELOAD' : ''} ·{' '}
+            {programCtx.plannedSession.workout_name}
+          </p>
+        )}
+        {(sessionExercises ?? []).map(({ link, exercise }) => {
+          const slotSets = programCtx?.plannedSets.filter(
+            (s) => s.exercise_id === exercise.id,
+          ) ?? [];
+          const first = [...slotSets].sort((a, b) => a.set_order - b.set_order)[0];
+          return (
+            <SetLogger
+              key={link.exerciseId}
+              workoutId={session.id}
+              exercise={exercise}
+              sets={setsByExercise.get(exercise.id) ?? []}
+              target={
+                first
+                  ? {
+                      target_weight: first.target_weight,
+                      target_reps: first.target_reps,
+                      target_rpe: first.target_rpe,
+                      lastWeight: lastWeights?.get(exercise.id) ?? null,
+                    }
+                  : undefined
+              }
+              onSwap={programCtx ? () => setSwapFor(exercise.id) : undefined}
+            />
+          );
+        })}
 
         <ExerciseSearch onSelect={addExercise} />
 
         {isCardio && <CardioForm workoutId={session.id} />}
       </div>
+
+      {swapFor && programCtx && (
+        <SwapExerciseModal
+          originalId={swapFor}
+          onPick={(to) => applySwap(swapFor, to)}
+          onClose={() => setSwapFor(null)}
+        />
+      )}
 
       <RestTimer />
     </main>

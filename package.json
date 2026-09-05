@@ -10,6 +10,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "seed:dev": "tsx scripts/seed.ts",
+    "seed:program": "tsx scripts/seed-program.ts",
     "seed:verify": "tsx scripts/verify-seed.ts",
     "icons": "node scripts/gen-icons.mjs"
   },

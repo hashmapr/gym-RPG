@@ -33,8 +33,9 @@ export default function ExerciseSearch({
     let cancelled = false;
     setBusy(true);
     const t = setTimeout(async () => {
+      let local: Exercise[] = [];
       try {
-        const local = await db.exercises
+        local = await db.exercises
           .filter((e) => exerciseName(e).toLowerCase().includes(q.toLowerCase()))
           .limit(10)
           .toArray();
@@ -59,8 +60,11 @@ export default function ExerciseSearch({
           setOpen(true);
         }
       } catch {
-        // offline: local results only
-        if (!cancelled) setOpen(true);
+        // offline: fall back to the local results we already have
+        if (!cancelled) {
+          setResults(local.slice(0, 10));
+          setOpen(true);
+        }
       } finally {
         if (!cancelled) setBusy(false);
       }

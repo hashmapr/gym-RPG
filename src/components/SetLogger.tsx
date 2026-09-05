@@ -11,6 +11,7 @@ import { useSettings } from '@/lib/settings';
 import { formatE1RM, formatWeight } from '@/lib/format';
 import { e1rm } from '@/lib/e1rm';
 import { exerciseName } from '@/lib/wger';
+import { setBadge, formatTargetLine, type SetBadge } from '@/lib/coach/ui';
 import type { PRResult } from '@/lib/pr';
 import type { Exercise, SetType, WorkoutSet } from '@/lib/types';
 
@@ -21,14 +22,32 @@ const SET_TYPES: { value: SetType; label: string }[] = [
   { value: 'drop', label: 'Drop' },
 ];
 
+export interface SetTarget {
+  target_weight: number | null;
+  target_reps: string | null;
+  target_rpe: number | null;
+  /** Heaviest logged weight for this exercise in the previous session. */
+  lastWeight: number | null;
+}
+
+const BADGE_CLASS: Record<SetBadge, string> = {
+  'TARGET HIT': 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300',
+  EXCEEDED: 'bg-amber-500/15 border-amber-500/40 text-amber-300',
+  'BELOW TARGET': 'bg-red-500/15 border-red-500/40 text-red-300',
+};
+
 export default function SetLogger({
   workoutId,
   exercise,
   sets,
+  target,
+  onSwap,
 }: {
   workoutId: string;
   exercise: Exercise;
   sets: WorkoutSet[];
+  target?: SetTarget;
+  onSwap?: () => void;
 }) {
   const [weight, setWeight] = useState('');
   const [reps, setReps] = useState('');
@@ -45,6 +64,13 @@ export default function SetLogger({
     [sets],
   );
   const last = sorted[sorted.length - 1];
+
+  // Program mode: prefill the input with the prescribed weight.
+  const [prefilled, setPrefilled] = useState(false);
+  if (target && !prefilled && sorted.length === 0 && weight === '' && target.target_weight !== null) {
+    setWeight(String(target.target_weight));
+    setPrefilled(true);
+  }
 
   const submit = async () => {
     const w = weight.trim() === '' ? null : Number(weight);
@@ -85,9 +111,38 @@ export default function SetLogger({
       data-testid={`exercise-block-${exercise.id}`}
       className="rounded-xl bg-zinc-900 border border-zinc-800 p-4"
     >
-      <h3 className="text-lg font-bold text-zinc-100 mb-3">
-        {exerciseName(exercise)}
-      </h3>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-lg font-bold text-zinc-100">
+          {exerciseName(exercise)}
+        </h3>
+        {onSwap && (
+          <button
+            type="button"
+            data-testid={`swap-${exercise.id}`}
+            onClick={onSwap}
+            className="min-h-10 px-3 rounded-lg bg-zinc-800 border border-zinc-700 text-sm font-semibold text-zinc-300 active:bg-zinc-700"
+          >
+            SWAP
+          </button>
+        )}
+      </div>
+
+      {target && (
+        <p
+          data-testid={`target-line-${exercise.id}`}
+          className="mb-3 text-sm text-zinc-400"
+        >
+          Target:{' '}
+          <span className="text-zinc-200 font-semibold tabular-nums">
+            {formatTargetLine(target)}
+          </span>
+          {target.lastWeight !== null && (
+            <span className="text-zinc-500 tabular-nums">
+              {' '}— last: {formatWeight(target.lastWeight)}
+            </span>
+          )}
+        </p>
+      )}
 
       {lastPR && (
         <div
@@ -152,6 +207,22 @@ export default function SetLogger({
                   <td className="text-right tabular-nums text-zinc-400">
                     {est !== null ? formatE1RM(est) : '—'}
                   </td>
+                  {target && (
+                    <td className="text-right">
+                      {s.set_type === 'working' &&
+                        (() => {
+                          const badge = setBadge(s, target);
+                          return badge ? (
+                            <span
+                              data-testid={`badge-${s.id}`}
+                              className={`inline-block rounded border px-1.5 py-0.5 text-[10px] font-bold tracking-wide ${BADGE_CLASS[badge]}`}
+                            >
+                              {badge}
+                            </span>
+                          ) : null;
+                        })()}
+                    </td>
+                  )}
                 </tr>
               );
             })}

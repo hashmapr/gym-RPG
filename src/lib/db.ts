@@ -10,14 +10,20 @@ import type {
   CardioEntry,
   DailyMetric,
   Exercise,
+  ExerciseEquivalent,
   Goal,
   GymProfile,
   HevyMapping,
+  PlannedSession,
+  PlannedSet,
   Program,
+  ProgramRun,
   ProgramTemplate,
+  ProgressionRule,
   RPGCharacter,
   SessionExercise,
   Settings,
+  TargetChange,
   TemplateExercise,
   WorkoutSession,
   WorkoutSet,
@@ -35,6 +41,12 @@ export class LabDB extends Dexie {
   template_exercises!: Table<TemplateExercise, string>;
   rpg_character!: Table<RPGCharacter, string>;
   goals!: Table<Goal, string>;
+  progression_rules!: Table<ProgressionRule, string>;
+  program_runs!: Table<ProgramRun, string>;
+  planned_sessions!: Table<PlannedSession, string>;
+  planned_sets!: Table<PlannedSet, string>;
+  target_changes!: Table<TargetChange, string>;
+  exercise_equivalents!: Table<ExerciseEquivalent, string>;
   session_exercises!: Table<SessionExercise, [string, string]>;
   settings!: Table<{ key: string; value: unknown }, string>;
   hevy_mappings!: Table<HevyMapping, string>;
@@ -61,6 +73,17 @@ export class LabDB extends Dexie {
     this.version(2).stores({
       goals: 'id, exercise_id, achieved_at',
     });
+    // Sprint 3: Coach Layer — progression rules, runs, materialized
+    // schedule/targets, audit log, equivalents.
+    this.version(3).stores({
+      progression_rules: 'id, template_exercise_id',
+      program_runs: 'id, program_id, status',
+      planned_sessions:
+        'id, program_run_id, planned_date, status, workout_session_id, [program_run_id+week_number]',
+      planned_sets: 'id, planned_session_id, exercise_id',
+      target_changes: 'id, planned_set_id, created_at',
+      exercise_equivalents: 'id, exercise_a, exercise_b',
+    });
     // P0 sync rule: any mutation to a synced row re-queues it (data layer).
     installRequeueHooks(this, SYNC_TABLE_ORDER);
   }
@@ -69,6 +92,7 @@ export class LabDB extends Dexie {
 export const db = new LabDB();
 
 export function newId(): string {
+  if (idFactory) return idFactory();
   if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
     return crypto.randomUUID();
   }
@@ -80,7 +104,25 @@ export function newId(): string {
 }
 
 export function nowIso(): string {
+  if (timeFactory) return timeFactory();
   return new Date().toISOString();
+}
+
+let idFactory: (() => string) | null = null;
+let timeFactory: (() => string) | null = null;
+
+/**
+ * Deterministic id/clock overrides for seeds and golden generation ONLY.
+ * Never set in app code — the UI must use real ids and the real clock.
+ */
+export function setDeterministicFactories(id: () => string, time: () => string): void {
+  idFactory = id;
+  timeFactory = time;
+}
+
+export function clearDeterministicFactories(): void {
+  idFactory = null;
+  timeFactory = null;
 }
 
 /** The active (unfinished) session, if any. */
@@ -90,19 +132,8 @@ export async function getActiveSession(): Promise<WorkoutSession | undefined> {
 }
 
 export async function getUnsyncedCount(): Promise<number> {
-  const tables = [
-    db.exercises,
-    db.gym_profiles,
-    db.workout_sessions,
-    db.workout_sets,
-    db.cardio_entries,
-    db.daily_metrics,
-    db.programs,
-    db.program_templates,
-    db.template_exercises,
-    db.rpg_character,
-    db.goals,
-  ] as unknown as Dexie.Table[];
+  // Every synced table, in engine order — stays correct as tables are added.
+  const tables = SYNC_TABLE_ORDER.map((name) => db.table(name)) as unknown as Dexie.Table[];
   const counts = await Promise.all(
     tables.map((t) => t.filter((r) => !(r as { syncedAt?: string }).syncedAt).count()),
   );

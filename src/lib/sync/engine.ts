@@ -27,6 +27,14 @@ export const SYNC_TABLE_ORDER: TableName[] = [
   'template_exercises',
   'rpg_character',
   'goals',
+  // Sprint 3 (Coach): FK-safe order — rules/runs before sessions,
+  // sessions before sets, sets before the audit log.
+  'progression_rules',
+  'program_runs',
+  'planned_sessions',
+  'planned_sets',
+  'target_changes',
+  'exercise_equivalents',
 ];
 
 export const DEFAULT_BATCH_SIZE = 200;

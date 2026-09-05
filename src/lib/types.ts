@@ -99,6 +99,8 @@ export interface Program {
   start_date: string | null;
   end_date: string | null;
   is_active: boolean;
+  /** JS getDay() values (0=Sun..6=Sat) the program trains on, e.g. [2,4,6] = Mon/Wed/Fri. */
+  weekdays: number[] | null;
   created_at: string;
   syncedAt?: string;
 }
@@ -109,6 +111,7 @@ export interface ProgramTemplate {
   week_number: number | null;
   day_number: number | null;
   workout_name: string;
+  is_deload: boolean;
   created_at: string;
   syncedAt?: string;
 }
@@ -158,6 +161,85 @@ export interface Goal {
   syncedAt?: string;
 }
 
+// ------------------------------------------------------------- Sprint 3: Coach
+
+export type ProgressionRuleType = 'linear' | 'double' | 'rpe_autoreg' | 'static';
+
+export interface ProgressionRule {
+  id: string;
+  template_exercise_id: string;
+  rule_type: ProgressionRuleType;
+  increment_lb: number | null; // linear / double / rpe_autoreg step
+  target_rpe: number | null; // rpe_autoreg anchor
+  min_reps: number | null; // double progression range bottom
+  max_reps: number | null; // double progression range top
+  start_weight_lb: number | null; // week-1 target; falls back to athlete history
+  created_at: string;
+  syncedAt?: string;
+}
+
+export type ProgramRunStatus = 'active' | 'completed' | 'abandoned';
+export type PlannedSessionStatus = 'planned' | 'completed' | 'missed' | 'skipped';
+
+export interface ProgramRun {
+  id: string;
+  program_id: string;
+  started_on: string; // YYYY-MM-DD (training date)
+  current_week: number;
+  status: ProgramRunStatus;
+  created_at: string;
+  syncedAt?: string;
+}
+
+export interface PlannedSession {
+  id: string;
+  program_run_id: string;
+  week_number: number;
+  day_number: number;
+  workout_name: string;
+  is_deload: boolean;
+  planned_date: string | null; // YYYY-MM-DD, assigned at schedule generation
+  status: PlannedSessionStatus;
+  workout_session_id: string | null; // linked when completed
+  created_at: string;
+  syncedAt?: string;
+}
+
+export interface PlannedSet {
+  id: string;
+  planned_session_id: string;
+  exercise_id: string;
+  set_order: number;
+  target_weight: number | null;
+  target_reps: string | null;
+  target_rpe: number | null;
+  target_rest: number | null;
+  set_type: SetType;
+  substituted_from: string | null; // original exercise when swapped
+  updated_by_engine: boolean;
+  created_at: string;
+  syncedAt?: string;
+}
+
+export interface TargetChange {
+  id: string;
+  planned_set_id: string;
+  old_weight: number | null;
+  new_weight: number | null;
+  reason: string; // e.g. 'exceeded: 12 reps > max 12' | 'deload hold' | 'miss hold'
+  engine_version: string;
+  created_at: string;
+  syncedAt?: string;
+}
+
+export interface ExerciseEquivalent {
+  id: string;
+  exercise_a: string;
+  exercise_b: string;
+  created_at: string;
+  syncedAt?: string;
+}
+
 export type TableName =
   | 'exercises'
   | 'gym_profiles'
@@ -169,7 +251,13 @@ export type TableName =
   | 'program_templates'
   | 'template_exercises'
   | 'rpg_character'
-  | 'goals';
+  | 'goals'
+  | 'progression_rules'
+  | 'program_runs'
+  | 'planned_sessions'
+  | 'planned_sets'
+  | 'target_changes'
+  | 'exercise_equivalents';
 
 export interface Settings {
   day_boundary_hour: number;

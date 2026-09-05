@@ -1,0 +1,122 @@
+{
+  "hold_audits": [
+    {
+      "exercise": "bench",
+      "new_weight": 190,
+      "old_weight": 190,
+      "reason": "hit: within target range — deload hold",
+      "week": 4
+    },
+    {
+      "exercise": "deadlift",
+      "new_weight": 230,
+      "old_weight": 230,
+      "reason": "hit: within target range — deload hold",
+      "week": 4
+    },
+    {
+      "exercise": "ohp",
+      "new_weight": 100,
+      "old_weight": 100,
+      "reason": "hit: within target range — deload hold",
+      "week": 4
+    },
+    {
+      "exercise": "squat",
+      "new_weight": 320,
+      "old_weight": 320,
+      "reason": "hit: within target range — deload hold",
+      "week": 4
+    }
+  ],
+  "is_deload": true,
+  "set_counts": {
+    "w4d1": 3,
+    "w4d2": 3,
+    "w4d3": 2,
+    "w4d4": 2
+  },
+  "sets": [
+    {
+      "exercise": "bench",
+      "session": "w4d1",
+      "set_order": 1,
+      "target_reps": "8-12",
+      "target_rpe": 8,
+      "target_weight": 190
+    },
+    {
+      "exercise": "bench",
+      "session": "w4d1",
+      "set_order": 2,
+      "target_reps": "8-12",
+      "target_rpe": 8,
+      "target_weight": 190
+    },
+    {
+      "exercise": "latPulldown",
+      "session": "w4d1",
+      "set_order": 1,
+      "target_reps": "10",
+      "target_rpe": null,
+      "target_weight": 120
+    },
+    {
+      "exercise": "legCurl",
+      "session": "w4d2",
+      "set_order": 1,
+      "target_reps": "10",
+      "target_rpe": null,
+      "target_weight": 60
+    },
+    {
+      "exercise": "squat",
+      "session": "w4d2",
+      "set_order": 1,
+      "target_reps": "5",
+      "target_rpe": 8,
+      "target_weight": 320
+    },
+    {
+      "exercise": "squat",
+      "session": "w4d2",
+      "set_order": 2,
+      "target_reps": "5",
+      "target_rpe": 8,
+      "target_weight": 320
+    },
+    {
+      "exercise": "latPulldown",
+      "session": "w4d3",
+      "set_order": 1,
+      "target_reps": "10",
+      "target_rpe": null,
+      "target_weight": 120
+    },
+    {
+      "exercise": "ohp",
+      "session": "w4d3",
+      "set_order": 1,
+      "target_reps": "8",
+      "target_rpe": 8,
+      "target_weight": 100
+    },
+    {
+      "exercise": "deadlift",
+      "session": "w4d4",
+      "set_order": 1,
+      "target_reps": "5",
+      "target_rpe": 8,
+      "target_weight": 230
+    },
+    {
+      "exercise": "legCurl",
+      "session": "w4d4",
+      "set_order": 1,
+      "target_reps": "10",
+      "target_rpe": null,
+      "target_weight": 60
+    }
+  ],
+  "week": 4
+}

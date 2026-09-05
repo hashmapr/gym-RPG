@@ -1,0 +1,415 @@
+{
+  "audit_rows": [
+    {
+      "created_at": "2026-08-17T00:02:46.000Z",
+      "day": 1,
+      "exercise": "bench",
+      "new_weight": 185,
+      "old_weight": 185,
+      "reason": "hit: within target range",
+      "week": 2
+    },
+    {
+      "created_at": "2026-08-17T00:02:55.000Z",
+      "day": 2,
+      "exercise": "squat",
+      "new_weight": 315,
+      "old_weight": 315,
+      "reason": "hit: within target range",
+      "week": 2
+    },
+    {
+      "created_at": "2026-08-17T00:03:03.000Z",
+      "day": 3,
+      "exercise": "ohp",
+      "new_weight": 100,
+      "old_weight": 95,
+      "reason": "exceeded: RPE 6.5 < 8 − 1.0",
+      "week": 2
+    },
+    {
+      "created_at": "2026-08-17T00:03:11.000Z",
+      "day": 4,
+      "exercise": "deadlift",
+      "new_weight": 225,
+      "old_weight": 225,
+      "reason": "hit: within target range",
+      "week": 2
+    },
+    {
+      "created_at": "2026-08-17T00:03:46.000Z",
+      "day": 1,
+      "exercise": "bench",
+      "new_weight": 190,
+      "old_weight": 185,
+      "reason": "exceeded: 12 reps == max 12 (boundary)",
+      "week": 3
+    },
+    {
+      "created_at": "2026-08-17T00:03:55.000Z",
+      "day": 2,
+      "exercise": "squat",
+      "new_weight": 320,
+      "old_weight": 315,
+      "reason": "exceeded: 6 reps > max 5",
+      "week": 3
+    },
+    {
+      "created_at": "2026-08-17T00:04:03.000Z",
+      "day": 4,
+      "exercise": "deadlift",
+      "new_weight": 230,
+      "old_weight": 225,
+      "reason": "exceeded: 6 reps > max 5",
+      "week": 3
+    },
+    {
+      "created_at": "2026-08-17T00:04:22.000Z",
+      "day": 1,
+      "exercise": "bench",
+      "new_weight": 190,
+      "old_weight": 190,
+      "reason": "hit: within target range — deload hold",
+      "week": 4
+    },
+    {
+      "created_at": "2026-08-17T00:04:31.000Z",
+      "day": 2,
+      "exercise": "squat",
+      "new_weight": 320,
+      "old_weight": 320,
+      "reason": "hit: within target range — deload hold",
+      "week": 4
+    },
+    {
+      "created_at": "2026-08-17T00:04:39.000Z",
+      "day": 3,
+      "exercise": "ohp",
+      "new_weight": 100,
+      "old_weight": 100,
+      "reason": "hit: within target range — deload hold",
+      "week": 4
+    },
+    {
+      "created_at": "2026-08-17T00:04:47.000Z",
+      "day": 4,
+      "exercise": "deadlift",
+      "new_weight": 230,
+      "old_weight": 230,
+      "reason": "hit: within target range — deload hold",
+      "week": 4
+    }
+  ],
+  "current_week": 3,
+  "program_start": "2026-08-17",
+  "weeks": {
+    "1": {
+      "exercises": {
+        "bench@d1": {
+          "day": 1,
+          "exercise": "bench",
+          "set_count": 4,
+          "substituted_from": null,
+          "target_reps": "8-12",
+          "target_rpe": 8,
+          "target_weight": 185
+        },
+        "deadlift@d4": {
+          "day": 4,
+          "exercise": "deadlift",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "5",
+          "target_rpe": 8,
+          "target_weight": 225
+        },
+        "latPulldown@d1": {
+          "day": 1,
+          "exercise": "latPulldown",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 100
+        },
+        "latPulldown@d3": {
+          "day": 3,
+          "exercise": "latPulldown",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 120
+        },
+        "lateralRaise@d3": {
+          "day": 3,
+          "exercise": "lateralRaise",
+          "set_count": 3,
+          "substituted_from": "ohp",
+          "target_reps": "8",
+          "target_rpe": 8,
+          "target_weight": 95
+        },
+        "legCurl@d2": {
+          "day": 2,
+          "exercise": "legCurl",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 60
+        },
+        "legCurl@d4": {
+          "day": 4,
+          "exercise": "legCurl",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 60
+        },
+        "squat@d2": {
+          "day": 2,
+          "exercise": "squat",
+          "set_count": 4,
+          "substituted_from": null,
+          "target_reps": "5",
+          "target_rpe": 8,
+          "target_weight": 315
+        }
+      },
+      "is_deload": false
+    },
+    "2": {
+      "exercises": {
+        "bench@d1": {
+          "day": 1,
+          "exercise": "bench",
+          "set_count": 4,
+          "substituted_from": null,
+          "target_reps": "8-12",
+          "target_rpe": 8,
+          "target_weight": 185
+        },
+        "deadlift@d4": {
+          "day": 4,
+          "exercise": "deadlift",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "5",
+          "target_rpe": 8,
+          "target_weight": 225
+        },
+        "latPulldown@d1": {
+          "day": 1,
+          "exercise": "latPulldown",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 120
+        },
+        "latPulldown@d3": {
+          "day": 3,
+          "exercise": "latPulldown",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 120
+        },
+        "legCurl@d2": {
+          "day": 2,
+          "exercise": "legCurl",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 60
+        },
+        "legCurl@d4": {
+          "day": 4,
+          "exercise": "legCurl",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 60
+        },
+        "ohp@d3": {
+          "day": 3,
+          "exercise": "ohp",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "8",
+          "target_rpe": 8,
+          "target_weight": 100
+        },
+        "squat@d2": {
+          "day": 2,
+          "exercise": "squat",
+          "set_count": 4,
+          "substituted_from": null,
+          "target_reps": "5",
+          "target_rpe": 8,
+          "target_weight": 315
+        }
+      },
+      "is_deload": false
+    },
+    "3": {
+      "exercises": {
+        "bench@d1": {
+          "day": 1,
+          "exercise": "bench",
+          "set_count": 4,
+          "substituted_from": null,
+          "target_reps": "8",
+          "target_rpe": 8,
+          "target_weight": 190
+        },
+        "deadlift@d4": {
+          "day": 4,
+          "exercise": "deadlift",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "5",
+          "target_rpe": 8,
+          "target_weight": 230
+        },
+        "latPulldown@d1": {
+          "day": 1,
+          "exercise": "latPulldown",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 120
+        },
+        "latPulldown@d3": {
+          "day": 3,
+          "exercise": "latPulldown",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 120
+        },
+        "legCurl@d2": {
+          "day": 2,
+          "exercise": "legCurl",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 60
+        },
+        "legCurl@d4": {
+          "day": 4,
+          "exercise": "legCurl",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 60
+        },
+        "ohp@d3": {
+          "day": 3,
+          "exercise": "ohp",
+          "set_count": 3,
+          "substituted_from": null,
+          "target_reps": "8",
+          "target_rpe": 8,
+          "target_weight": 100
+        },
+        "squat@d2": {
+          "day": 2,
+          "exercise": "squat",
+          "set_count": 4,
+          "substituted_from": null,
+          "target_reps": "5",
+          "target_rpe": 8,
+          "target_weight": 320
+        }
+      },
+      "is_deload": false
+    },
+    "4": {
+      "exercises": {
+        "bench@d1": {
+          "day": 1,
+          "exercise": "bench",
+          "set_count": 2,
+          "substituted_from": null,
+          "target_reps": "8-12",
+          "target_rpe": 8,
+          "target_weight": 190
+        },
+        "deadlift@d4": {
+          "day": 4,
+          "exercise": "deadlift",
+          "set_count": 1,
+          "substituted_from": null,
+          "target_reps": "5",
+          "target_rpe": 8,
+          "target_weight": 230
+        },
+        "latPulldown@d1": {
+          "day": 1,
+          "exercise": "latPulldown",
+          "set_count": 1,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 120
+        },
+        "latPulldown@d3": {
+          "day": 3,
+          "exercise": "latPulldown",
+          "set_count": 1,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 120
+        },
+        "legCurl@d2": {
+          "day": 2,
+          "exercise": "legCurl",
+          "set_count": 1,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 60
+        },
+        "legCurl@d4": {
+          "day": 4,
+          "exercise": "legCurl",
+          "set_count": 1,
+          "substituted_from": null,
+          "target_reps": "10",
+          "target_rpe": null,
+          "target_weight": 60
+        },
+        "ohp@d3": {
+          "day": 3,
+          "exercise": "ohp",
+          "set_count": 1,
+          "substituted_from": null,
+          "target_reps": "8",
+          "target_rpe": 8,
+          "target_weight": 100
+        },
+        "squat@d2": {
+          "day": 2,
+          "exercise": "squat",
+          "set_count": 2,
+          "substituted_from": null,
+          "target_reps": "5",
+          "target_rpe": 8,
+          "target_weight": 320
+        }
+      },
+      "is_deload": true
+    }
+  }
+}
