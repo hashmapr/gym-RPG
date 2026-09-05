@@ -211,7 +211,9 @@ test('achieving a goal: log the target set → goal card flips to Achieved', asy
   const after = await mockWriteCounts(page);
   expect((after.workout_sets ?? 0) - (before.workout_sets ?? 0)).toBe(1);
   expect((after.exercises ?? 0) - (before.exercises ?? 0)).toBe(0);
-  expect((after.workout_sessions ?? 0) - (before.workout_sessions ?? 0)).toBe(0);
+  // P0 re-queue rule: the finish (end_time) update re-queues the already-
+  // synced session, so it re-pushes too (previously it silently never did).
+  expect((after.workout_sessions ?? 0) - (before.workout_sessions ?? 0)).toBe(1);
 });
 
 test('lab refresh recomputes the engine and writes only the cache', async ({

@@ -80,10 +80,8 @@ async function achieveGoalsFor(set: WorkoutSet): Promise<void> {
   for (const g of goals) {
     if (g.achieved_at != null) continue;
     if (set.weight >= g.target_weight && set.reps >= g.target_reps) {
-      await db.goals.update(g.id, {
-        achieved_at: set.timestamp,
-        syncedAt: undefined, // re-queue: the achieved state must sync
-      });
+      // syncedAt is cleared by the data-layer re-queue hook (src/lib/sync/requeue.ts).
+      await db.goals.update(g.id, { achieved_at: set.timestamp });
     }
   }
 }

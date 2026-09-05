@@ -3,6 +3,7 @@
 
 import { test, expect } from '@playwright/test';
 import path from 'node:path';
+import { resetMockSync } from './helpers';
 
 const FIXTURE = path.join(__dirname, '../fixtures/hevy-export.csv');
 
@@ -11,7 +12,9 @@ test.use({ timezoneId: 'UTC' });
 
 test('hevy import → history shows workouts; re-import → zero duplicates', async ({
   page,
+  context,
 }) => {
+  await resetMockSync(page);
   await page.goto('/import');
 
   // First import.

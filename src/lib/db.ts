@@ -4,6 +4,8 @@
 // (session_exercises, settings, hevy_mappings).
 
 import Dexie, { type Table } from 'dexie';
+import { SYNC_TABLE_ORDER } from './sync/engine';
+import { installRequeueHooks } from './sync/requeue';
 import type {
   CardioEntry,
   DailyMetric,
@@ -59,6 +61,8 @@ export class LabDB extends Dexie {
     this.version(2).stores({
       goals: 'id, exercise_id, achieved_at',
     });
+    // P0 sync rule: any mutation to a synced row re-queues it (data layer).
+    installRequeueHooks(this, SYNC_TABLE_ORDER);
   }
 }
 
@@ -97,6 +101,7 @@ export async function getUnsyncedCount(): Promise<number> {
     db.program_templates,
     db.template_exercises,
     db.rpg_character,
+    db.goals,
   ] as unknown as Dexie.Table[];
   const counts = await Promise.all(
     tables.map((t) => t.filter((r) => !(r as { syncedAt?: string }).syncedAt).count()),
