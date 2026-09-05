@@ -1,0 +1,177 @@
+{
+  "month": {
+    "current": {
+      "workout_count": 2,
+      "total_volume": 37595,
+      "total_sets": 28,
+      "avg_session_duration_min": 49,
+      "pr_count": 1,
+      "avg_top_set_rpe": null,
+      "per_exercise_e1rm": {
+        "a1000000-0000-4000-8000-000000000001": {
+          "best": 260.0097
+        },
+        "a1000000-0000-4000-8000-000000000002": {
+          "best": 308.583
+        },
+        "a1000000-0000-4000-8000-000000000005": {
+          "best": 213.7273
+        }
+      }
+    },
+    "previous": {
+      "workout_count": 12,
+      "total_volume": 196059.5,
+      "total_sets": 166,
+      "avg_session_duration_min": 48.3333,
+      "pr_count": 5,
+      "avg_top_set_rpe": 8.2222,
+      "per_exercise_e1rm": {
+        "a1000000-0000-4000-8000-000000000001": {
+          "best": 257.1525
+        },
+        "a1000000-0000-4000-8000-000000000002": {
+          "best": 308.583
+        },
+        "a1000000-0000-4000-8000-000000000003": {
+          "best": 305.8435
+        },
+        "a1000000-0000-4000-8000-000000000004": {
+          "best": 117.7854
+        },
+        "a1000000-0000-4000-8000-000000000005": {
+          "best": 213.7273
+        },
+        "a1000000-0000-4000-8000-000000000006": {
+          "best": 93.5057
+        }
+      }
+    },
+    "is_new": false,
+    "volume_pct_change": -0.8082,
+    "workout_count_pct_change": -0.8333,
+    "per_exercise_e1rm_delta": {
+      "a1000000-0000-4000-8000-000000000001": {
+        "delta": 2.8572,
+        "best": 260.0097,
+        "prev_best": 257.1525
+      },
+      "a1000000-0000-4000-8000-000000000002": {
+        "delta": 0,
+        "best": 308.583,
+        "prev_best": 308.583
+      },
+      "a1000000-0000-4000-8000-000000000005": {
+        "delta": 0,
+        "best": 213.7273,
+        "prev_best": 213.7273
+      }
+    }
+  },
+  "week": {
+    "current": {
+      "workout_count": 2,
+      "total_volume": 37595,
+      "total_sets": 28,
+      "avg_session_duration_min": 49,
+      "pr_count": 1,
+      "avg_top_set_rpe": null,
+      "per_exercise_e1rm": {
+        "a1000000-0000-4000-8000-000000000001": {
+          "best": 260.0097
+        },
+        "a1000000-0000-4000-8000-000000000002": {
+          "best": 308.583
+        },
+        "a1000000-0000-4000-8000-000000000005": {
+          "best": 213.7273
+        }
+      }
+    },
+    "previous": {
+      "workout_count": 2,
+      "total_volume": 40449,
+      "total_sets": 32,
+      "avg_session_duration_min": 54,
+      "pr_count": 1,
+      "avg_top_set_rpe": 8,
+      "per_exercise_e1rm": {
+        "a1000000-0000-4000-8000-000000000001": {
+          "best": 257.1525
+        },
+        "a1000000-0000-4000-8000-000000000002": {
+          "best": 308.0115
+        },
+        "a1000000-0000-4000-8000-000000000003": {
+          "best": 299.9205
+        },
+        "a1000000-0000-4000-8000-000000000005": {
+          "best": 213.7273
+        }
+      }
+    },
+    "is_new": false,
+    "volume_pct_change": -0.0706,
+    "workout_count_pct_change": 0,
+    "per_exercise_e1rm_delta": {
+      "a1000000-0000-4000-8000-000000000001": {
+        "delta": 2.8572,
+        "best": 260.0097,
+        "prev_best": 257.1525
+      },
+      "a1000000-0000-4000-8000-000000000002": {
+        "delta": 0.5715,
+        "best": 308.583,
+        "prev_best": 308.0115
+      },
+      "a1000000-0000-4000-8000-000000000005": {
+        "delta": 0,
+        "best": 213.7273,
+        "prev_best": 213.7273
+      }
+    }
+  },
+  "year": {
+    "current": {
+      "workout_count": 35,
+      "total_volume": 717855.5,
+      "total_sets": 608,
+      "avg_session_duration_min": 49.9429,
+      "pr_count": 30,
+      "avg_top_set_rpe": 8.4167,
+      "per_exercise_e1rm": {
+        "a1000000-0000-4000-8000-000000000001": {
+          "best": 260.0097
+        },
+        "a1000000-0000-4000-8000-000000000002": {
+          "best": 315
+        },
+        "a1000000-0000-4000-8000-000000000003": {
+          "best": 318.228
+        },
+        "a1000000-0000-4000-8000-000000000004": {
+          "best": 117.7854
+        },
+        "a1000000-0000-4000-8000-000000000005": {
+          "best": 213.7273
+        },
+        "a1000000-0000-4000-8000-000000000006": {
+          "best": 93.5057
+        }
+      }
+    },
+    "previous": {
+      "workout_count": 0,
+      "total_volume": 0,
+      "total_sets": 0,
+      "avg_session_duration_min": null,
+      "pr_count": 0,
+      "avg_top_set_rpe": null,
+      "per_exercise_e1rm": {}
+    },
+    "is_new": true,
+    "volume_pct_change": null,
+    "workout_count_pct_change": null,
+    "per_exercise_e1rm_delta": {}
+  }
+}

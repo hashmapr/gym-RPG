@@ -156,7 +156,9 @@ describe('workout logger', () => {
     await user.click(screen.getByTestId('log-set'));
     expect(useRestTimer.getState().endsAt).not.toBeNull();
     expect(screen.getByTestId('rest-timer')).toBeInTheDocument();
-    expect(screen.getByTestId('rest-remaining')).toHaveTextContent('2:00');
+    // findBy: the set-save state update flushes asynchronously; a sync
+    // assertion can race it (and a leftover timer from a previous test).
+    await screen.findByText('2:00', { selector: '[data-testid="rest-remaining"]' });
   });
 
   it('numeric inputs reject letters and accept decimals (type=number, min 0)', () => {
@@ -290,6 +292,8 @@ describe('rest timer', () => {
     await user.click(screen.getByTestId('log-set'));
     const { endsAt, durationSec } = useRestTimer.getState();
     expect(durationSec).toBe(90);
-    expect(endsAt! - Date.now()).toBeCloseTo(90_000, -1);
+    // -2 (±50ms): a few ms of real-clock drift between start() and this
+    // assertion is expected; -1 (±5ms, strict) flakes under load.
+    expect(endsAt! - Date.now()).toBeCloseTo(90_000, -2);
   });
 });

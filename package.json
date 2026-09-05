@@ -9,6 +9,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "seed:dev": "tsx scripts/seed.ts",
+    "seed:verify": "tsx scripts/verify-seed.ts",
     "icons": "node scripts/gen-icons.mjs"
   },
   "dependencies": {
@@ -35,6 +37,7 @@
     "fake-indexeddb": "^6.2.5",
     "jsdom": "^29.1.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.13",
     "typescript": "^5",
     "vitest": "^5.0.0"
   }

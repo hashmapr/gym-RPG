@@ -58,6 +58,9 @@ export default function HomePage() {
           THE LAB
         </h1>
         <nav className="flex gap-1 text-sm">
+          <Link href="/lab" className="min-h-12 px-3 py-3 text-zinc-400 hover:text-zinc-100">
+            Lab
+          </Link>
           <Link href="/history" className="min-h-12 px-3 py-3 text-zinc-400 hover:text-zinc-100">
             History
           </Link>

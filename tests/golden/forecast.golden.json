@@ -1,0 +1,26 @@
+{
+  "goals": [
+    {
+      "goal_id": "20000000-0000-4000-8000-000000000001",
+      "exercise_id": "a1000000-0000-4000-8000-000000000001",
+      "target_weight": 260,
+      "target_reps": 5,
+      "achieved": false,
+      "achieved_at": null,
+      "progress_pct": 87.5,
+      "eta_weeks": 13.6952,
+      "projection": "reliable"
+    },
+    {
+      "goal_id": "20000000-0000-4000-8000-000000000002",
+      "exercise_id": "a1000000-0000-4000-8000-000000000002",
+      "target_weight": 315,
+      "target_reps": 1,
+      "achieved": true,
+      "achieved_at": "2026-07-25T18:00:00.000Z",
+      "progress_pct": 100,
+      "eta_weeks": 0,
+      "projection": "reliable"
+    }
+  ]
+}

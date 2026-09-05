@@ -148,6 +148,16 @@ export interface SessionExercise {
   exercise_order: number;
 }
 
+export interface Goal {
+  id: string;
+  exercise_id: string;
+  target_weight: number;
+  target_reps: number;
+  created_at: string;
+  achieved_at: string | null; // set when a logged set first satisfies the goal
+  syncedAt?: string;
+}
+
 export type TableName =
   | 'exercises'
   | 'gym_profiles'
@@ -158,7 +168,8 @@ export type TableName =
   | 'programs'
   | 'program_templates'
   | 'template_exercises'
-  | 'rpg_character';
+  | 'rpg_character'
+  | 'goals';
 
 export interface Settings {
   day_boundary_hour: number;

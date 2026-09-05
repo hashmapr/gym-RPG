@@ -1,14 +1,14 @@
 // Read the mock backend's full state — E2E tests assert against this.
+// DELETE resets the store entirely (seed:dev calls this before pushing).
 
 import { NextResponse } from 'next/server';
+import { mockClear, mockSnapshot, mockWriteCounts } from '@/lib/server/mock-db';
 
 export async function GET() {
-  const g = globalThis as unknown as {
-    __labMockStore?: { tables: Map<string, Map<string, Record<string, unknown>>> };
-  };
-  const tables: Record<string, Record<string, unknown>[]> = {};
-  for (const [name, rows] of g.__labMockStore?.tables ?? []) {
-    tables[name] = [...rows.values()];
-  }
-  return NextResponse.json({ tables });
+  return NextResponse.json({ tables: mockSnapshot(), writeCounts: mockWriteCounts() });
+}
+
+export async function DELETE() {
+  mockClear();
+  return NextResponse.json({ ok: true });
 }

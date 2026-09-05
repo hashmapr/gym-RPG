@@ -26,6 +26,7 @@ export const SYNC_TABLE_ORDER: TableName[] = [
   'program_templates',
   'template_exercises',
   'rpg_character',
+  'goals',
 ];
 
 export const DEFAULT_BATCH_SIZE = 200;

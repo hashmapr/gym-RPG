@@ -45,6 +45,6 @@ test('hevy import → history shows workouts; re-import → zero duplicates', as
   );
 
   await page.goto('/history');
-  const stillThree = await page.getByTestId('history-list').getByRole('listitem').count();
-  expect(stillThree).toBe(3);
+  // Auto-retry: the live query resolves after goto; a bare count() can race it.
+  await expect(list.getByRole('listitem')).toHaveCount(3);
 });

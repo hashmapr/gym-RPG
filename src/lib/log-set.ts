@@ -67,7 +67,25 @@ export async function logSet(input: LogSetInput): Promise<LoggedSet> {
     created_at: nowIso(),
   };
   await db.workout_sets.put(set);
+  await achieveGoalsFor(set);
   return { set, pr };
+}
+
+// Goal-achieve hook: when a logged set first satisfies an unachieved goal
+// (weight >= target AND reps >= target), stamp achieved_at.
+async function achieveGoalsFor(set: WorkoutSet): Promise<void> {
+  if (set.weight == null || set.reps == null) return;
+  if ((set.set_type ?? 'working') !== 'working') return;
+  const goals = await db.goals.where('exercise_id').equals(set.exercise_id).toArray();
+  for (const g of goals) {
+    if (g.achieved_at != null) continue;
+    if (set.weight >= g.target_weight && set.reps >= g.target_reps) {
+      await db.goals.update(g.id, {
+        achieved_at: set.timestamp,
+        syncedAt: undefined, // re-queue: the achieved state must sync
+      });
+    }
+  }
 }
 
 function siblingsFilter(

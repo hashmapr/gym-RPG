@@ -8,6 +8,7 @@ import type {
   CardioEntry,
   DailyMetric,
   Exercise,
+  Goal,
   GymProfile,
   HevyMapping,
   Program,
@@ -31,6 +32,7 @@ export class LabDB extends Dexie {
   program_templates!: Table<ProgramTemplate, string>;
   template_exercises!: Table<TemplateExercise, string>;
   rpg_character!: Table<RPGCharacter, string>;
+  goals!: Table<Goal, string>;
   session_exercises!: Table<SessionExercise, [string, string]>;
   settings!: Table<{ key: string; value: unknown }, string>;
   hevy_mappings!: Table<HevyMapping, string>;
@@ -52,6 +54,10 @@ export class LabDB extends Dexie {
       session_exercises: '[sessionId+exerciseId], sessionId, exerciseId',
       settings: 'key',
       hevy_mappings: 'hevy_name',
+    });
+    // Sprint 2: goals table (The Lab analytics).
+    this.version(2).stores({
+      goals: 'id, exercise_id, achieved_at',
     });
   }
 }
