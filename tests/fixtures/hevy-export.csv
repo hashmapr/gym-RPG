@@ -1,0 +1,33 @@
+Title,Start Time,End Time,Exercise Title,Set Order,Weight (kg),Reps,RPE,Distance,Duration,Notes
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Barbell Bench Press,1,100,5,8,,,
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Barbell Bench Press,2,102.5,5,8.5,,,,
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Barbell Bench Press,3,105,3,9,,,,
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Barbell Bench Press,4,102.5,5,,,,,duplicate row
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Close-Grip Bench Press,1,90,8,,,,
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Close-Grip Bench Press,2,92.5,8,,,,
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Close-Grip Bench Press,3,95,6,,,,
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Close-Grip Bench Press,4,97.5,6,n/a,,,,
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Overhead Press,1,50,8,7,,,,
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Overhead Press,2,52.5,8,,,,
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Overhead Press,3,52.5,6,9,,,,
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Pushup,1,,20,,,,
+Push Day A,2024-01-15 18:30:05 UTC,2024-01-15 19:25:00 UTC,Pushup,2,,15,8,,,,
+2:30 AM Session,2024-01-16 02:30:00 UTC,2024-01-16 03:05:00 UTC,Barbell Squat,1,140,5,7,,,,
+2:30 AM Session,2024-01-16 02:30:00 UTC,2024-01-16 03:05:00 UTC,Barbell Squat,2,145,5,,,,
+2:30 AM Session,2024-01-16 02:30:00 UTC,2024-01-16 03:05:00 UTC,Barbell Squat,3,150,3,9,,,,
+2:30 AM Session,2024-01-16 02:30:00 UTC,2024-01-16 03:05:00 UTC,Pause Squat,1,100,8,,,,
+2:30 AM Session,2024-01-16 02:30:00 UTC,2024-01-16 03:05:00 UTC,Pause Squat,2,105,8,,,,
+2:30 AM Session,2024-01-16 02:30:00 UTC,2024-01-16 03:05:00 UTC,Cable Row,1,,12,,,,
+Pull Day B,2024-01-17 07:00:00 UTC,2024-01-17 08:10:00 UTC,Deadlift,1,180,3,8,,,,
+Pull Day B,2024-01-17 07:00:00 UTC,2024-01-17 08:10:00 UTC,Deadlift,2,187.5,3,,,,
+Pull Day B,2024-01-17 07:00:00 UTC,2024-01-17 08:10:00 UTC,Deadlift,3,195,1,9.5,,,,
+Pull Day B,2024-01-17 07:00:00 UTC,2024-01-17 08:10:00 UTC,Deadlift,4,195,1,,,,,duplicate row
+Pull Day B,2024-01-17 07:00:00 UTC,2024-01-17 08:10:00 UTC,Pull Up,1,,10,,,,
+Pull Day B,2024-01-17 07:00:00 UTC,2024-01-17 08:10:00 UTC,Pull Up,2,,8,9,,,,
+Pull Day B,2024-01-17 07:00:00 UTC,2024-01-17 08:10:00 UTC,Pull Up,3,,8,,,,,duplicate row
+Pull Day B,2024-01-17 07:00:00 UTC,2024-01-17 08:10:00 UTC,Lat Pulldown,1,65,10,,,,
+Pull Day B,2024-01-17 07:00:00 UTC,2024-01-17 08:10:00 UTC,Lat Pulldown,2,70,10,8,,,,
+Pull Day B,2024-01-17 07:00:00 UTC,2024-01-17 08:10:00 UTC,Lat Pulldown,3,70,8,,,,
+,2024-01-18 10:00:00 UTC,2024-01-18 10:30:00 UTC,,1,60,10,,,,,garbage: missing exercise
+Bad Time,not-a-timestamp,2024-01-18 10:30:00 UTC,Barbell Bench Press,1,60,6,,,,,garbage: bad start time
+No Reps,2024-01-18 10:00:00 UTC,2024-01-18 10:30:00 UTC,Barbell Bench Press,1,60,,,,,,garbage: missing reps

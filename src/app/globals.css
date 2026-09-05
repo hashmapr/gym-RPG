@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+/* Dark-mode-only app: no light theme exists. */
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: #09090b;
+}
+
+/* Kill number-input spinners — they wreck touch targets */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
