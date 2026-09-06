@@ -13,6 +13,8 @@ import { getTrainingDate } from '@/lib/day-boundary';
 import { formatVolume } from '@/lib/format';
 import { starterDefs, joinChallenge, STREAK_RAW_RULES_NOTICE } from '@/lib/challenges/service';
 import { diffDays } from '@/lib/streak';
+import { AI_NAME, ARGUS_ENABLED } from '@/lib/argus/config';
+import { AdaptiveBadge, SuggestionCard } from '@/components/argus/ArgusUI';
 import ChallengeDial from '@/components/challenges/ChallengeDial';
 import type { ChallengeDef, ChallengeRun } from '@/lib/types';
 
@@ -107,6 +109,15 @@ export default function ChallengesPage() {
 
       {error && <p className="mb-3 text-sm text-red-400">{error}</p>}
 
+      {/* Weekly suggestion (AI) */}
+      {ARGUS_ENABLED && (
+        <SuggestionCard
+          onAccepted={(runId) => {
+            if (runId) router.push(`/challenges/${runId}`);
+          }}
+        />
+      )}
+
       {/* Active */}
       <section className="mb-6">
         <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-2">Active</h2>
@@ -127,7 +138,14 @@ export default function ChallengesPage() {
               >
                 <ChallengeDial pct={pct} label={progressLabel(def, run.progress_value)} />
                 <div className="min-w-0 flex-1">
-                  <p className="font-semibold truncate">{def.name}</p>
+                  <p className="font-semibold truncate">
+                    {def.name}
+                    {ARGUS_ENABLED && def.authored_by === 'ai' && (
+                      <span className="ml-2 align-middle">
+                        <AdaptiveBadge kind="authored" />
+                      </span>
+                    )}
+                  </p>
                   <p className="text-xs text-zinc-500 tabular-nums">
                     {TYPE_LABEL[def.challenge_type]} · target {targetLabel(def)}
                   </p>
@@ -150,7 +168,14 @@ export default function ChallengesPage() {
             <div key={def.id} className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="font-semibold">{def.name}</p>
+                  <p className="font-semibold">
+                    {def.name}
+                    {ARGUS_ENABLED && def.authored_by === 'ai' && (
+                      <span className="ml-2 align-middle">
+                        <AdaptiveBadge kind="authored" />
+                      </span>
+                    )}
+                  </p>
                   {def.description && <p className="text-xs text-zinc-500 mt-0.5">{def.description}</p>}
                   <p className="text-xs text-zinc-400 tabular-nums mt-1">
                     {TYPE_LABEL[def.challenge_type]} · {targetLabel(def)} · {def.duration_days}d

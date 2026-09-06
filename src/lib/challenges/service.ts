@@ -13,6 +13,7 @@ import {
   type EvalContext,
   type EvalSet,
 } from './engine';
+import { effectiveTargetOf } from '../argus/governor';
 import {
   addDays,
   bankFreezes,
@@ -23,7 +24,9 @@ import {
   vacationDateSet,
 } from '../streak';
 import type {
+  AdaptationPolicy,
   ChallengeDef,
+  ChallengeDefDraft,
   ChallengeParams,
   ChallengeRun,
   PrescriptiveSessionSpec,
@@ -113,7 +116,11 @@ export async function resolveChallenges(today?: string): Promise<void> {
     const def = defById.get(run.challenge_def_id);
     if (!def || run.status !== 'active') continue;
 
-    const { eval: e, pace } = evaluateChallenge(def, run, ctx);
+    // Governor/user amendments may have moved the target; evaluation and
+    // resolution always run against the EFFECTIVE target (original when
+    // never amended — byte-identical to Sprint 4 behavior).
+    const effective = await effectiveTargetOf(def, run);
+    const { eval: e, pace } = evaluateChallenge(def, run, ctx, effective);
 
     // Upsert daily progress rows (idempotent by PK [run_id, training_date]).
     if (e.series.length > 0) {
@@ -141,7 +148,7 @@ export async function resolveChallenges(today?: string): Promise<void> {
       }
     }
 
-    const action = resolveRun(def, run, e, pace, ctx, now);
+    const action = resolveRun(def, run, e, pace, ctx, now, effective);
     if (action.kind === 'complete') {
       await db.challenge_runs.update(run.id, {
         status: 'completed',
@@ -175,7 +182,11 @@ export interface StreakDisplay {
  * Global streak state. Grants this month's freezes (idempotent), persists
  * freeze consumption from the state machine, and returns display data.
  */
-export async function getStreakDisplay(today?: string): Promise<StreakDisplay> {
+export async function getStreakDisplay(
+  today?: string,
+  opts?: { persist?: boolean },
+): Promise<StreakDisplay> {
+  const persist = opts?.persist ?? true;
   const t = today ?? trainingDateOf();
   const settings = await getSettings();
   const [freezes, vacations, sessions, planned] = await Promise.all([
@@ -188,7 +199,7 @@ export async function getStreakDisplay(today?: string): Promise<StreakDisplay> {
   // 1. Monthly grant (lazy, idempotent, skipped at cap).
   const month = t.slice(0, 7);
   const grant = planMonthlyGrant(month, freezes, settings.freeze_bank_cap, t, newId);
-  if (grant.toCreate.length > 0) {
+  if (persist && grant.toCreate.length > 0) {
     await db.streak_freezes.bulkPut(grant.toCreate);
     freezes.push(...grant.toCreate);
   }
@@ -224,10 +235,12 @@ export async function getStreakDisplay(today?: string): Promise<StreakDisplay> {
 
   // 3. Persist consumption (idempotent: only unconsumed rows are updated).
   const consumedIds = new Set(result.freezes_consumed.map((c) => c.id));
-  for (const f of bank) {
-    if (!consumedIds.has(f.id)) continue;
-    const covered = result.freezes_consumed.find((c) => c.id === f.id)?.covered_training_date ?? null;
-    await db.streak_freezes.update(f.id, { consumed_date: t, covered_training_date: covered });
+  if (persist) {
+    for (const f of bank) {
+      if (!consumedIds.has(f.id)) continue;
+      const covered = result.freezes_consumed.find((c) => c.id === f.id)?.covered_training_date ?? null;
+      await db.streak_freezes.update(f.id, { consumed_date: t, covered_training_date: covered });
+    }
   }
 
   const grantedThisMonth = freezes.filter((f) => f.granted_date.slice(0, 7) === month).length;
@@ -262,10 +275,13 @@ export const STREAK_RAW_RULES_NOTICE =
 export async function joinChallenge(
   def: ChallengeDef,
   startedOn?: string,
+  options?: { adaptationPolicy?: AdaptationPolicy | null },
 ): Promise<ChallengeRun> {
   const today = trainingDateOf();
   const start = startedOn ?? today;
   const endsOn = addDays(start, def.duration_days - 1);
+  // AI-authored defs persist their validated policy on the def — join adaptively by default.
+  const policy = options?.adaptationPolicy ?? (def as ChallengeDefDraft).adaptation_policy ?? null;
   const run: ChallengeRun = {
     id: newId(),
     challenge_def_id: def.id,
@@ -274,6 +290,8 @@ export async function joinChallenge(
     status: 'active',
     completed_at: null,
     progress_value: 0,
+    adaptation_policy: policy,
+    is_adaptive: policy != null,
     created_at: nowIso(),
   };
   await db.challenge_runs.put(run);
@@ -445,6 +463,7 @@ export async function createCustomChallenge(input: CustomChallengeInput): Promis
     params: input.params,
     duration_days: input.duration_days,
     is_starter: false,
+    authored_by: 'user',
     created_at: nowIso(),
   };
   await db.challenge_defs.put(def);
@@ -456,7 +475,7 @@ export async function createCustomChallenge(input: CustomChallengeInput): Promis
 // ---------------------------------------------------------------------------
 
 export function starterDefs(): ChallengeDef[] {
-  const base = { is_starter: true, created_at: '2026-01-01T00:00:00.000Z' };
+  const base = { is_starter: true, authored_by: 'user' as const, created_at: '2026-01-01T00:00:00.000Z' };
   return [
     {
       ...base,

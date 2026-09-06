@@ -12,13 +12,16 @@ import { syncAll } from '@/lib/sync/engine';
 import { resolveSyncClient } from '@/lib/sync/client';
 import { maybePullE2ESeed } from '@/lib/e2e-seed';
 import { useSyncStore } from '@/lib/sync/store';
-import { ensureStarters, resolveChallenges } from '@/lib/challenges/service';
+import { ensureStarters, resolveChallenges, getStreakDisplay } from '@/lib/challenges/service';
+import { runGovernorSweep } from '@/lib/argus/governor';
 
-/** Lazy challenge work: install starters + resolve runs (idempotent). */
+/** Lazy challenge work: install starters + resolve runs + governor (idempotent). */
 export function runChallengeSweep(): void {
   void (async () => {
     await ensureStarters();
+    await getStreakDisplay(); // lazy monthly freeze grant + consumption persistence
     await resolveChallenges();
+    await runGovernorSweep();
   })();
 }
 

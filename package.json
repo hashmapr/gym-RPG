@@ -13,6 +13,7 @@
     "seed:challenges": "tsx scripts/seed-challenges.ts",
     "seed:program": "tsx scripts/seed-program.ts",
     "seed:verify": "tsx scripts/verify-seed.ts",
+    "seed:goldens-argus": "tsx scripts/goldens-argus.ts",
     "icons": "node scripts/gen-icons.mjs"
   },
   "dependencies": {

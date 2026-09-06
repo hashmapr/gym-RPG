@@ -14,6 +14,8 @@ import { formatVolume, formatDateTime } from '@/lib/format';
 import { useSettings } from '@/lib/settings';
 import { getTodayCard, linkPlannedSession, syncRunProgress, sweepMissedSessions } from '@/lib/coach/run';
 import { exerciseName } from '@/lib/wger';
+import { ARGUS_ENABLED } from '@/lib/argus/config';
+import { SuggestionCard } from '@/components/argus/ArgusUI';
 import type { TodayCard } from '@/lib/coach/run';
 import type { WorkoutSession } from '@/lib/types';
 
@@ -143,6 +145,15 @@ export default function HomePage() {
           </Link>
         </nav>
       </header>
+
+      {/* Weekly suggestion nudge (AI) */}
+      {ARGUS_ENABLED && (
+        <SuggestionCard
+          onAccepted={(runId) => {
+            if (runId) router.push(`/challenges/${runId}`);
+          }}
+        />
+      )}
 
       {active ? (
         <Link

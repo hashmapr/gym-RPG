@@ -44,6 +44,7 @@ function def(
     params,
     duration_days: duration,
     is_starter: true,
+    authored_by: 'user',
     created_at: '2026-01-01T00:00:00Z',
   };
 }
@@ -57,6 +58,8 @@ function run(startedOn: string, duration = 7): ChallengeRun {
     status: 'active',
     completed_at: null,
     progress_value: 0,
+    adaptation_policy: null,
+    is_adaptive: false,
     created_at: '2026-01-01T00:00:00Z',
   };
 }

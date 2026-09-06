@@ -413,11 +413,12 @@ export function paceOf(
   run: ChallengeRun,
   evalResult: ChallengeEval,
   ctx: EvalContext,
+  targetOverride?: number,
 ): PaceResult {
   const total = windowDays(run);
   const elapsed = elapsedDays(run, ctx.today);
   const remaining = daysRemaining(run, ctx.today);
-  const target = targetOf(def, run);
+  const target = targetOf(def, run, targetOverride);
 
   if (remaining === 0) {
     return {
@@ -459,7 +460,8 @@ export function paceOf(
 }
 
 /** The run's target in the challenge's native unit. */
-export function targetOf(def: ChallengeDef, _run: ChallengeRun): number {
+export function targetOf(def: ChallengeDef, _run: ChallengeRun, override?: number): number {
+  if (override != null) return override;
   const p = def.params;
   switch (def.challenge_type) {
     case 'volume': return p.target_lb ?? 0;
@@ -496,9 +498,10 @@ export function resolveRun(
   pace: PaceResult,
   ctx: EvalContext,
   nowIso: string,
+  targetOverride?: number,
 ): ResolutionAction {
   if (run.status !== 'active') return { kind: 'none' };
-  const target = targetOf(def, run);
+  const target = targetOf(def, run, targetOverride);
 
   // Early completion (streak completes only at window end).
   if (def.challenge_type !== 'streak' && evalResult.target_met) {
@@ -534,6 +537,7 @@ export function evaluateChallenge(
   def: ChallengeDef,
   run: ChallengeRun,
   ctx: EvalContext,
+  targetOverride?: number,
 ): { eval: ChallengeEval; pace: PaceResult } {
   let e: ChallengeEval;
   switch (def.challenge_type) {
@@ -545,5 +549,5 @@ export function evaluateChallenge(
     case 'streak': e = streakProgress(ctx, run, def.params); break;
     case 'prescriptive': e = prescriptiveProgress(ctx, run, def.params); break;
   }
-  return { eval: e, pace: paceOf(def, run, e, ctx) };
+  return { eval: e, pace: paceOf(def, run, e, ctx, targetOverride) };
 }

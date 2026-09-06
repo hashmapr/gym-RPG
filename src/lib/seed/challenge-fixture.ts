@@ -75,7 +75,7 @@ function def(
   duration_days: number,
   description: string | null = null,
 ): ChallengeDef {
-  return { id, name, description, challenge_type, params, duration_days, is_starter: false, created_at: SEED_NOW };
+  return { id, name, description, challenge_type, params, duration_days, is_starter: false, authored_by: 'user', created_at: SEED_NOW };
 }
 
 function run(id: string, defId: string, started_on: string, ends_on: string): ChallengeRun {
@@ -87,6 +87,8 @@ function run(id: string, defId: string, started_on: string, ends_on: string): Ch
     status: 'active',
     completed_at: null,
     progress_value: 0,
+    adaptation_policy: null,
+    is_adaptive: false,
     created_at: SEED_NOW,
   };
 }

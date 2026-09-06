@@ -11,6 +11,9 @@ import { downloadExport } from '@/lib/export';
 import { resolveSyncClient } from '@/lib/sync/client';
 import { abandonRun } from '@/lib/coach/run';
 import { db } from '@/lib/db';
+import { AI_NAME, ARGUS_ENABLED, PROMPT_VERSION } from '@/lib/argus/config';
+import { runWeeklySuggestion } from '@/lib/argus/suggest';
+import { useSyncStore } from '@/lib/sync/store';
 import type { E1RMFormula } from '@/lib/types';
 
 const FORMULAS: { value: E1RMFormula; label: string }[] = [
@@ -24,6 +27,13 @@ export default function SettingsPage() {
   const settings = useSettings();
   const [syncMode, setSyncMode] = useState<string>('auto');
   const [exported, setExported] = useState(false);
+  const online = useSyncStore((s) => s.online);
+  const [suggestBusy, setSuggestBusy] = useState(false);
+  const [suggestError, setSuggestError] = useState<string | null>(null);
+  const generationLogs = useLiveQuery(
+    () => db.ai_generation_logs.orderBy('created_at').reverse().limit(10).toArray(),
+    [],
+  );
 
   useEffect(() => {
     setSyncMode(localStorage.getItem('lab.syncMode') ?? 'auto');
@@ -43,6 +53,73 @@ export default function SettingsPage() {
         <h1 className="text-xl font-bold">Settings</h1>
         <span className="w-16" />
       </header>
+
+      {/* AI section */}
+      {ARGUS_ENABLED && (
+        <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4" data-testid="argus-settings">
+          <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">{AI_NAME}</h2>
+          <div className="flex items-center justify-between text-sm mb-3">
+            <span className="text-zinc-400">Provider</span>
+            <span className="tabular-nums" data-testid="argus-provider">
+              {online ? 'anthropic · online' : 'offline'}
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-sm mb-3">
+            <span className="text-zinc-400">Prompt version</span>
+            <span className="tabular-nums">{PROMPT_VERSION}</span>
+          </div>
+          <button
+            type="button"
+            onClick={async () => {
+              setSuggestBusy(true);
+              setSuggestError(null);
+              try {
+                await runWeeklySuggestion();
+              } catch (e) {
+                setSuggestError(e instanceof Error ? e.message : 'Suggestion failed.');
+              } finally {
+                setSuggestBusy(false);
+              }
+            }}
+            disabled={suggestBusy || !online}
+            data-testid="run-suggestion"
+            className="w-full min-h-12 rounded-lg bg-violet-600 text-white font-semibold disabled:opacity-50"
+          >
+            {suggestBusy ? 'Drafting…' : `Draft this week's ${AI_NAME} suggestion`}
+          </button>
+          {!online && (
+            <p className="mt-2 text-xs text-zinc-500">
+              Offline — suggestions need a connection.
+            </p>
+          )}
+          {suggestError && <p className="mt-2 text-sm text-red-400">{suggestError}</p>}
+
+          <h3 className="text-xs uppercase tracking-wider text-zinc-500 mt-4 mb-2">
+            Generation history
+          </h3>
+          {generationLogs && generationLogs.length === 0 && (
+            <p className="text-xs text-zinc-500">No generations yet.</p>
+          )}
+          <ul className="space-y-1 text-xs tabular-nums" data-testid="generation-history">
+            {generationLogs?.map((log) => (
+              <li key={log.id} className="flex items-center justify-between gap-2">
+                <span className="text-zinc-400 truncate">{log.created_at.slice(0, 16).replace('T', ' ')}</span>
+                <span
+                  className={
+                    log.outcome === 'accepted'
+                      ? 'text-emerald-400'
+                      : log.outcome === 'error'
+                        ? 'text-red-400'
+                        : 'text-zinc-500'
+                  }
+                >
+                  {log.outcome}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
         <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
@@ -269,9 +346,11 @@ function AbandonProgramSection() {
 // ---------------------------------------------------------------------------
 
 function StreakSection() {
+  // persist:false — liveQuery queriers must be read-only (Dexie forbids
+  // readwrite transactions inside liveQuery); the sweep persists instead.
   const display = useLiveQuery(async () => {
     const { getStreakDisplay } = await import('@/lib/challenges/service');
-    return getStreakDisplay();
+    return getStreakDisplay(undefined, { persist: false });
   }, []);
   const vacations = useLiveQuery(() => db.vacation_periods.toArray(), []);
   const [start, setStart] = useState('');

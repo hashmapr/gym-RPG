@@ -1,0 +1,192 @@
+{
+  "generated_at": "2026-09-05T12:00:00.000Z",
+  "training_date": "2026-09-05",
+  "history_days": 109,
+  "total_sets": 608,
+  "total_sessions": 35,
+  "top_exercises": [
+    {
+      "exercise_id": "a1000000-0000-4000-8000-000000000005",
+      "name": "wger #1125",
+      "weekly_sets": 14.25,
+      "best_e1rm_28d": 213.73,
+      "top_weight_mean": 160,
+      "velocity_status": "stalled",
+      "plateau_status": "plateau"
+    },
+    {
+      "exercise_id": "a1000000-0000-4000-8000-000000000002",
+      "name": "wger #615",
+      "weekly_sets": 9.63,
+      "best_e1rm_28d": 308.58,
+      "top_weight_mean": 272.375,
+      "velocity_status": "stalled",
+      "plateau_status": "plateau"
+    },
+    {
+      "exercise_id": "a1000000-0000-4000-8000-000000000001",
+      "name": "wger #73",
+      "weekly_sets": 9.5,
+      "best_e1rm_28d": 260.01,
+      "top_weight_mean": 216.6875,
+      "velocity_status": "progressing",
+      "plateau_status": "progressing"
+    },
+    {
+      "exercise_id": "a1000000-0000-4000-8000-000000000006",
+      "name": "wger #364",
+      "weekly_sets": 5.25,
+      "best_e1rm_28d": 93.51,
+      "top_weight_mean": 70,
+      "velocity_status": "stalled",
+      "plateau_status": "plateau"
+    },
+    {
+      "exercise_id": "a1000000-0000-4000-8000-000000000003",
+      "name": "wger #184",
+      "weekly_sets": 2,
+      "best_e1rm_28d": 303.15,
+      "top_weight_mean": 282.75,
+      "velocity_status": "declining",
+      "plateau_status": "regressing"
+    },
+    {
+      "exercise_id": "a1000000-0000-4000-8000-000000000004",
+      "name": "wger #687",
+      "weekly_sets": 1,
+      "best_e1rm_28d": 117.79,
+      "top_weight_mean": 89,
+      "velocity_status": null,
+      "plateau_status": "insufficient_data"
+    }
+  ],
+  "weekly_volume": {
+    "mean": 45350.7,
+    "min": 40070,
+    "max": 80499,
+    "last": 40449
+  },
+  "baseline_daily_tonnage_lb": 6797.2,
+  "session_frequency": {
+    "per_week_8w": 2.5,
+    "avg_duration_min": 49
+  },
+  "session_rate_28d_per_day": 0.36,
+  "pr_rate_90d_per_day": 0.23,
+  "recent_prs": [
+    {
+      "exercise": "wger #73",
+      "date": "2026-08-11",
+      "weight": 219.5,
+      "reps": 5
+    },
+    {
+      "exercise": "wger #73",
+      "date": "2026-08-18",
+      "weight": 222,
+      "reps": 5
+    },
+    {
+      "exercise": "wger #73",
+      "date": "2026-08-25",
+      "weight": 225,
+      "reps": 5
+    },
+    {
+      "exercise": "wger #73",
+      "date": "2026-09-01",
+      "weight": 227.5,
+      "reps": 5
+    },
+    {
+      "exercise": "wger #687",
+      "date": "2026-08-18",
+      "weight": 94,
+      "reps": 8
+    }
+  ],
+  "plateaus": [
+    "wger #615:plateau",
+    "wger #184:regressing",
+    "wger #687:insufficient_data",
+    "wger #1125:plateau",
+    "wger #364:plateau"
+  ],
+  "neglected_muscles": [
+    {
+      "muscle": "hamstrings",
+      "weeks_zero": 2
+    }
+  ],
+  "anomalies": {
+    "sessions": 2,
+    "volume": 1
+  },
+  "streak": {
+    "current": 35,
+    "best": 35,
+    "bank": 0
+  },
+  "active_challenges": [
+    {
+      "name": "Season Opener: 341,904 lb",
+      "type": "volume",
+      "progress_pct": 0,
+      "adaptive": false
+    },
+    {
+      "name": "Final Push: 55,000 lb",
+      "type": "volume",
+      "progress_pct": 0,
+      "adaptive": false
+    },
+    {
+      "name": "Bench Closer: 12,587.5 lb",
+      "type": "volume",
+      "progress_pct": 0,
+      "adaptive": false
+    },
+    {
+      "name": "Perfect Finish: 4 Sessions",
+      "type": "session_count",
+      "progress_pct": 0,
+      "adaptive": false
+    },
+    {
+      "name": "Bench PR Hunter",
+      "type": "pr_count",
+      "progress_pct": 0,
+      "adaptive": false
+    },
+    {
+      "name": "Squat +2%",
+      "type": "e1rm_gain",
+      "progress_pct": 0,
+      "adaptive": false
+    },
+    {
+      "name": "Bench Ladder 185",
+      "type": "prescriptive",
+      "progress_pct": 0,
+      "adaptive": false
+    },
+    {
+      "name": "Herculean: 500,000 lb",
+      "type": "volume",
+      "progress_pct": 0,
+      "adaptive": false
+    },
+    {
+      "name": "September 25",
+      "type": "distance",
+      "progress_pct": 0,
+      "adaptive": false
+    },
+    {
+      "name": "Iron Cadence (2×/wk)",
+      "type": "streak",
+      "progress_pct": 0,
+      "adaptive": false
+    }
+  ]
+}

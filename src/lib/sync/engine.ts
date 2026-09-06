@@ -54,6 +54,12 @@ export const SYNC_TABLE_ORDER: TableName[] = [
   'challenge_progress',
   'streak_freezes',
   'vacation_periods',
+  // Sprint 5 (Adaptive): state + amendments reference runs; audit + suggestion
+  // tables are independent. policy_state dedupes by the composite PK.
+  'challenge_policy_state',
+  'challenge_amendments',
+  'ai_generation_logs',
+  'ai_suggestions',
 ];
 
 export const DEFAULT_BATCH_SIZE = 200;

@@ -34,6 +34,10 @@ import type {
   VacationPeriod,
   WorkoutSession,
   WorkoutSet,
+  ChallengeAmendment,
+  ChallengePolicyState,
+  AIGenerationLog,
+  AISuggestion,
 } from './types';
 
 export class LabDB extends Dexie {
@@ -65,6 +69,11 @@ export class LabDB extends Dexie {
   challenge_progress!: Table<ChallengeProgress, [string, string]>;
   streak_freezes!: Table<StreakFreeze, string>;
   vacation_periods!: Table<VacationPeriod, string>;
+  // Sprint 5: adaptive policies + audit.
+  challenge_policy_state!: Table<ChallengePolicyState, [string, string]>;
+  challenge_amendments!: Table<ChallengeAmendment, string>;
+  ai_generation_logs!: Table<AIGenerationLog, string>;
+  ai_suggestions!: Table<AISuggestion, string>;
 
   constructor() {
     super('the-lab');
@@ -108,6 +117,17 @@ export class LabDB extends Dexie {
       challenge_progress: '[challenge_run_id+training_date], challenge_run_id',
       streak_freezes: 'id, granted_date, consumed_date, local_id',
       vacation_periods: 'id, start_date, end_date',
+    });
+    // Sprint 5: Adaptive challenges + generation audit. policy_state keeps the
+    // composite PK (run + checkpoint) — the sync engine derives keys from the
+    // primKey schema, so compound PKs push correctly (covered by unit test).
+    this.version(5).stores({
+      challenge_defs: 'id, challenge_type, is_starter, authored_by',
+      challenge_runs: 'id, challenge_def_id, status, ends_on, is_adaptive',
+      challenge_policy_state: '[challenge_run_id+checkpoint_id], challenge_run_id',
+      challenge_amendments: 'id, challenge_run_id, created_at',
+      ai_generation_logs: 'id, request_kind, outcome, challenge_def_id, created_at',
+      ai_suggestions: 'id, status, created_at',
     });
     // P0 sync rule: any mutation to a synced row re-queues it (data layer).
     installRequeueHooks(this, SYNC_TABLE_ORDER);

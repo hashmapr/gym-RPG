@@ -14,6 +14,12 @@ import { generateFixture, seedSettingsRows } from '../src/lib/seed/fixture';
 import { computeAnalytics } from '../src/lib/analytics';
 import type { AnalyticsResult } from '../src/lib/analytics';
 import { evaluateSeedChallenges, buildSeedChallengeGoldens } from '../src/lib/seed/challenge-fixture';
+import {
+  adaptiveGovernorGolden,
+  aiValidationGolden,
+  calibrationGolden,
+  suggestionGolden,
+} from '../src/lib/seed/adaptive-fixture';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const MOCK_DB_PATH = resolve(ROOT, 'mock-db.json');
@@ -177,7 +183,36 @@ function main(): number {
     return 1;
   }
 
-  console.log('\nAll analytics + challenge sections match goldens.');
+  // --- 4. Argus goldens (Sprint 5): governor timelines, gauntlet, suggestion, calibration
+  const adaptiveSections: Array<[string, () => unknown]> = [
+    ['governor', adaptiveGovernorGolden],
+    ['ai-validation', aiValidationGolden],
+    ['suggestion', suggestionGolden],
+    ['calibration', calibrationGolden],
+  ];
+
+  let adaptiveFailed = false;
+  for (const [name, build] of adaptiveSections) {
+    const golden = JSON.parse(readFileSync(resolve(GOLDEN_DIR, `${name}.golden.json`), 'utf8'));
+    const diffs: Diff[] = [];
+    deepDiff(golden, build(), '$', diffs);
+    if (diffs.length === 0) {
+      console.log(`✓ ${name} matches golden`);
+    } else {
+      adaptiveFailed = true;
+      console.error(`✗ ${name}: ${diffs.length} difference(s)`);
+      for (const d of diffs.slice(0, 8)) {
+        console.error(`    ${d.path}: golden=${JSON.stringify(d.golden)} engine=${JSON.stringify(d.engine)}`);
+      }
+      if (diffs.length > 8) console.error(`    … and ${diffs.length - 8} more`);
+    }
+  }
+  if (adaptiveFailed) {
+    console.error('\nArgus engine disagrees with goldens — goldens win.');
+    return 1;
+  }
+
+  console.log('\nAll analytics + challenge + Argus sections match goldens.');
   return 0;
 }
 

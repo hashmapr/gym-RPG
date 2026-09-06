@@ -3,11 +3,13 @@
 // NEW CHALLENGE — custom creator. Structural validation only (Sprint 5 adds
 // the AI-authoring gauntlet on top of the same service call).
 
-import { useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { createCustomChallenge, validateCustomChallenge } from '@/lib/challenges/service';
-import type { ChallengeParams, ChallengeType } from '@/lib/types';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { createCustomChallenge, joinChallenge, validateCustomChallenge } from '@/lib/challenges/service';
+import { db } from '@/lib/db';
+import { AI_NAME, ARGUS_ENABLED } from '@/lib/argus/config';
+import type { ChallengeDef, ChallengeParams, ChallengeType } from '@/lib/types';
 
 const TYPES: Array<{ value: ChallengeType; label: string }> = [
   { value: 'volume', label: 'Volume (lb)' },
@@ -18,7 +20,26 @@ const TYPES: Array<{ value: ChallengeType; label: string }> = [
 ];
 
 export default function NewChallengePage() {
+  // `?from=<defId>` (Argus confirm flow) needs searchParams — Suspense keeps
+  // the static prerender happy.
+  return (
+    <Suspense
+      fallback={
+        <main className="max-w-md mx-auto p-4 pb-16">
+          <p className="py-8 text-center text-zinc-500">Loading…</p>
+        </main>
+      }
+    >
+      <NewChallengeInner />
+    </Suspense>
+  );
+}
+
+function NewChallengeInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const fromId = searchParams.get('from');
+  const [argusDef, setArgusDef] = useState<ChallengeDef | null>(null);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState<ChallengeType>('volume');
@@ -30,6 +51,24 @@ export default function NewChallengePage() {
   const [weeklyMode, setWeeklyMode] = useState(false);
   const [minPerWeek, setMinPerWeek] = useState('');
   const [error, setError] = useState<string | null>(null);
+
+  // Argus confirm flow: prefill the review form from the confirmed def and
+  // join THAT def (policy attached) instead of creating a duplicate.
+  useEffect(() => {
+    if (!fromId) return;
+    void db.challenge_defs.get(fromId).then((d) => {
+      if (!d) return;
+      setArgusDef(d);
+      setName(d.name);
+      setDescription(d.description ?? '');
+      setType(d.challenge_type);
+      setDuration(d.duration_days);
+      if (d.params.target_lb != null) setTargetLb(String(d.params.target_lb));
+      if (d.params.target_sessions != null) setTargetSessions(String(d.params.target_sessions));
+      if (d.params.target_n != null) setTargetPrs(String(d.params.target_n));
+      if (d.params.target_miles != null) setTargetMiles(String(d.params.target_miles));
+    });
+  }, [fromId]);
 
   function buildParams(): ChallengeParams {
     switch (type) {
@@ -50,7 +89,16 @@ export default function NewChallengePage() {
   }
   }
 
-  function submit() {
+  async function submit() {
+    if (argusDef) {
+      try {
+        const run = await joinChallenge(argusDef);
+        router.push(`/challenges/${run.id}`);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Could not start challenge.');
+      }
+      return;
+    }
     const input = {
       name,
       description: description.trim() || null,
@@ -83,6 +131,11 @@ export default function NewChallengePage() {
       </header>
 
       <div className="space-y-4">
+        {argusDef && ARGUS_ENABLED && (
+          <p className="text-xs text-violet-300 bg-violet-950/40 border border-violet-900 rounded-lg px-3 py-2">
+            ✨ Drafted by {AI_NAME} — adaptation policy attached. Review and start it.
+          </p>
+        )}
         <div>
           <label className="text-sm text-zinc-400 mb-1 block">Name</label>
           <input className={inputCls} value={name} onChange={(e) => setName(e.target.value)} placeholder="Deadlift December" />
@@ -93,7 +146,12 @@ export default function NewChallengePage() {
         </div>
         <div>
           <label className="text-sm text-zinc-400 mb-1 block">Type</label>
-          <select className={inputCls} value={type} onChange={(e) => setType(e.target.value as ChallengeType)}>
+          <select
+            className={inputCls}
+            value={type}
+            disabled={!!argusDef}
+            onChange={(e) => setType(e.target.value as ChallengeType)}
+          >
             {TYPES.map((t) => (
               <option key={t.value} value={t.value}>
                 {t.label}
@@ -109,6 +167,7 @@ export default function NewChallengePage() {
             min={1}
             max={365}
             value={duration}
+            disabled={!!argusDef}
             onChange={(e) => setDuration(Number(e.target.value))}
           />
         </div>
@@ -116,7 +175,7 @@ export default function NewChallengePage() {
         {type === 'volume' && (
           <div>
             <label className="text-sm text-zinc-400 mb-1 block">Volume target (lb)</label>
-            <input className={inputCls} type="number" value={targetLb} onChange={(e) => setTargetLb(e.target.value)} />
+            <input className={inputCls} type="number" value={targetLb} disabled={!!argusDef} onChange={(e) => setTargetLb(e.target.value)} />
           </div>
         )}
         {type === 'session_count' && (
@@ -155,7 +214,7 @@ export default function NewChallengePage() {
 
         {error && <p className="text-sm text-red-400">{error}</p>}
         <button onClick={submit} className="w-full min-h-12 rounded-lg bg-emerald-600 text-white font-semibold">
-          Create challenge
+          {argusDef ? 'Start challenge' : 'Create challenge'}
         </button>
       </div>
     </main>

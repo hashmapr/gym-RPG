@@ -3,7 +3,7 @@
 // CHALLENGE RUN DETAIL — dial, pace, prescriptive ladder, resolution banner,
 // abandon. Data is Dexie-live; the sweep keeps progress_value fresh.
 
-import { use, useMemo, useState } from 'react';
+import { use, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -13,6 +13,20 @@ import { getTrainingDate } from '@/lib/day-boundary';
 import { formatVolume, formatWeight } from '@/lib/format';
 import { abandonRun } from '@/lib/challenges/service';
 import { diffDays } from '@/lib/streak';
+import { AI_NAME, ARGUS_ENABLED } from '@/lib/argus/config';
+import {
+  targetFieldOf,
+  effectiveTargetOf,
+  listPendingAmendments,
+  type PendingAmendment,
+} from '@/lib/argus/governor';
+import { amendTarget } from '@/lib/argus/amend';
+import {
+  AdaptiveBadge,
+  ConfirmAmendmentModal,
+  GovernorBanners,
+  PolicyView,
+} from '@/components/argus/ArgusUI';
 import ChallengeDial from '@/components/challenges/ChallengeDial';
 import type { ChallengeDef, ChallengeRun } from '@/lib/types';
 
@@ -33,12 +47,56 @@ export default function ChallengeRunPage({ params }: { params: Promise<{ id: str
   );
   const targets = useLiveQuery(() => db.challenge_targets.toArray(), []);
   const [confirming, setConfirming] = useState(false);
+  const [amendOpen, setAmendOpen] = useState(false);
+  const [amendValue, setAmendValue] = useState('');
+  const [amendReason, setAmendReason] = useState('');
+  const [amendError, setAmendError] = useState<string | null>(null);
+  const [effective, setEffective] = useState<number | null>(null);
 
   const target = useMemo(() => targetOf(def ?? null, run ?? null), [def, run]);
   const pct = run && target > 0 ? run.progress_value / target : 0;
   const state = run?.status === 'completed' ? 'complete' : run?.status === 'failed' ? 'fail' : 'active';
   const early =
     run?.status === 'completed' && run?.completed_at != null && run.completed_at.slice(0, 10) < run.ends_on;
+
+  // Amendment-aware effective target (governor + user amendments applied).
+  useEffect(() => {
+    let cancelled = false;
+    if (def && run) {
+      void effectiveTargetOf(def, run).then((t) => {
+        if (!cancelled) setEffective(t);
+      });
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [def, run]);
+
+  const pendingAmendment = useLiveQuery(async (): Promise<PendingAmendment | null> => {
+    if (!ARGUS_ENABLED || !run || run.status !== 'active') return null;
+    const all = await listPendingAmendments();
+    return all.find((p) => p.run.id === run.id) ?? null;
+  }, [run?.id, run?.status]);
+
+  const canAmend = def != null && targetFieldOf(def.challenge_type) != null;
+
+  async function submitAmendment() {
+    if (!def || !run) return;
+    const n = Number(amendValue);
+    if (!Number.isFinite(n) || n <= 0) {
+      setAmendError('Enter a positive number.');
+      return;
+    }
+    try {
+      await amendTarget(def, run, n, amendReason.trim() || null);
+      setAmendOpen(false);
+      setAmendValue('');
+      setAmendReason('');
+      setAmendError(null);
+    } catch (e) {
+      setAmendError(e instanceof Error ? e.message : 'Could not amend target.');
+    }
+  }
 
   if (!run || !def) {
     return (
@@ -60,6 +118,30 @@ export default function ChallengeRunPage({ params }: { params: Promise<{ id: str
         <h1 className="text-xl font-bold truncate px-2">{def.name}</h1>
         <span className="w-10" />
       </header>
+
+      {/* AI badges */}
+      {ARGUS_ENABLED && (def.authored_by === 'ai' || run.is_adaptive) && (
+        <div className="flex gap-2 mb-4">
+          {def.authored_by === 'ai' && <AdaptiveBadge kind="authored" />}
+          {run.is_adaptive && <AdaptiveBadge kind="adaptive" />}
+        </div>
+      )}
+
+      {/* Governor banners + pending confirm-mode amendment */}
+      {ARGUS_ENABLED && run.status === 'active' && (
+        <>
+          <GovernorBanners runId={run.id} />
+          {pendingAmendment && (
+            <button
+              onClick={() => setAmendOpen(true)}
+              data-testid="open-amendment"
+              className="w-full min-h-12 rounded-lg bg-violet-600 text-white font-semibold mb-4"
+            >
+              Review {AI_NAME}'s proposed adjustment
+            </button>
+          )}
+        </>
+      )}
 
       {/* Resolution banner */}
       {run.status === 'completed' && (
@@ -86,7 +168,10 @@ export default function ChallengeRunPage({ params }: { params: Promise<{ id: str
         <ChallengeDial pct={pct} size={96} state={state} label={progressLabel(def, run.progress_value)} />
         <div className="text-sm space-y-1 tabular-nums">
           <p className="text-zinc-400">
-            Target <span className="text-zinc-100 font-semibold">{targetLabel(def)}</span>
+            Target{' '}
+            <span className="text-zinc-100 font-semibold" data-testid="effective-target">
+              {effective != null && effective !== target ? progressLabel(def, effective) : targetLabel(def)}
+            </span>
           </p>
           <p className="text-zinc-400">
             {run.started_on} → {run.ends_on}
@@ -135,6 +220,25 @@ export default function ChallengeRunPage({ params }: { params: Promise<{ id: str
         </section>
       )}
 
+      {/* Adaptation policy + manual amendment (AI surfaces) */}
+      {ARGUS_ENABLED && run.status === 'active' && (
+        <>
+          <PolicyView run={run} />
+          {canAmend && !amendOpen && !pendingAmendment && (
+            <button
+              onClick={() => {
+                setAmendValue(String(effective ?? target));
+                setAmendOpen(true);
+              }}
+              data-testid="ask-adjust"
+              className="w-full min-h-12 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 font-semibold mb-4"
+            >
+              Ask {AI_NAME} to adjust…
+            </button>
+          )}
+        </>
+      )}
+
       {/* Abandon */}
       {run.status === 'active' && (
         <section className="mt-8">
@@ -165,6 +269,62 @@ export default function ChallengeRunPage({ params }: { params: Promise<{ id: str
             </button>
           )}
         </section>
+      )}
+
+      {/* Pending confirm-mode amendment modal */}
+      {ARGUS_ENABLED && pendingAmendment && amendOpen && (
+        <ConfirmAmendmentModal pending={pendingAmendment} onClose={() => setAmendOpen(false)} />
+      )}
+
+      {/* Manual target amendment modal */}
+      {ARGUS_ENABLED && amendOpen && !pendingAmendment && canAmend && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4">
+          <div
+            className="w-full max-w-md rounded-xl bg-zinc-900 border border-zinc-700 p-4"
+            data-testid="amend-modal"
+          >
+            <h3 className="font-semibold mb-1">Adjust target</h3>
+            <p className="text-sm text-zinc-400 mb-3">
+              Forward-only: past checkpoints keep their original targets. Current:{' '}
+              <span className="tabular-nums">{progressLabel(def, effective ?? target)}</span>
+            </p>
+            <input
+              type="number"
+              inputMode="decimal"
+              value={amendValue}
+              onChange={(e) => setAmendValue(e.target.value)}
+              className="w-full rounded-lg bg-zinc-800 border border-zinc-700 p-3 text-sm mb-2 tabular-nums"
+              data-testid="amend-input"
+            />
+            <input
+              type="text"
+              value={amendReason}
+              onChange={(e) => setAmendReason(e.target.value)}
+              placeholder="Reason (optional)"
+              className="w-full rounded-lg bg-zinc-800 border border-zinc-700 p-3 text-sm mb-2"
+              data-testid="amend-reason"
+            />
+            {amendError && <p className="text-sm text-red-400 mb-2">{amendError}</p>}
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setAmendOpen(false);
+                  setAmendError(null);
+                }}
+                className="flex-1 min-h-12 rounded-lg bg-zinc-800 font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={submitAmendment}
+                data-testid="amend-submit"
+                className="flex-1 min-h-12 rounded-lg bg-violet-600 text-white font-semibold"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </main>
   );

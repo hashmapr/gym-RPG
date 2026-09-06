@@ -265,7 +265,12 @@ export type TableName =
   | 'challenge_targets'
   | 'challenge_progress'
   | 'streak_freezes'
-  | 'vacation_periods';
+  | 'vacation_periods'
+  // Sprint 5 (Adaptive + audit).
+  | 'challenge_policy_state'
+  | 'challenge_amendments'
+  | 'ai_generation_logs'
+  | 'ai_suggestions';
 
 export interface Settings {
   day_boundary_hour: number;
@@ -341,11 +346,21 @@ export interface ChallengeDef {
   params: ChallengeParams;
   duration_days: number;
   is_starter: boolean;
+  /** 'user' | 'ai' — cosmetic badge only; evaluation is identical. */
+  authored_by: 'user' | 'ai';
   created_at: string;
   syncedAt?: string;
 }
 
 export type ChallengeRunStatus = 'active' | 'completed' | 'failed' | 'abandoned';
+
+/**
+ * Pre-creation def produced by the generation pipeline (no id yet). The
+ * optional policy rides on the draft and lands on the run at join time.
+ */
+export type ChallengeDefDraft = Omit<ChallengeDef, 'id' | 'created_at' | 'syncedAt'> & {
+  adaptation_policy?: AdaptationPolicy | null;
+};
 
 export interface ChallengeRun {
   id: string;
@@ -356,6 +371,9 @@ export interface ChallengeRun {
   status: ChallengeRunStatus;
   completed_at: string | null;
   progress_value: number;
+  /** Present only on adaptive runs; validated by the policy gauntlet. */
+  adaptation_policy: AdaptationPolicy | null;
+  is_adaptive: boolean;
   created_at: string;
   syncedAt?: string;
 }
@@ -410,5 +428,123 @@ export interface VacationPeriod {
   start_date: string;
   end_date: string;
   created_at: string;
+  syncedAt?: string;
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 5 — Adaptive challenges (policies + governor state + audit)
+// ---------------------------------------------------------------------------
+
+export type PolicyMetric = 'pace_vs_required';
+export type PolicyOp = '>=' | '<=';
+export type PolicyActionKind = 'adjust_remaining';
+export type PolicyExecution = 'automatic' | 'confirm';
+
+export interface PolicyAction {
+  kind: PolicyActionKind;
+  /** Percent adjustment to the remaining target (−25..25, never 0). */
+  pct: number;
+}
+
+export interface PolicyCheckpoint {
+  id: string;
+  /** Window % point where the checkpoint evaluates (10–90, ascending). */
+  at_pct: number;
+  metric: PolicyMetric;
+  op: PolicyOp;
+  /** Delta-percent threshold the metric must satisfy to fire. */
+  threshold_pct: number;
+  action: PolicyAction;
+  max_fires: number;
+}
+
+export interface PolicyBounds {
+  /** Final target ≥ original × final_min_pct/100. */
+  final_min_pct: number;
+  /** Final target ≤ original × final_max_pct/100. */
+  final_max_pct: number;
+}
+
+export interface PolicyRounding {
+  /** Round volume targets to the nearest N lb (e.g. 500). */
+  volume?: number;
+  /** Round distance targets to the nearest N mi (e.g. 1). */
+  distance?: number;
+}
+
+export interface AdaptationPolicy {
+  version: 1;
+  checkpoints: PolicyCheckpoint[];
+  bounds: PolicyBounds;
+  rounding?: PolicyRounding;
+  execution: PolicyExecution;
+}
+
+/** One row per (run, checkpoint) — proves the checkpoint was consumed. */
+export interface ChallengePolicyState {
+  challenge_run_id: string;
+  checkpoint_id: string;
+  /** Set when the checkpoint condition was met (even if later denied/clamped). */
+  fired_at: string | null;
+  /** Set only when an adjustment was actually applied (post-confirm). */
+  applied_adjustment: number | null;
+  denied: boolean;
+  syncedAt?: string;
+}
+
+export type AmendmentSource = 'governor' | 'user_amendment';
+
+/** Audit trail for every target mutation (governor fires + user amendments). */
+export interface ChallengeAmendment {
+  id: string;
+  challenge_run_id: string;
+  source: AmendmentSource;
+  checkpoint_id: string | null;
+  /** What changed, e.g. 'target_lb' | 'target_weight'. */
+  field: string;
+  pre_value: number | null;
+  post_value: number | null;
+  /** True when the requested value hit a policy bound. */
+  clamped: boolean;
+  reason: string | null;
+  created_at: string;
+  syncedAt?: string;
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 5 — Generation audit + weekly suggestions
+// ---------------------------------------------------------------------------
+
+export type GenerationKind = 'generate' | 'amend' | 'weekly_suggest';
+export type GenerationOutcome =
+  | 'accepted'
+  | 'rejected_validation'
+  | 'rejected_user'
+  | 'error';
+
+export interface AIGenerationLog {
+  id: string;
+  request_kind: GenerationKind;
+  prompt_version: string;
+  profile_snapshot: unknown;
+  raw_response: unknown | null;
+  validation_errors: string[] | null;
+  outcome: GenerationOutcome;
+  challenge_def_id: string | null;
+  created_at: string;
+  syncedAt?: string;
+}
+
+export type SuggestionStatus = 'pending' | 'accepted' | 'dismissed';
+
+/** Weekly proposal — never auto-creates; at most one pending at a time. */
+export interface AISuggestion {
+  id: string;
+  status: SuggestionStatus;
+  /** Validated def draft (+ optional policy draft) awaiting user confirm. */
+  draft: { def: ChallengeDefDraft; policy: AdaptationPolicy | null };
+  rationale: string | null;
+  created_at: string;
+  resolved_at: string | null;
   syncedAt?: string;
 }
