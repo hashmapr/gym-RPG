@@ -22,6 +22,8 @@ import FinishWorkoutModal, {
 import SwapExerciseModal from '@/components/SwapExerciseModal';
 import { getProgramSessionContext, type ProgramSessionContext } from '@/lib/coach/ui';
 import { onSessionFinished, type SessionFeedback } from '@/lib/coach/run';
+import { linkPrescriptiveSession } from '@/lib/challenges/service';
+import { getTrainingDate } from '@/lib/day-boundary';
 import type { CardioEntry, Exercise, SessionExercise } from '@/lib/types';
 
 const CARDIO_ACTIVITIES = ['row', 'ski', 'bike', 'run', 'walk'] as const;
@@ -135,6 +137,8 @@ export default function WorkoutPage() {
       end_time: endTime,
     });
     const fb = await onSessionFinished(session.id, allSets);
+    // Multi-count: one finished session feeds every active prescriptive run.
+    await linkPrescriptiveSession(session.id, getTrainingDate(new Date(endTime)));
     setFeedback(fb);
     setRecap(r);
     setFinishing(false);

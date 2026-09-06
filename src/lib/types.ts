@@ -257,7 +257,15 @@ export type TableName =
   | 'planned_sessions'
   | 'planned_sets'
   | 'target_changes'
-  | 'exercise_equivalents';
+  | 'exercise_equivalents'
+  // Sprint 4 (Challenges + Streak v3).
+  | 'challenge_defs'
+  | 'challenge_runs'
+  | 'challenge_sessions'
+  | 'challenge_targets'
+  | 'challenge_progress'
+  | 'streak_freezes'
+  | 'vacation_periods';
 
 export interface Settings {
   day_boundary_hour: number;
@@ -266,4 +274,141 @@ export interface Settings {
   vibration_enabled: boolean;
   e1rm_formula: E1RMFormula;
   hevy_unit: 'lb' | 'kg';
+  // Sprint 4: streak v3.
+  freeze_bank_cap: number;
+  max_rest_days: number;
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 4 — Challenges + Streak v3
+// ---------------------------------------------------------------------------
+
+export type ChallengeType =
+  | 'volume'
+  | 'session_count'
+  | 'streak'
+  | 'distance'
+  | 'pr_count'
+  | 'e1rm_gain'
+  | 'prescriptive';
+
+/** Prescriptive mini-program session spec (params.sessions[]). */
+export interface PrescriptiveSessionSpec {
+  workout_name: string;
+  /** Days after run start (0 = first day). planned_date = started_on + offset. */
+  day_offset: number;
+  exercise_id: string;
+  target_weight: number | null;
+  target_reps: string | null;
+  target_rpe: number | null;
+  target_rest: number | null;
+}
+
+/**
+ * Per-type params. Only the keys listed for each type in the Sprint 4 spec
+ * are meaningful; the validation gauntlet (Sprint 5) rejects unknown keys.
+ */
+export interface ChallengeParams {
+  // volume
+  scope?: 'all' | 'exercise' | 'category';
+  exercise_id?: string | null;
+  category?: string | null;
+  target_lb?: number;
+  // session_count
+  target_sessions?: number;
+  // streak
+  mode?: 'daily' | 'weekly';
+  min_sessions_per_week?: number;
+  max_rest_days?: number;
+  // distance
+  activity?: 'run' | 'ride' | 'all';
+  target_miles?: number;
+  // pr_count
+  target_n?: number;
+  // e1rm_gain
+  target_pct?: number;
+  // prescriptive
+  sessions?: PrescriptiveSessionSpec[];
+  progression?: 'fixed' | 'ladder';
+  ladder_step_lb?: number;
+}
+
+export interface ChallengeDef {
+  id: string;
+  name: string;
+  description: string | null;
+  challenge_type: ChallengeType;
+  params: ChallengeParams;
+  duration_days: number;
+  is_starter: boolean;
+  created_at: string;
+  syncedAt?: string;
+}
+
+export type ChallengeRunStatus = 'active' | 'completed' | 'failed' | 'abandoned';
+
+export interface ChallengeRun {
+  id: string;
+  challenge_def_id: string;
+  /** Training dates (YYYY-MM-DD), inclusive window. */
+  started_on: string;
+  ends_on: string;
+  status: ChallengeRunStatus;
+  completed_at: string | null;
+  progress_value: number;
+  created_at: string;
+  syncedAt?: string;
+}
+
+export type ChallengeSessionStatus = 'planned' | 'completed' | 'missed';
+
+export interface ChallengeSession {
+  id: string;
+  challenge_run_id: string;
+  session_order: number;
+  workout_name: string;
+  planned_date: string | null;
+  status: ChallengeSessionStatus;
+  workout_session_id: string | null;
+  created_at: string;
+  syncedAt?: string;
+}
+
+export interface ChallengeTarget {
+  id: string;
+  challenge_session_id: string;
+  exercise_id: string;
+  target_weight: number | null;
+  target_reps: string | null;
+  target_rpe: number | null;
+  target_rest: number | null;
+  created_at: string;
+  syncedAt?: string;
+}
+
+export interface ChallengeProgress {
+  challenge_run_id: string;
+  training_date: string;
+  progress_value: number;
+  syncedAt?: string;
+}
+
+export interface StreakFreeze {
+  id: string;
+  granted_date: string;
+  source: string; // 'monthly'
+  consumed_date: string | null;
+  covered_training_date: string | null;
+  local_id: string;
+  synced_at: string | null;
+  created_at: string;
+  syncedAt?: string;
+}
+
+export interface VacationPeriod {
+  id: string;
+  start_date: string;
+  end_date: string;
+  created_at: string;
+  syncedAt?: string;
 }

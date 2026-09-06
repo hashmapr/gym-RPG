@@ -12,6 +12,15 @@ import { syncAll } from '@/lib/sync/engine';
 import { resolveSyncClient } from '@/lib/sync/client';
 import { maybePullE2ESeed } from '@/lib/e2e-seed';
 import { useSyncStore } from '@/lib/sync/store';
+import { ensureStarters, resolveChallenges } from '@/lib/challenges/service';
+
+/** Lazy challenge work: install starters + resolve runs (idempotent). */
+export function runChallengeSweep(): void {
+  void (async () => {
+    await ensureStarters();
+    await resolveChallenges();
+  })();
+}
 
 export function runSyncNow(): void {
   const store = useSyncStore.getState();
@@ -30,6 +39,8 @@ export function runSyncNow(): void {
       // Data changed — invalidate the Lab analytics cache (fire-and-forget).
       if (result.errors.length === 0) {
         fetch('/api/lab/refresh', { method: 'POST' }).catch(() => {});
+        // Resolution is lazy: re-run after sync batches (spec A3).
+        runChallengeSweep();
       }
     } catch (err) {
       useSyncStore
@@ -64,8 +75,12 @@ export default function SyncProvider({
     window.addEventListener('online', goOnline);
     window.addEventListener('offline', goOffline);
 
-    // E2E hydration (no-op without the armed flag), then sync on app open
-    void maybePullE2ESeed().then(() => runSyncNow());
+    // E2E hydration (no-op without the armed flag), then sync on app open.
+    // Challenge resolution is lazy on app open (spec A3) — offline-safe.
+    void maybePullE2ESeed().then(() => {
+      runSyncNow();
+      runChallengeSweep();
+    });
 
     // Periodic retry while rows are queued (also covers failed pushes)
     const interval = setInterval(() => {

@@ -8,6 +8,11 @@ import { SYNC_TABLE_ORDER } from './sync/engine';
 import { installRequeueHooks } from './sync/requeue';
 import type {
   CardioEntry,
+  ChallengeDef,
+  ChallengeProgress,
+  ChallengeRun,
+  ChallengeSession,
+  ChallengeTarget,
   DailyMetric,
   Exercise,
   ExerciseEquivalent,
@@ -23,8 +28,10 @@ import type {
   RPGCharacter,
   SessionExercise,
   Settings,
+  StreakFreeze,
   TargetChange,
   TemplateExercise,
+  VacationPeriod,
   WorkoutSession,
   WorkoutSet,
 } from './types';
@@ -50,6 +57,14 @@ export class LabDB extends Dexie {
   session_exercises!: Table<SessionExercise, [string, string]>;
   settings!: Table<{ key: string; value: unknown }, string>;
   hevy_mappings!: Table<HevyMapping, string>;
+  // Sprint 4: Challenges + Streak v3.
+  challenge_defs!: Table<ChallengeDef, string>;
+  challenge_runs!: Table<ChallengeRun, string>;
+  challenge_sessions!: Table<ChallengeSession, string>;
+  challenge_targets!: Table<ChallengeTarget, string>;
+  challenge_progress!: Table<ChallengeProgress, [string, string]>;
+  streak_freezes!: Table<StreakFreeze, string>;
+  vacation_periods!: Table<VacationPeriod, string>;
 
   constructor() {
     super('the-lab');
@@ -83,6 +98,16 @@ export class LabDB extends Dexie {
       planned_sets: 'id, planned_session_id, exercise_id',
       target_changes: 'id, planned_set_id, created_at',
       exercise_equivalents: 'id, exercise_a, exercise_b',
+    });
+    // Sprint 4: Challenges + Streak v3.
+    this.version(4).stores({
+      challenge_defs: 'id, challenge_type, is_starter',
+      challenge_runs: 'id, challenge_def_id, status, ends_on',
+      challenge_sessions: 'id, challenge_run_id, status, workout_session_id',
+      challenge_targets: 'id, challenge_session_id, exercise_id',
+      challenge_progress: '[challenge_run_id+training_date], challenge_run_id',
+      streak_freezes: 'id, granted_date, consumed_date, local_id',
+      vacation_periods: 'id, start_date, end_date',
     });
     // P0 sync rule: any mutation to a synced row re-queues it (data layer).
     installRequeueHooks(this, SYNC_TABLE_ORDER);

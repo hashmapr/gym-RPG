@@ -1,0 +1,59 @@
+'use client';
+
+// ChallengeDial — SVG progress ring. 48px minimum touch target, tabular-nums,
+// dark-mode native (zinc palette).
+
+interface Props {
+  /** 0..1 (clamped). */
+  pct: number;
+  size?: number;
+  label?: string;
+  sub?: string;
+  state?: 'active' | 'complete' | 'fail';
+}
+
+const COLORS = {
+  active: '#34d399',
+  complete: '#34d399',
+  fail: '#f87171',
+} as const;
+
+export default function ChallengeDial({ pct, size = 72, label, sub, state = 'active' }: Props) {
+  const clamped = Math.max(0, Math.min(1, pct));
+  const stroke = 6;
+  const r = (size - stroke) / 2;
+  const c = 2 * Math.PI * r;
+  const color = COLORS[state];
+
+  return (
+    <div className="flex flex-col items-center shrink-0" style={{ width: size }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={`${Math.round(clamped * 100)}% complete`}>
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#27272a" strokeWidth={stroke} />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          stroke={color}
+          strokeWidth={stroke}
+          strokeLinecap="round"
+          strokeDasharray={c}
+          strokeDashoffset={c * (1 - clamped)}
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+        />
+        <text
+          x="50%"
+          y="50%"
+          dominantBaseline="central"
+          textAnchor="middle"
+          className="fill-zinc-100 font-semibold"
+          style={{ fontSize: size * 0.24, fontVariantNumeric: 'tabular-nums' }}
+        >
+          {Math.round(clamped * 100)}%
+        </text>
+      </svg>
+      {label && <span className="mt-1 text-xs text-zinc-400 text-center tabular-nums">{label}</span>}
+      {sub && <span className="text-[10px] text-zinc-500 text-center tabular-nums">{sub}</span>}
+    </div>
+  );
+}

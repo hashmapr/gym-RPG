@@ -9,6 +9,8 @@ export const DEFAULT_SETTINGS: Settings = {
   vibration_enabled: true,
   e1rm_formula: 'consensus',
   hevy_unit: 'lb',
+  freeze_bank_cap: 4,
+  max_rest_days: 2,
 };
 
 export async function getSettings(): Promise<Settings> {

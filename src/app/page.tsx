@@ -244,6 +244,33 @@ export default function HomePage() {
           </p>
         </section>
       )}
+      {/* Active challenges strip */}
+      <ChallengeStrip />
+
     </main>
+  );
+}
+
+function ChallengeStrip() {
+  const runs = useLiveQuery(
+    () => db.challenge_runs.where('status').equals('active').toArray(),
+    [],
+  );
+  const defs = useLiveQuery(() => db.challenge_defs.toArray(), []);
+  if (!runs || runs.length === 0) return null;
+  const defById = new Map((defs ?? []).map((d) => [d.id, d]));
+  return (
+    <Link
+      href="/challenges"
+      className="mt-6 rounded-xl bg-zinc-900 border border-zinc-800 p-4 flex items-center justify-between min-h-12"
+    >
+      <div>
+        <p className="text-sm uppercase tracking-wider text-zinc-500">Challenges</p>
+        <p className="text-sm text-zinc-300 tabular-nums">
+          {runs.length} active{runs.length === 1 && defById.get(runs[0].challenge_def_id) ? ` · ${defById.get(runs[0].challenge_def_id)!.name}` : ''}
+        </p>
+      </div>
+      <span className="text-zinc-500">→</span>
+    </Link>
   );
 }

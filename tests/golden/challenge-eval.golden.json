@@ -1,0 +1,524 @@
+{
+  "generated_at": "2026-09-05T12:00:00Z",
+  "today": "2026-09-05",
+  "runs": [
+    {
+      "run_id": "run-seed-vol-early",
+      "def_id": "seed-vol-early",
+      "challenge_type": "volume",
+      "started_on": "2026-07-07",
+      "ends_on": "2026-09-01",
+      "target": 341904,
+      "progress": 401140.5,
+      "target_met": true,
+      "baseline": null,
+      "resolved_today": "2026-09-05",
+      "resolution": {
+        "kind": "complete",
+        "completed_at": "2026-09-05T12:00:00Z"
+      },
+      "pace": {
+        "status": "FINAL_DAY",
+        "required_daily_rate": null,
+        "days_remaining": 0,
+        "days_ahead": null,
+        "days_behind": null,
+        "projection": null
+      },
+      "series": [
+        {
+          "training_date": "2026-07-07",
+          "value": 20497.5
+        },
+        {
+          "training_date": "2026-07-08",
+          "value": 20497.5
+        },
+        {
+          "training_date": "2026-07-09",
+          "value": 20497.5
+        },
+        {
+          "training_date": "2026-07-10",
+          "value": 20497.5
+        },
+        {
+          "training_date": "2026-07-11",
+          "value": 40995
+        },
+        {
+          "training_date": "2026-07-12",
+          "value": 40995
+        },
+        {
+          "training_date": "2026-07-13",
+          "value": 40995
+        },
+        {
+          "training_date": "2026-07-14",
+          "value": 61545
+        },
+        {
+          "training_date": "2026-07-15",
+          "value": 61545
+        },
+        {
+          "training_date": "2026-07-16",
+          "value": 61545
+        },
+        {
+          "training_date": "2026-07-17",
+          "value": 61545
+        },
+        {
+          "training_date": "2026-07-18",
+          "value": 85142
+        },
+        {
+          "training_date": "2026-07-19",
+          "value": 85142
+        },
+        {
+          "training_date": "2026-07-20",
+          "value": 85142
+        },
+        {
+          "training_date": "2026-07-21",
+          "value": 126486
+        },
+        {
+          "training_date": "2026-07-22",
+          "value": 126486
+        },
+        {
+          "training_date": "2026-07-23",
+          "value": 126486
+        },
+        {
+          "training_date": "2026-07-24",
+          "value": 126486
+        },
+        {
+          "training_date": "2026-07-25",
+          "value": 165641
+        },
+        {
+          "training_date": "2026-07-26",
+          "value": 165641
+        },
+        {
+          "training_date": "2026-07-27",
+          "value": 165641
+        },
+        {
+          "training_date": "2026-07-28",
+          "value": 186293.5
+        },
+        {
+          "training_date": "2026-07-29",
+          "value": 186293.5
+        },
+        {
+          "training_date": "2026-07-30",
+          "value": 186293.5
+        },
+        {
+          "training_date": "2026-07-31",
+          "value": 186293.5
+        },
+        {
+          "training_date": "2026-08-01",
+          "value": 212061.5
+        },
+        {
+          "training_date": "2026-08-02",
+          "value": 214161.5
+        },
+        {
+          "training_date": "2026-08-03",
+          "value": 214161.5
+        },
+        {
+          "training_date": "2026-08-04",
+          "value": 234874
+        },
+        {
+          "training_date": "2026-08-05",
+          "value": 234874
+        },
+        {
+          "training_date": "2026-08-06",
+          "value": 234874
+        },
+        {
+          "training_date": "2026-08-07",
+          "value": 234874
+        },
+        {
+          "training_date": "2026-08-08",
+          "value": 255586.5
+        },
+        {
+          "training_date": "2026-08-09",
+          "value": 257686.5
+        },
+        {
+          "training_date": "2026-08-10",
+          "value": 257686.5
+        },
+        {
+          "training_date": "2026-08-11",
+          "value": 278441.5
+        },
+        {
+          "training_date": "2026-08-12",
+          "value": 278441.5
+        },
+        {
+          "training_date": "2026-08-13",
+          "value": 278441.5
+        },
+        {
+          "training_date": "2026-08-14",
+          "value": 278441.5
+        },
+        {
+          "training_date": "2026-08-15",
+          "value": 301724
+        },
+        {
+          "training_date": "2026-08-16",
+          "value": 301724
+        },
+        {
+          "training_date": "2026-08-17",
+          "value": 301724
+        },
+        {
+          "training_date": "2026-08-18",
+          "value": 323199
+        },
+        {
+          "training_date": "2026-08-19",
+          "value": 323199
+        },
+        {
+          "training_date": "2026-08-20",
+          "value": 323199
+        },
+        {
+          "training_date": "2026-08-21",
+          "value": 323199
+        },
+        {
+          "training_date": "2026-08-22",
+          "value": 341904
+        },
+        {
+          "training_date": "2026-08-23",
+          "value": 341904
+        },
+        {
+          "training_date": "2026-08-24",
+          "value": 341904
+        },
+        {
+          "training_date": "2026-08-25",
+          "value": 360651.5
+        },
+        {
+          "training_date": "2026-08-26",
+          "value": 360651.5
+        },
+        {
+          "training_date": "2026-08-27",
+          "value": 360651.5
+        },
+        {
+          "training_date": "2026-08-28",
+          "value": 360651.5
+        },
+        {
+          "training_date": "2026-08-29",
+          "value": 382353
+        },
+        {
+          "training_date": "2026-08-30",
+          "value": 382353
+        },
+        {
+          "training_date": "2026-08-31",
+          "value": 382353
+        },
+        {
+          "training_date": "2026-09-01",
+          "value": 401140.5
+        }
+      ]
+    },
+    {
+      "run_id": "run-seed-tri-a",
+      "def_id": "seed-tri-a",
+      "challenge_type": "volume",
+      "started_on": "2026-08-25",
+      "ends_on": "2026-09-05",
+      "target": 55000,
+      "progress": 78044,
+      "target_met": true,
+      "baseline": null,
+      "resolved_today": "2026-09-05",
+      "resolution": {
+        "kind": "complete",
+        "completed_at": "2026-09-05T12:00:00Z"
+      },
+      "pace": {
+        "status": "FINAL_DAY",
+        "required_daily_rate": null,
+        "days_remaining": 0,
+        "days_ahead": null,
+        "days_behind": null,
+        "projection": null
+      },
+      "series": [
+        {
+          "training_date": "2026-08-25",
+          "value": 18747.5
+        },
+        {
+          "training_date": "2026-08-26",
+          "value": 18747.5
+        },
+        {
+          "training_date": "2026-08-27",
+          "value": 18747.5
+        },
+        {
+          "training_date": "2026-08-28",
+          "value": 18747.5
+        },
+        {
+          "training_date": "2026-08-29",
+          "value": 40449
+        },
+        {
+          "training_date": "2026-08-30",
+          "value": 40449
+        },
+        {
+          "training_date": "2026-08-31",
+          "value": 40449
+        },
+        {
+          "training_date": "2026-09-01",
+          "value": 59236.5
+        },
+        {
+          "training_date": "2026-09-02",
+          "value": 59236.5
+        },
+        {
+          "training_date": "2026-09-03",
+          "value": 59236.5
+        },
+        {
+          "training_date": "2026-09-04",
+          "value": 59236.5
+        },
+        {
+          "training_date": "2026-09-05",
+          "value": 78044
+        }
+      ]
+    },
+    {
+      "run_id": "run-seed-tri-b",
+      "def_id": "seed-tri-b",
+      "challenge_type": "volume",
+      "started_on": "2026-08-25",
+      "ends_on": "2026-09-05",
+      "target": 12587.5,
+      "progress": 16750,
+      "target_met": true,
+      "baseline": null,
+      "resolved_today": "2026-09-05",
+      "resolution": {
+        "kind": "complete",
+        "completed_at": "2026-09-05T12:00:00Z"
+      },
+      "pace": {
+        "status": "FINAL_DAY",
+        "required_daily_rate": null,
+        "days_remaining": 0,
+        "days_ahead": null,
+        "days_behind": null,
+        "projection": null
+      }
+    },
+    {
+      "run_id": "run-seed-tri-c",
+      "def_id": "seed-tri-c",
+      "challenge_type": "session_count",
+      "started_on": "2026-08-25",
+      "ends_on": "2026-09-05",
+      "target": 4,
+      "progress": 4,
+      "target_met": true,
+      "baseline": null,
+      "resolved_today": "2026-09-05",
+      "resolution": {
+        "kind": "complete",
+        "completed_at": "2026-09-05T12:00:00Z"
+      },
+      "pace": {
+        "status": "FINAL_DAY",
+        "required_daily_rate": null,
+        "days_remaining": 0,
+        "days_ahead": null,
+        "days_behind": null,
+        "projection": null
+      }
+    },
+    {
+      "run_id": "run-seed-prs",
+      "def_id": "seed-prs",
+      "challenge_type": "pr_count",
+      "started_on": "2026-07-28",
+      "ends_on": "2026-09-05",
+      "target": 3,
+      "progress": 6,
+      "target_met": true,
+      "baseline": null,
+      "resolved_today": "2026-09-05",
+      "resolution": {
+        "kind": "complete",
+        "completed_at": "2026-09-05T12:00:00Z"
+      },
+      "pace": {
+        "status": "FINAL_DAY",
+        "required_daily_rate": null,
+        "days_remaining": 0,
+        "days_ahead": null,
+        "days_behind": null,
+        "projection": null
+      }
+    },
+    {
+      "run_id": "run-seed-squat-flat",
+      "def_id": "seed-squat-flat",
+      "challenge_type": "e1rm_gain",
+      "started_on": "2026-08-04",
+      "ends_on": "2026-09-01",
+      "target": 2,
+      "progress": -2.04,
+      "target_met": false,
+      "baseline": 315,
+      "resolved_today": "2026-09-05",
+      "resolution": {
+        "kind": "fail"
+      },
+      "pace": {
+        "status": "FINAL_DAY",
+        "required_daily_rate": null,
+        "days_remaining": 0,
+        "days_ahead": null,
+        "days_behind": null,
+        "projection": null
+      }
+    },
+    {
+      "run_id": "run-seed-ladder",
+      "def_id": "seed-ladder",
+      "challenge_type": "prescriptive",
+      "started_on": "2026-06-02",
+      "ends_on": "2026-07-18",
+      "target": 12,
+      "progress": 12,
+      "target_met": true,
+      "baseline": null,
+      "resolved_today": "2026-09-05",
+      "resolution": {
+        "kind": "complete",
+        "completed_at": "2026-09-05T12:00:00Z"
+      },
+      "pace": {
+        "status": "FINAL_DAY",
+        "required_daily_rate": null,
+        "days_remaining": 0,
+        "days_ahead": null,
+        "days_behind": null,
+        "projection": null
+      }
+    },
+    {
+      "run_id": "run-seed-vol-impossible",
+      "def_id": "seed-vol-impossible",
+      "challenge_type": "volume",
+      "started_on": "2026-08-29",
+      "ends_on": "2026-09-05",
+      "target": 500000,
+      "progress": 21701.5,
+      "target_met": false,
+      "baseline": null,
+      "resolved_today": "2026-08-30",
+      "resolution": {
+        "kind": "fail"
+      },
+      "pace": {
+        "status": "IMPOSSIBLE",
+        "required_daily_rate": 79716.42,
+        "days_remaining": 6,
+        "days_ahead": null,
+        "days_behind": 2,
+        "projection": 86806
+      }
+    },
+    {
+      "run_id": "run-seed-distance-25",
+      "def_id": "seed-distance-25",
+      "challenge_type": "distance",
+      "started_on": "2026-08-19",
+      "ends_on": "2026-09-05",
+      "target": 25,
+      "progress": 25,
+      "target_met": true,
+      "baseline": null,
+      "resolved_today": "2026-09-05",
+      "resolution": {
+        "kind": "complete",
+        "completed_at": "2026-09-05T12:00:00Z"
+      },
+      "pace": {
+        "status": "FINAL_DAY",
+        "required_daily_rate": null,
+        "days_remaining": 0,
+        "days_ahead": null,
+        "days_behind": null,
+        "projection": null
+      }
+    },
+    {
+      "run_id": "run-seed-streak-weekly",
+      "def_id": "seed-streak-weekly",
+      "challenge_type": "streak",
+      "started_on": "2026-07-20",
+      "ends_on": "2026-08-16",
+      "target": 4,
+      "progress": 4,
+      "target_met": false,
+      "baseline": null,
+      "resolved_today": "2026-09-05",
+      "resolution": {
+        "kind": "complete",
+        "completed_at": "2026-09-05T12:00:00Z"
+      },
+      "pace": {
+        "status": "FINAL_DAY",
+        "required_daily_rate": null,
+        "days_remaining": 0,
+        "days_ahead": null,
+        "days_behind": null,
+        "projection": null
+      }
+    }
+  ]
+}

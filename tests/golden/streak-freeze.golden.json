@@ -1,0 +1,204 @@
+{
+  "scenarios": {
+    "two_day_break_survives": {
+      "streak": 2,
+      "breaks": 0,
+      "kinds": [
+        "grace",
+        "session",
+        "grace",
+        "grace",
+        "session",
+        "grace",
+        "grace"
+      ]
+    },
+    "three_day_break": {
+      "with_freeze": {
+        "streak": 2,
+        "consumed": [
+          {
+            "id": "f1",
+            "covered_training_date": "2026-03-04"
+          }
+        ],
+        "kinds": [
+          "session",
+          "grace",
+          "grace",
+          "freeze",
+          "session",
+          "grace"
+        ]
+      },
+      "empty_bank": {
+        "streak": 1,
+        "breaks": [
+          "2026-03-04"
+        ],
+        "kinds": [
+          "session",
+          "grace",
+          "grace",
+          "break",
+          "session",
+          "grace"
+        ]
+      }
+    },
+    "vacation_global_vs_raw": {
+      "global": {
+        "streak": 3,
+        "breaks": 0,
+        "kinds": [
+          "session",
+          "grace",
+          "session",
+          "vacation",
+          "vacation",
+          "vacation",
+          "vacation",
+          "vacation",
+          "vacation",
+          "vacation",
+          "session"
+        ]
+      },
+      "raw_challenge": {
+        "streak": 1,
+        "breaks": [
+          "2026-03-11",
+          "2026-03-14"
+        ],
+        "kinds": [
+          "session",
+          "grace",
+          "session",
+          "grace",
+          "grace",
+          "break",
+          "grace",
+          "grace",
+          "break",
+          "grace",
+          "session"
+        ]
+      }
+    },
+    "grant_ledger": {
+      "ledger": [
+        {
+          "month": "2026-03",
+          "call": 1,
+          "created": 2,
+          "bank": 2,
+          "bankFull": false
+        },
+        {
+          "month": "2026-03",
+          "call": 2,
+          "created": 0,
+          "bank": 2,
+          "bankFull": false
+        },
+        {
+          "month": "2026-03",
+          "call": 3,
+          "created": 0,
+          "bank": 2,
+          "bankFull": false
+        },
+        {
+          "month": "2026-03",
+          "call": 4,
+          "created": 0,
+          "bank": 2,
+          "bankFull": false
+        },
+        {
+          "month": "2026-03",
+          "call": 5,
+          "created": 0,
+          "bank": 2,
+          "bankFull": false
+        },
+        {
+          "month": "2026-04",
+          "call": 1,
+          "created": 2,
+          "bank": 4,
+          "bankFull": false
+        },
+        {
+          "month": "2026-05",
+          "call": 1,
+          "created": 0,
+          "bank": 4,
+          "bankFull": true
+        }
+      ],
+      "granted_dates": [
+        "2026-03-01",
+        "2026-03-01",
+        "2026-04-01",
+        "2026-04-01"
+      ]
+    },
+    "fifo_two_stretches": {
+      "streak": 1,
+      "breaks": [
+        "2026-03-12"
+      ],
+      "consumed_order": [
+        "f-old",
+        "f-new"
+      ],
+      "covered_dates": [
+        "2026-03-04",
+        "2026-03-08"
+      ],
+      "kinds": [
+        "session",
+        "grace",
+        "grace",
+        "freeze",
+        "session",
+        "grace",
+        "grace",
+        "freeze",
+        "session",
+        "grace",
+        "grace",
+        "break",
+        "session",
+        "grace"
+      ]
+    },
+    "vacation_validation": {
+      "too_long": {
+        "ok": false,
+        "error": "Vacation is limited to 30 days"
+      },
+      "overlap": {
+        "ok": false,
+        "error": "Vacation periods cannot overlap"
+      },
+      "ok_30": {
+        "ok": true,
+        "error": null
+      }
+    },
+    "deload_precedes_freeze": {
+      "streak": 2,
+      "breaks": 0,
+      "kinds": [
+        "session",
+        "grace",
+        "grace",
+        "deload",
+        "session",
+        "grace"
+      ]
+    }
+  }
+}

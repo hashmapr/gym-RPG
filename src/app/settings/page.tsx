@@ -186,6 +186,8 @@ export default function SettingsPage() {
           {exported ? 'Exported ✓' : 'Export all data (JSON)'}
         </button>
       </section>
+
+      <StreakSection />
     </main>
   );
 }
@@ -258,6 +260,105 @@ function AbandonProgramSection() {
           </div>
         </div>
       )}
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Streak v3 — freeze bank display + vacation mode management
+// ---------------------------------------------------------------------------
+
+function StreakSection() {
+  const display = useLiveQuery(async () => {
+    const { getStreakDisplay } = await import('@/lib/challenges/service');
+    return getStreakDisplay();
+  }, []);
+  const vacations = useLiveQuery(() => db.vacation_periods.toArray(), []);
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  if (!display) return null;
+  const bank = display.events.filter((d) => d.kind === 'freeze').length;
+
+  async function addVacationPeriod() {
+    const { addVacation } = await import('@/lib/challenges/service');
+    const res = await addVacation(start, end);
+    if (!res.ok) {
+      setError(res.error);
+      return;
+    }
+    setError(null);
+    setStart('');
+    setEnd('');
+  }
+
+  return (
+    <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
+      <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">Streak</h2>
+      <div className="flex items-center justify-between tabular-nums mb-2">
+        <span className="text-zinc-400">Current streak</span>
+        <span className="font-semibold">{display.streak} days</span>
+      </div>
+      <div className="flex items-center justify-between tabular-nums mb-2">
+        <span className="text-zinc-400">Best</span>
+        <span>{display.best} days</span>
+      </div>
+      <div className="flex items-center justify-between tabular-nums mb-2">
+        <span className="text-zinc-400">Freeze bank</span>
+        <span>
+          {display.bank}/{display.bank_cap}
+          {display.bank_full && <span className="text-zinc-500"> (full)</span>}
+        </span>
+      </div>
+      <p className="text-xs text-zinc-500">
+        {display.granted_this_month} freeze{display.granted_this_month === 1 ? '' : 's'} granted this month
+        {display.on_vacation_until && ` · on vacation until ${display.on_vacation_until}`}
+        {bank > 0 && ` · ${bank} consumed`}
+      </p>
+
+      <h3 className="text-sm uppercase tracking-wider text-zinc-500 mt-4 mb-2">Vacation mode</h3>
+      {(vacations ?? []).length > 0 && (
+        <ul className="space-y-1 mb-2">
+          {(vacations ?? []).map((v) => (
+            <li key={v.id} className="flex items-center justify-between text-sm tabular-nums">
+              <span className="text-zinc-300">
+                {v.start_date} → {v.end_date}
+              </span>
+              <button
+                onClick={() => import('@/lib/challenges/service').then((m) => m.removeVacation(v.id))}
+                className="text-red-400 px-3 min-h-12"
+              >
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="flex gap-2">
+        <input
+          type="date"
+          value={start}
+          onChange={(e) => setStart(e.target.value)}
+          className="flex-1 min-h-12 rounded-lg bg-zinc-900 border border-zinc-800 px-2 text-sm tabular-nums"
+          aria-label="Vacation start"
+        />
+        <input
+          type="date"
+          value={end}
+          onChange={(e) => setEnd(e.target.value)}
+          className="flex-1 min-h-12 rounded-lg bg-zinc-900 border border-zinc-800 px-2 text-sm tabular-nums"
+          aria-label="Vacation end"
+        />
+        <button
+          onClick={addVacationPeriod}
+          disabled={!start || !end}
+          className="px-4 min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 font-semibold disabled:opacity-50"
+        >
+          Add
+        </button>
+      </div>
+      {error && <p className="text-xs text-red-400 mt-2">{error}</p>}
     </section>
   );
 }

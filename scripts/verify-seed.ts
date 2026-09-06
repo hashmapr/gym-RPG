@@ -13,6 +13,7 @@ import { resolve } from 'node:path';
 import { generateFixture, seedSettingsRows } from '../src/lib/seed/fixture';
 import { computeAnalytics } from '../src/lib/analytics';
 import type { AnalyticsResult } from '../src/lib/analytics';
+import { evaluateSeedChallenges, buildSeedChallengeGoldens } from '../src/lib/seed/challenge-fixture';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const MOCK_DB_PATH = resolve(ROOT, 'mock-db.json');
@@ -142,6 +143,41 @@ function main(): number {
     return 1;
   }
   console.log('\nAll analytics sections match goldens.');
+
+  // --- 3. challenge engine vs Sprint 4 goldens (on-disk files vs fresh recompute)
+  const { evals } = evaluateSeedChallenges();
+  const fresh = buildSeedChallengeGoldens();
+  const challengeSections: Array<[string, unknown]> = [
+    ['challenge-eval', evals],
+    ['pacing', fresh.pacing],
+    ['prescriptive', fresh.prescriptive],
+    ['streak-freeze', fresh.streakFreeze],
+  ];
+
+  let challengeFailed = false;
+  for (const [name, enginePart] of challengeSections) {
+    const goldenRaw = JSON.parse(readFileSync(resolve(GOLDEN_DIR, `${name}.golden.json`), 'utf8'));
+    // challenge-eval golden wraps the run array with generation metadata.
+    const golden = name === 'challenge-eval' ? (goldenRaw as { runs: unknown }).runs : goldenRaw;
+    const diffs: Diff[] = [];
+    deepDiff(golden, enginePart, '$', diffs);
+    if (diffs.length === 0) {
+      console.log(`✓ ${name} matches golden`);
+    } else {
+      challengeFailed = true;
+      console.error(`✗ ${name}: ${diffs.length} difference(s)`);
+      for (const d of diffs.slice(0, 8)) {
+        console.error(`    ${d.path}: golden=${JSON.stringify(d.golden)} engine=${JSON.stringify(d.engine)}`);
+      }
+      if (diffs.length > 8) console.error(`    … and ${diffs.length - 8} more`);
+    }
+  }
+  if (challengeFailed) {
+    console.error('\nChallenge engine disagrees with goldens — goldens win.');
+    return 1;
+  }
+
+  console.log('\nAll analytics + challenge sections match goldens.');
   return 0;
 }
 

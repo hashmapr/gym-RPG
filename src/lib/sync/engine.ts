@@ -13,6 +13,16 @@
 
 import type { LabDB } from '../db';
 import type { TableName } from '../types';
+import type { Table } from 'dexie';
+
+/** Primary key of a row, per the table's schema — 'id', 'date', or a
+ * compound PK like challenge_progress's [challenge_run_id+training_date]
+ * (Dexie represents compound keyPaths as arrays of parts). */
+function rowKeyOf(t: Table, r: Record<string, unknown>): unknown {
+  const kp = t.schema.primKey.keyPath as string | string[];
+  if (Array.isArray(kp)) return kp.map((k) => r[k]);
+  return r[kp];
+}
 
 /** Parent tables must sync before their children (FK constraints). */
 export const SYNC_TABLE_ORDER: TableName[] = [
@@ -35,6 +45,15 @@ export const SYNC_TABLE_ORDER: TableName[] = [
   'planned_sets',
   'target_changes',
   'exercise_equivalents',
+  // Sprint 4 (Challenges): defs before runs, runs before sessions,
+  // sessions before targets/progress. Freezes dedupe by local_id.
+  'challenge_defs',
+  'challenge_runs',
+  'challenge_sessions',
+  'challenge_targets',
+  'challenge_progress',
+  'streak_freezes',
+  'vacation_periods',
 ];
 
 export const DEFAULT_BATCH_SIZE = 200;
@@ -85,11 +104,7 @@ export async function syncAll(
         // remote upsert dedups, so no duplicates).
         const syncedAt = new Date().toISOString();
         await Promise.all(
-          chunk.map((r) =>
-            t.update((r as { id: string }).id ?? (r as { date: string }).date, {
-              syncedAt,
-            }),
-          ),
+          chunk.map((r) => t.update(rowKeyOf(t, r as Record<string, unknown>), { syncedAt })),
         );
         result.pushed += chunk.length;
       } catch (err) {
