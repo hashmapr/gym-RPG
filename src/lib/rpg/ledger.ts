@@ -24,6 +24,7 @@ import type {
 } from '../types';
 import { evaluatePR } from '../pr';
 import { diffDays } from '../streak';
+import { BODYWEIGHT_FEATS, BODYWEIGHT_FEAT_XP } from './config';
 import {
   cardioXp,
   CHALLENGE_REWARD_XP,
@@ -312,6 +313,17 @@ export function computeRpg(data: RpgData): RpgComputation {
     if (!g.achieved_at) continue;
     ledger.push(row('goal', g.id, GOAL_ACHIEVED_XP, stateAt(g.achieved_at.slice(0, 10)), 1.0, g.achieved_at));
     if (!goalAchievedAt || g.achieved_at < goalAchievedAt) goalAchievedAt = g.achieved_at;
+  }
+
+  // ---- 7b. Bodyweight Feats (M1: one-time threshold crossings, +750) ----
+  const weighIns = data.metrics
+    .filter((m) => m.body_weight != null)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  for (const feat of BODYWEIGHT_FEATS) {
+    const crossing = weighIns.find((m) => m.body_weight! < feat.threshold_lb);
+    if (!crossing) continue;
+    const at = `${crossing.date}T12:00:00.000Z`;
+    ledger.push(row('feat', feat.id, BODYWEIGHT_FEAT_XP, stateAt(crossing.date), 1.0, at));
   }
 
   // ---- 8. Stats + streak ----

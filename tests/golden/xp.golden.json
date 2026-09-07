@@ -129,7 +129,8 @@
         "distance": 400,
         "pr_count": 500,
         "e1rm_gain": 800,
-        "prescriptive": 700
+        "prescriptive": 700,
+        "cardio_time": 400
       },
       "program_week": 200,
       "program": 1000,
@@ -219,19 +220,20 @@
     ]
   },
   "seedLedgerSummary": {
-    "rows": 718,
-    "total_xp": 17592,
-    "level": 18,
+    "rows": 720,
+    "total_xp": 19242,
+    "level": 19,
     "byKind": {
       "pr": 30,
       "session": 35,
       "set": 608,
-      "skill": 44,
+      "skill": 42,
+      "feat": 4,
       "goal": 1
     },
     "byState": {
-      "BALANCED": 240,
-      "CUT": 478
+      "BALANCED": 234,
+      "CUT": 486
     },
     "cutCardioRows": 0,
     "gainLiftingRows": 0

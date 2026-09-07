@@ -86,6 +86,7 @@ export async function buildEvalContext(today: string): Promise<EvalContext> {
     cardio: cardio.map((c) => ({
       activity: c.activity,
       distance_m: c.distance_m,
+      duration_seconds: c.duration_seconds,
       training_date: getTrainingDate(new Date(c.timestamp), BOUNDARY_HOUR, TZ),
     })),
     exercises: exercises.map((e) => ({ id: e.id, category: e.category ?? null })),
@@ -515,11 +516,11 @@ export function starterDefs(): ChallengeDef[] {
     },
     {
       ...base,
-      id: 'starter-distance-25mi',
-      name: '25 Miles This Month',
-      description: 'Run 25 miles in 30 days.',
-      challenge_type: 'distance',
-      params: { activity: 'run', target_miles: 25 },
+      id: 'starter-cardio-10h',
+      name: '10 Hours of Cardio This Month',
+      description: 'Log 10 hours of cardio in 30 days. Any machine counts.',
+      challenge_type: 'cardio_time',
+      params: { activity: 'all', target_hours: 10 },
       duration_days: 30,
     },
     {
@@ -551,6 +552,16 @@ export function starterDefs(): ChallengeDef[] {
         progression: 'ladder',
         ladder_step_lb: 2.5,
       },
+      duration_days: 30,
+    },
+    {
+      // M1: deprioritized — the user's cardio has no distance data.
+      ...base,
+      id: 'starter-distance-25mi',
+      name: '25 Miles This Month',
+      description: 'Run 25 miles in 30 days.',
+      challenge_type: 'distance',
+      params: { activity: 'run', target_miles: 25 },
       duration_days: 30,
     },
   ];

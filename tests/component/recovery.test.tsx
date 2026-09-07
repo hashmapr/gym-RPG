@@ -38,6 +38,7 @@ function metricFor(date: string, recovery: number | null): DailyMetric {
     sleep_hours: 7,
     resting_hr: 52,
     body_weight: null,
+    body_fat_pct: null,
     source: 'whoop',
     created_at: `${date}T07:00:00.000Z`,
   };

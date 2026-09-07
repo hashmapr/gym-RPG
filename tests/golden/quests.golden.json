@@ -290,6 +290,63 @@
         "xp": 500,
         "adaptive": false
       }
+    },
+    {
+      "id": "feat:bodyweight-sub-250",
+      "kind": "feat",
+      "kindLabel": "Feats",
+      "title": "Sub 250 Bodyweight",
+      "subtitle": "Earned.",
+      "state": "completed",
+      "progress": null,
+      "reward": null
+    },
+    {
+      "id": "feat:bodyweight-sub-240",
+      "kind": "feat",
+      "kindLabel": "Feats",
+      "title": "Sub 240 Bodyweight",
+      "subtitle": "Earned.",
+      "state": "completed",
+      "progress": null,
+      "reward": null
+    },
+    {
+      "id": "feat:bodyweight-sub-230",
+      "kind": "feat",
+      "kindLabel": "Feats",
+      "title": "Sub 230 Bodyweight",
+      "subtitle": "Earned.",
+      "state": "completed",
+      "progress": null,
+      "reward": null
+    },
+    {
+      "id": "feat:bodyweight-sub-225",
+      "kind": "feat",
+      "kindLabel": "Feats",
+      "title": "Sub 225 Bodyweight",
+      "subtitle": "Earned.",
+      "state": "completed",
+      "progress": null,
+      "reward": null
+    },
+    {
+      "id": "feat:bodyweight-sub-220",
+      "kind": "feat",
+      "kindLabel": "Feats",
+      "title": "Sub 220 Bodyweight (100 kg)",
+      "subtitle": "Weigh 220 lb — you're at 222.5",
+      "state": "active",
+      "progress": {
+        "current": 222.5,
+        "required": 220,
+        "unit": "lb"
+      },
+      "reward": {
+        "xp": 750,
+        "adaptive": false
+      }
     }
   ]
 }

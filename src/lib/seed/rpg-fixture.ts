@@ -23,6 +23,7 @@ import {
 import type { DailyMetric, SkillNode } from '../types';
 import {
   buildSkillNodes,
+  BODYWEIGHT_FEATS,
   defaultPrMilestones,
   type KeyLiftRoles,
 } from '../rpg/config';
@@ -316,6 +317,19 @@ export function bodyStateCases() {
       220,
       addDays(base, 12),
     ),
+    // M1 real Hevy weigh-ins (measurement_data.csv): 251.33 / 252 / 252.21
+    // (fat 48.7) / 252.2 vs 220 target → CUT via the latest-weight rule.
+    mk(
+      'real-hevy-weigh-ins-CUT',
+      [
+        { date: addDays(base, 0), body_weight: 251.33 },
+        { date: addDays(base, 1), body_weight: 252 },
+        { date: addDays(base, 2), body_weight: 252.21 },
+        { date: addDays(base, 20), body_weight: 252.2 },
+      ],
+      220,
+      addDays(base, 21),
+    ),
     // Entries stop for 20 days → last-known weight governs.
     mk(
       'entries-stop-20d-last-known-governs',
@@ -376,6 +390,21 @@ export function bodyStateCases() {
   ];
 }
 
+/** Latest / minimum weigh-in (lb) across the fixture metrics. */
+function latestWeighIn(metrics: DailyMetric[]): number | null {
+  const rows = metrics
+    .filter((m) => m.body_weight != null)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  return rows.length ? (rows[rows.length - 1]!.body_weight ?? null) : null;
+}
+
+function minWeighIn(metrics: DailyMetric[]): number | null {
+  const vals = metrics
+    .map((m) => m.body_weight)
+    .filter((w): w is number => w != null);
+  return vals.length ? Math.min(...vals) : null;
+}
+
 function questBoard() {
   const comp = computeSeedRpg();
   const data = buildRpgData();
@@ -390,6 +419,9 @@ function questBoard() {
     programRuns: [],
     goals: data.goals,
     prMilestones: defaultPrMilestones(RPG_KEY_LIFTS),
+    bodyweightFeats: BODYWEIGHT_FEATS,
+    latestBodyweight: latestWeighIn(data.metrics),
+    minBodyweight: minWeighIn(data.metrics),
     stats: comp.stats,
     character: comp.character,
     e1rmFormula: 'consensus',

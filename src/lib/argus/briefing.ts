@@ -8,6 +8,7 @@
 import { db, nowIso } from '../db';
 import { getTrainingDate } from '../day-boundary';
 import { getSettings } from '../settings';
+import { BODYWEIGHT_TARGET_LB } from '../rpg/config';
 import { AI_NAME, ARGUS_ENABLED, PROMPT_VERSION } from './config';
 import type { AIBriefing, DailyGateLog, DailyMetric } from '../types';
 
@@ -33,6 +34,11 @@ export interface BriefingInput {
     days_since_last_session: number | null;
     week_volume_lb: number;
     planned_today: string | null;
+    /** M1 §7: direction of the last two weigh-ins (≥0.5 lb delta = up/down). */
+    bodyweight_trend: 'up' | 'down' | 'flat' | null;
+    bodyweight_target_lb: number;
+    /** latest weigh-in − target (positive = still above goal). */
+    bodyweight_distance_lb: number | null;
   };
 }
 
@@ -46,6 +52,9 @@ export interface BriefingDataDeps {
   /** Sum of weight × reps over that window's sets. */
   week_set_volume_lb: number;
   planned_today: string | null;
+  /** Two most recent weigh-ins (latest first), or null when absent. */
+  latest_bodyweight_lb: number | null;
+  previous_bodyweight_lb: number | null;
 }
 
 /** Pure input builder — golden-tested (briefing-input.golden.json). */
@@ -59,6 +68,20 @@ export function buildBriefingInputFromData(
           86_400_000,
       )
     : null;
+
+  // M1 §7: bodyweight trend from the last two weigh-ins.
+  const latest = deps.latest_bodyweight_lb;
+  const previous = deps.previous_bodyweight_lb;
+  const bodyweightTrend =
+    latest != null && previous != null
+      ? latest - previous >= 0.5
+        ? 'up'
+        : previous - latest >= 0.5
+          ? 'down'
+          : 'flat'
+      : null;
+  const bodyweightDistance =
+    latest != null ? Math.round((latest - BODYWEIGHT_TARGET_LB) * 10) / 10 : null;
 
   return {
     training_date: today,
@@ -84,6 +107,9 @@ export function buildBriefingInputFromData(
       days_since_last_session: daysSince != null && daysSince >= 0 ? daysSince : null,
       week_volume_lb: Math.round(deps.week_set_volume_lb),
       planned_today: deps.planned_today,
+      bodyweight_trend: bodyweightTrend,
+      bodyweight_target_lb: BODYWEIGHT_TARGET_LB,
+      bodyweight_distance_lb: bodyweightDistance,
     },
   };
 }
@@ -122,6 +148,14 @@ export async function buildBriefingInput(today: string): Promise<BriefingInput> 
   // Today's planned workout name (if any).
   const planned = await db.planned_sessions.where('planned_date').equals(today).first();
 
+  // M1 §7: two most recent weigh-ins for trend + distance-to-target.
+  const weighIns = await db.daily_metrics
+    .orderBy('date')
+    .reverse()
+    .filter((m) => m.body_weight != null)
+    .limit(2)
+    .toArray();
+
   return buildBriefingInputFromData(today, {
     metric,
     log,
@@ -129,6 +163,8 @@ export async function buildBriefingInput(today: string): Promise<BriefingInput> 
     week_session_starts: recentSessions.map((s) => s.start_time),
     week_set_volume_lb: weekVolume,
     planned_today: planned?.workout_name ?? null,
+    latest_bodyweight_lb: weighIns[0]?.body_weight ?? null,
+    previous_bodyweight_lb: weighIns[1]?.body_weight ?? null,
   });
 }
 

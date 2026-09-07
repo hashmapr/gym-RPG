@@ -157,6 +157,9 @@ export class LabDB extends Dexie {
       user_skills: 'skill_node_id',
       xp_ledger: 'id, source_kind, earned_at, [source_kind+source_id]',
     });
+    // M1: calibration columns (daily_metrics.body_fat_pct, exercises.machine_type)
+    // live in the mock backend (migration 0008); Dexie needs no new indexes.
+    this.version(8).stores({});
     // P0 sync rule: any mutation to a synced row re-queues it (data layer).
     installRequeueHooks(this, SYNC_TABLE_ORDER);
   }

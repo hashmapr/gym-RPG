@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useSettings, saveSettings } from '@/lib/settings';
-import { downloadExport } from '@/lib/export';
+import { downloadExport, downloadHevyCsvExport } from '@/lib/export';
 import { resolveSyncClient } from '@/lib/sync/client';
 import { abandonRun } from '@/lib/coach/run';
 import { db } from '@/lib/db';
@@ -34,6 +34,7 @@ export default function SettingsPage() {
   const settings = useSettings();
   const [syncMode, setSyncMode] = useState<string>('auto');
   const [exported, setExported] = useState(false);
+  const [exportedCsv, setExportedCsv] = useState(false);
   const online = useSyncStore((s) => s.online);
   const [suggestBusy, setSuggestBusy] = useState(false);
   const [suggestError, setSuggestError] = useState<string | null>(null);
@@ -274,6 +275,18 @@ export default function SettingsPage() {
           className="w-full min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 font-semibold"
         >
           {exported ? 'Exported ✓' : 'Export all data (JSON)'}
+        </button>
+        <button
+          type="button"
+          data-testid="export-csv"
+          onClick={async () => {
+            await downloadHevyCsvExport();
+            setExportedCsv(true);
+            setTimeout(() => setExportedCsv(false), 2000);
+          }}
+          className="w-full min-h-12 mt-2 rounded-lg bg-zinc-800 border border-zinc-700 font-semibold"
+        >
+          {exportedCsv ? 'Exported ✓' : 'Export CSV (Hevy-compatible)'}
         </button>
       </section>
 
@@ -635,6 +648,7 @@ function CheckInSection() {
       sleep_hours: sleep.trim() === '' ? (existing?.sleep_hours ?? null) : Number(sleep),
       resting_hr: existing?.resting_hr ?? null,
       body_weight: weight.trim() === '' ? (existing?.body_weight ?? null) : Number(weight),
+      body_fat_pct: existing?.body_fat_pct ?? null,
       source: 'manual',
       created_at: existing?.created_at ?? new Date().toISOString(),
     });

@@ -168,6 +168,7 @@ const ALLOWED_KEYS: Record<ChallengeType, string[]> = {
   pr_count: ['target_n'],
   e1rm_gain: ['target_pct', 'exercise_id'],
   prescriptive: ['sessions', 'progression', 'ladder_step_lb'],
+  cardio_time: ['activity', 'target_hours'],
 };
 
 function unknownKeys(params: ChallengeParams, type: ChallengeType): string[] {

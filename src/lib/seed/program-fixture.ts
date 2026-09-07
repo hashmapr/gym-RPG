@@ -277,6 +277,7 @@ export async function buildProgramFixture(): Promise<ProgramFixture> {
       category: def.primary_muscle,
       primary_muscle: def.primary_muscle,
       is_custom: false,
+      machine_type: null,
       created_at: nowIso(),
     }));
 

@@ -34,6 +34,37 @@
       "finalState": "CUT"
     },
     {
+      "name": "real-hevy-weigh-ins-CUT",
+      "entries": [
+        {
+          "date": "2026-01-01",
+          "body_weight": 251.33
+        },
+        {
+          "date": "2026-01-02",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-03",
+          "body_weight": 252.21
+        },
+        {
+          "date": "2026-01-21",
+          "body_weight": 252.2
+        }
+      ],
+      "target": 220,
+      "end": "2026-01-22",
+      "shifts": [
+        {
+          "date": "2026-01-03",
+          "from": "BALANCED",
+          "to": "CUT"
+        }
+      ],
+      "finalState": "CUT"
+    },
+    {
       "name": "entries-stop-20d-last-known-governs",
       "entries": [
         {

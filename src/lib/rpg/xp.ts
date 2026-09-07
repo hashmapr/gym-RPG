@@ -36,6 +36,7 @@ export const CHALLENGE_REWARD_XP: Record<string, number> = {
   pr_count: 500,
   e1rm_gain: 800,
   prescriptive: 700,
+  cardio_time: 400,
 };
 
 export const PROGRAM_ADHERENCE_WEEK_XP = 200;

@@ -7,16 +7,24 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { db, nowIso, newId } from '@/lib/db';
-import { parseHevyCsv, matchExerciseName, normalizeExerciseName } from '@/lib/hevy-csv';
+import {
+  parseHevyCsv,
+  parseMeasurementsCsv,
+  matchExerciseName,
+  normalizeExerciseName,
+  hevySetTypeToApp,
+} from '@/lib/hevy-csv';
+import { inferMachineType } from '@/lib/equipment';
 import { exerciseName, createCustomExercise } from '@/lib/wger';
 import { useSettings, saveSettings } from '@/lib/settings';
 import { getTrainingDate } from '@/lib/day-boundary';
 import { recomputeRpg, loadRpgData } from '@/lib/rpg/retro';
 import { RPG_SETTINGS_KEYS } from '@/lib/rpg/config';
 import { RPG_COPY } from '@/lib/rpg/copy';
-import type { WorkoutSession, WorkoutSet } from '@/lib/types';
+import type { WorkoutSession, WorkoutSet, CardioEntry } from '@/lib/types';
 
 const LB_PER_KG = 2.20462;
+const METERS_PER_MILE = 1609.344;
 
 export default function ImportPage() {
   const settings = useSettings();
@@ -26,9 +34,11 @@ export default function ImportPage() {
   const [result, setResult] = useState<{
     sessions: number;
     sets: number;
+    cardio: number;
     skipped: number;
     unmatched: number;
   } | null>(null);
+  const [measResult, setMeasResult] = useState<number | null>(null);
   const [materialized, setMaterialized] = useState<{ level: number; nodes: number } | null>(null);
 
   const runImport = async (file: File) => {
@@ -47,6 +57,7 @@ export default function ImportPage() {
         csvIsKg && w !== null ? Math.round(w * LB_PER_KG * 100) / 100 : w;
 
       let setCount = 0;
+      let cardioCount = 0;
       let unmatched = 0;
       let newSessions = 0;
 
@@ -70,6 +81,12 @@ export default function ImportPage() {
           const created = await createCustomExercise(hevyName);
           library.push({ id: created.id, name: hevyName });
           match = { exerciseId: created.id, confidence: 1 };
+        }
+        // M1: backfill machine_type from the Hevy name (equipment calibration).
+        const existing = await db.exercises.get(match.exerciseId);
+        if (existing && existing.machine_type == null) {
+          const mt = inferMachineType(hevyName);
+          if (mt) await db.exercises.update(match.exerciseId, { machine_type: mt });
         }
         if (key) {
           const row = {
@@ -113,13 +130,15 @@ export default function ImportPage() {
 
         for (const s of w.sets) {
           const match = await resolveExercise(s.exerciseName);
-          // Dedup: skip if same start_time + exercise + weight + reps exists.
+          // Dedup: skip if same start_time + exercise + set_order + weight +
+          // reps exists (set_order distinguishes repeated identical sets).
           const dup = await db.workout_sets
             .where('workout_id')
             .equals(sessionId)
             .filter(
               (x) =>
                 x.exercise_id === match.exerciseId &&
+                x.set_order === s.setOrder &&
                 x.weight === toLb(s.weight) &&
                 x.reps === s.reps,
             )
@@ -135,7 +154,7 @@ export default function ImportPage() {
             rpe: s.rpe,
             rir: null,
             tempo: null,
-            set_type: 'working',
+            set_type: hevySetTypeToApp(s.setType),
             rest_before: null,
             rest_after: null,
             duration: s.durationSeconds,
@@ -149,11 +168,42 @@ export default function ImportPage() {
           await db.workout_sets.put(set);
           setCount += 1;
         }
+
+        // M1: cardio rows (Treadmill / Stair Machine) -> cardio_entries.
+        for (const c of w.cardio) {
+          const dup = await db.cardio_entries
+            .where('workout_id')
+            .equals(sessionId)
+            .filter(
+              (x) =>
+                x.activity === c.exerciseName && x.duration_seconds === c.durationSeconds,
+            )
+            .first();
+          if (dup) continue;
+          const entry: CardioEntry = {
+            id: newId(),
+            workout_id: sessionId,
+            activity: c.exerciseName,
+            duration_seconds: c.durationSeconds ?? 0,
+            distance_m:
+              c.distance != null
+                ? Math.round(c.distance * METERS_PER_MILE * 100) / 100
+                : null,
+            avg_hr: null,
+            max_hr: null,
+            notes: c.notes,
+            timestamp: c.timestamp,
+            created_at: nowIso(),
+          };
+          await db.cardio_entries.put(entry);
+          cardioCount += 1;
+        }
       }
 
       setResult({
         sessions: newSessions,
         sets: setCount,
+        cardio: cardioCount,
         skipped: parsed.skipped.length,
         unmatched,
       });
@@ -171,6 +221,46 @@ export default function ImportPage() {
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Import failed.');
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const runMeasurementImport = async (file: File) => {
+    setError(null);
+    setMeasResult(null);
+    setImporting(true);
+    try {
+      const text = await file.text();
+      const measurements = parseMeasurementsCsv(text);
+      let count = 0;
+      for (const m of measurements) {
+        if (m.weightLbs == null && m.fatPct == null) continue;
+        const existing = await db.daily_metrics.get(m.date);
+        // Merge: never clobber recovery fields; fill weight + body fat.
+        const row = {
+          ...(existing ?? {
+            sleep_score: null,
+            sleep_hours: null,
+            hrv: null,
+            resting_hr: null,
+            recovery_percentage: null,
+            body_weight: null,
+            body_fat_pct: null,
+            source: 'hevy',
+            created_at: nowIso(),
+          }),
+          date: m.date,
+          body_weight: m.weightLbs ?? existing?.body_weight ?? null,
+          body_fat_pct: m.fatPct ?? existing?.body_fat_pct ?? null,
+          source: existing?.source === 'whoop' ? 'whoop+hevy' : 'hevy',
+        };
+        await db.daily_metrics.put(row);
+        count += 1;
+      }
+      setMeasResult(count);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Measurement import failed.');
     } finally {
       setImporting(false);
     }
@@ -234,7 +324,8 @@ export default function ImportPage() {
         {result && (
           <div data-testid="import-result" className="mt-3 text-sm">
             <p className="text-emerald-400 font-semibold">
-              Imported {result.sessions} sessions, {result.sets} sets.
+              Imported {result.sessions} sessions, {result.sets} sets
+              {result.cardio > 0 && `, ${result.cardio} cardio entries`}.
             </p>
             {result.skipped > 0 && (
               <p className="text-amber-400">{result.skipped} rows skipped.</p>
@@ -247,6 +338,31 @@ export default function ImportPage() {
           </div>
         )}
         {status && <p className="mt-3 text-sm text-zinc-400">{status}</p>}
+      </section>
+
+      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
+        <h2 className="font-bold mb-2">Measurements CSV</h2>
+        <p className="text-sm text-zinc-400 mb-3">
+          Hevy measurement_data.csv — bodyweight + body fat %.
+        </p>
+        <input
+          type="file"
+          accept=".csv,text/csv"
+          data-testid="import-measurements"
+          disabled={importing}
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) void runMeasurementImport(f);
+          }}
+          className="block w-full text-sm text-zinc-300
+            file:mr-3 file:py-3 file:px-4 file:rounded-lg file:border-0
+            file:bg-zinc-700 file:text-white file:font-semibold file:cursor-pointer"
+        />
+        {measResult != null && (
+          <p data-testid="measurements-result" className="mt-3 text-sm text-emerald-400 font-semibold">
+            Imported {measResult} measurement{measResult === 1 ? '' : 's'}.
+          </p>
+        )}
       </section>
 
       {materialized && (

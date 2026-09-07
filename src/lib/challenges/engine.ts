@@ -49,6 +49,7 @@ export interface EvalSession {
 export interface EvalCardio {
   activity: string;
   distance_m: number | null;
+  duration_seconds: number | null;
   training_date: string;
 }
 
@@ -173,6 +174,26 @@ function distanceProgress(ctx: EvalContext, run: ChallengeRun, params: Challenge
     if (activity !== 'all' && c.activity !== activity) continue;
     if (c.distance_m == null) continue;
     byDate.set(c.training_date, (byDate.get(c.training_date) ?? 0) + c.distance_m * MILES_PER_METER);
+  }
+  const series: ProgressSeries = [];
+  let cum = 0;
+  const last = run.ends_on < ctx.today ? run.ends_on : ctx.today;
+  for (let d = run.started_on; diffDays(last, d) >= 0; d = addDays(d, 1)) {
+    cum += byDate.get(d) ?? 0;
+    series.push({ training_date: d, value: round2(cum) });
+  }
+  return { progress: round2(cum), series, target_met: cum >= target, baseline: null };
+}
+
+/** M1: duration-based cardio challenge — cumulative hours in window. */
+function cardioTimeProgress(ctx: EvalContext, run: ChallengeRun, params: ChallengeParams): ChallengeEval {
+  const target = params.target_hours ?? 0;
+  const activity = params.activity ?? 'all';
+  const byDate = new Map<string, number>();
+  for (const c of ctx.cardio) {
+    if (!inWindow(c.training_date, run)) continue;
+    if (activity !== 'all' && c.activity !== activity) continue;
+    byDate.set(c.training_date, (byDate.get(c.training_date) ?? 0) + (c.duration_seconds ?? 0) / 3600);
   }
   const series: ProgressSeries = [];
   let cum = 0;
@@ -472,6 +493,7 @@ export function targetOf(def: ChallengeDef, _run: ChallengeRun, override?: numbe
     case 'pr_count': return p.target_n ?? 0;
     case 'e1rm_gain': return p.target_pct ?? 0;
     case 'prescriptive': return p.sessions?.length ?? 0;
+    case 'cardio_time': return p.target_hours ?? 0;
   }
 }
 
@@ -548,6 +570,7 @@ export function evaluateChallenge(
     case 'e1rm_gain': e = e1rmGainProgress(ctx, run, def.params); break;
     case 'streak': e = streakProgress(ctx, run, def.params); break;
     case 'prescriptive': e = prescriptiveProgress(ctx, run, def.params); break;
+    case 'cardio_time': e = cardioTimeProgress(ctx, run, def.params); break;
   }
   return { eval: e, pace: paceOf(def, run, e, ctx, targetOverride) };
 }

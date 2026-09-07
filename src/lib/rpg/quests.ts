@@ -12,7 +12,7 @@ import type {
 } from '../types';
 import { CHALLENGE_REWARD_XP } from './xp';
 import { RPG_COPY } from './copy';
-import type { PrMilestoneDef, PrMilestoneTier } from './config';
+import type { BodyweightFeatDef, PrMilestoneDef, PrMilestoneTier } from './config';
 import type { ComputedStats } from './stats';
 
 export interface QuestReward {
@@ -41,6 +41,10 @@ export interface QuestInputs {
   programRuns: ProgramRun[];
   goals: Goal[];
   prMilestones: PrMilestoneDef[];
+  /** M1: bodyweight milestone feats + observed weight bounds (lb). */
+  bodyweightFeats?: BodyweightFeatDef[];
+  latestBodyweight?: number | null;
+  minBodyweight?: number | null;
   stats: ComputedStats;
   character: RPGCharacter | null;
   e1rmFormula?: 'epley' | 'brzycki' | 'wathan' | 'consensus';
@@ -131,6 +135,32 @@ export function buildQuestBoard(inputs: QuestInputs): QuestView[] {
       // Display-only: PR XP already flows through 'pr' ledger rows.
       reward: nextTier ? { xp: nextTier.xp, adaptive: false } : null,
     });
+  }
+
+  // ---- Feats (M1 bodyweight milestones — +750 each, ledger 'feat' rows) ----
+  if (inputs.bodyweightFeats?.length) {
+    const latest = inputs.latestBodyweight ?? null;
+    const min = inputs.minBodyweight ?? null;
+    for (const feat of inputs.bodyweightFeats) {
+      const earned = min != null && min < feat.threshold_lb;
+      quests.push({
+        id: `feat:${feat.id}`,
+        kind: 'feat',
+        kindLabel: RPG_COPY.questKinds.feat,
+        title: feat.label,
+        subtitle: earned
+          ? 'Earned.'
+          : latest != null
+            ? `Weigh ${feat.threshold_lb} lb — you're at ${Math.round(latest * 10) / 10}`
+            : 'Log a weigh-in to start.',
+        state: earned ? 'completed' : latest != null ? 'active' : 'locked',
+        progress:
+          latest != null && !earned
+            ? { current: Math.round(latest * 10) / 10, required: feat.threshold_lb, unit: 'lb' }
+            : null,
+        reward: earned ? null : { xp: 750, adaptive: false },
+      });
+    }
   }
 
   return quests;

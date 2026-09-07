@@ -64,7 +64,9 @@ export function generateRecoveryMetrics(today: string = SEED_TODAY): DailyMetric
       hrv,
       sleep_hours: sleep,
       resting_hr: restingHr,
-      body_weight: null,
+      // M1 §7: weigh-ins on the two most recent days feed the briefing trend.
+      body_weight: i === 0 ? 222.5 : i === 1 ? 223.1 : null,
+      body_fat_pct: null,
       source: 'whoop',
       created_at: i === 0 ? `${today}T11:00:00.000Z` : `${date}T07:00:00.000Z`,
     });
@@ -156,6 +158,8 @@ export function briefingInputGolden(): unknown {
     week_session_starts: weekSessions.map((s) => s.start_time),
     week_set_volume_lb: weekVolume,
     planned_today: 'Lower A — Squat Focus',
+    latest_bodyweight_lb: 222.5,
+    previous_bodyweight_lb: 223.1,
   });
   return { input, prompt: null };
 }

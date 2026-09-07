@@ -1,9 +1,9 @@
 {
   "counts": {
-    "total": 74,
-    "completed": 44,
-    "available": 12,
-    "locked": 18
+    "total": 80,
+    "completed": 42,
+    "available": 16,
+    "locked": 22
   },
   "byBranch": {
     "DISCIPLINE": {
@@ -15,8 +15,8 @@
       "total": 8
     },
     "STRENGTH": {
-      "completed": 31,
-      "total": 34
+      "completed": 29,
+      "total": 40
     },
     "POWER": {
       "completed": 11,
@@ -33,9 +33,16 @@
     },
     {
       "id": "sk-hinge-1",
-      "title": "DB RDL I",
+      "title": "Seated Leg Curl I",
       "tier": 1,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-lateral-1",
+      "title": "Lateral Raise I",
+      "tier": 1,
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
       "xp": 100
     },
     {
@@ -68,7 +75,7 @@
     },
     {
       "id": "sk-pull-h-1",
-      "title": "Machine Row I",
+      "title": "Seated Row I",
       "tier": 1,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
       "xp": 100
@@ -82,14 +89,14 @@
     },
     {
       "id": "sk-push-h-1",
-      "title": "Machine Press I",
+      "title": "Chest Press I",
       "tier": 1,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
       "xp": 100
     },
     {
       "id": "sk-push-v-1",
-      "title": "Machine Shoulder I",
+      "title": "Seated Shoulder Press I",
       "tier": 1,
       "evidenceAt": "2026-06-09T18:00:00.000Z",
       "xp": 100
@@ -97,6 +104,13 @@
     {
       "id": "sk-squat-1",
       "title": "Leg Press I",
+      "tier": 1,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-squat-h-1",
+      "title": "Leg Press Horizontal I",
       "tier": 1,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
       "xp": 100
@@ -110,9 +124,16 @@
     },
     {
       "id": "sk-hinge-2",
-      "title": "DB RDL II",
+      "title": "Seated Leg Curl II",
       "tier": 2,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-lateral-2",
+      "title": "Lateral Raise II",
+      "tier": 2,
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
       "xp": 150
     },
     {
@@ -145,7 +166,7 @@
     },
     {
       "id": "sk-pull-h-2",
-      "title": "Machine Row II",
+      "title": "Seated Row II",
       "tier": 2,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
       "xp": 150
@@ -159,14 +180,14 @@
     },
     {
       "id": "sk-push-h-2",
-      "title": "Machine Press II",
+      "title": "Chest Press II",
       "tier": 2,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
       "xp": 150
     },
     {
       "id": "sk-push-v-2",
-      "title": "Machine Shoulder II",
+      "title": "Seated Shoulder Press II",
       "tier": 2,
       "evidenceAt": "2026-06-09T18:00:00.000Z",
       "xp": 150
@@ -179,10 +200,17 @@
       "xp": 150
     },
     {
-      "id": "sk-hinge-3",
-      "title": "DB RDL III",
-      "tier": 3,
+      "id": "sk-squat-h-2",
+      "title": "Leg Press Horizontal II",
+      "tier": 2,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-lateral-3",
+      "title": "Lateral Raise III",
+      "tier": 3,
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
       "xp": 200
     },
     {
@@ -208,7 +236,7 @@
     },
     {
       "id": "sk-pull-h-3",
-      "title": "Machine Row III",
+      "title": "Seated Row III",
       "tier": 3,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
       "xp": 200
@@ -222,28 +250,35 @@
     },
     {
       "id": "sk-push-h-3",
-      "title": "Machine Press III",
+      "title": "Chest Press III",
       "tier": 3,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 200
+    },
+    {
+      "id": "sk-push-v-3",
+      "title": "Seated Shoulder Press III",
+      "tier": 3,
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
       "xp": 200
     },
     {
       "id": "sk-squat-3",
       "title": "Leg Press III",
       "tier": 3,
-      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "evidenceAt": "2026-06-02T18:00:00.000Z",
       "xp": 200
     },
     {
-      "id": "sk-hinge-4",
-      "title": "Hip Thrust Machine I",
+      "id": "sk-lateral-4",
+      "title": "Lateral Raise IV",
       "tier": 4,
-      "evidenceAt": "2026-05-23T18:00:00.000Z",
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
       "xp": 250
     },
     {
       "id": "sk-pull-h-4",
-      "title": "Machine Row IV",
+      "title": "Seated Row IV",
       "tier": 4,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
       "xp": 250
@@ -257,79 +292,30 @@
     },
     {
       "id": "sk-push-h-4",
-      "title": "Machine Press IV",
-      "tier": 4,
-      "evidenceAt": "2026-06-16T18:00:00.000Z",
-      "xp": 250
-    },
-    {
-      "id": "sk-squat-4",
-      "title": "Leg Press IV",
+      "title": "Chest Press IV",
       "tier": 4,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
       "xp": 250
     },
     {
-      "id": "sk-hinge-5",
-      "title": "Hip Thrust Machine II",
-      "tier": 5,
-      "evidenceAt": "2026-05-23T18:00:00.000Z",
-      "xp": 300
-    },
-    {
       "id": "sk-pull-h-5",
-      "title": "DB Row I",
+      "title": "Seated Row V",
       "tier": 5,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
       "xp": 300
     },
     {
       "id": "sk-pull-v-5",
-      "title": "Assisted Pull-up I",
+      "title": "Lat Pulldown V",
       "tier": 5,
       "evidenceAt": "2026-05-19T18:00:00.000Z",
       "xp": 300
     },
     {
       "id": "sk-push-h-5",
-      "title": "DB Press I",
+      "title": "Chest Press V",
       "tier": 5,
-      "evidenceAt": "2026-05-19T18:00:00.000Z",
-      "xp": 300
-    },
-    {
-      "id": "sk-squat-5",
-      "title": "Hack Squat I",
-      "tier": 5,
-      "evidenceAt": "2026-05-19T18:00:00.000Z",
-      "xp": 300
-    },
-    {
-      "id": "sk-pull-h-6",
-      "title": "DB Row II",
-      "tier": 6,
-      "evidenceAt": "2026-05-19T18:00:00.000Z",
-      "xp": 300
-    },
-    {
-      "id": "sk-pull-v-6",
-      "title": "Assisted Pull-up II",
-      "tier": 6,
-      "evidenceAt": "2026-05-19T18:00:00.000Z",
-      "xp": 300
-    },
-    {
-      "id": "sk-push-h-6",
-      "title": "DB Press II",
-      "tier": 6,
-      "evidenceAt": "2026-05-19T18:00:00.000Z",
-      "xp": 300
-    },
-    {
-      "id": "sk-squat-6",
-      "title": "Hack Squat II",
-      "tier": 6,
-      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "evidenceAt": "2026-05-26T18:00:00.000Z",
       "xp": 300
     }
   ],
@@ -393,27 +379,23 @@
     "note": "Machine-flavored nodes bind to the fixture barbell ids (editable seed data); DB variants chain behind them.",
     "horizontalPush": [
       {
-        "title": "Machine Press I",
+        "title": "Chest Press I",
         "state": "completed"
       },
       {
-        "title": "Machine Press II",
+        "title": "Chest Press II",
         "state": "completed"
       },
       {
-        "title": "Machine Press III",
+        "title": "Chest Press III",
         "state": "completed"
       },
       {
-        "title": "Machine Press IV",
+        "title": "Chest Press IV",
         "state": "completed"
       },
       {
-        "title": "DB Press I",
-        "state": "completed"
-      },
-      {
-        "title": "DB Press II",
+        "title": "Chest Press V",
         "state": "completed"
       }
     ]

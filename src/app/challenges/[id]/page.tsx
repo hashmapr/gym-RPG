@@ -348,6 +348,8 @@ function targetOf(def: ChallengeDef | null, run: ChallengeRun | null): number {
       return p.mode === 'weekly' ? Math.ceil((run ? diffDays(run.ends_on, run.started_on) + 1 : def.duration_days) / 7) : def.duration_days;
     case 'prescriptive':
       return p.sessions?.length ?? 0;
+    case 'cardio_time':
+      return p.target_hours ?? 0;
   }
 }
 
@@ -368,6 +370,8 @@ function targetLabel(def: ChallengeDef): string {
       return p.mode === 'weekly' ? `${p.min_sessions_per_week}×/wk` : `${def.duration_days}d streak`;
     case 'prescriptive':
       return `${p.sessions?.length ?? 0} sessions`;
+    case 'cardio_time':
+      return `${p.target_hours} h`;
   }
 }
 

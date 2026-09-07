@@ -76,6 +76,7 @@ export default function FinishWorkoutModal({
             category: null,
             primary_muscle: null,
             is_custom: false,
+            machine_type: null,
             created_at: '',
           },
         );

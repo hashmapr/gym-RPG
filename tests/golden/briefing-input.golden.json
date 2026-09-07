@@ -24,7 +24,10 @@
     "context": {
       "days_since_last_session": null,
       "week_volume_lb": 59297,
-      "planned_today": "Lower A — Squat Focus"
+      "planned_today": "Lower A — Squat Focus",
+      "bodyweight_trend": "down",
+      "bodyweight_target_lb": 220,
+      "bodyweight_distance_lb": 2.5
     }
   },
   "prompt": null

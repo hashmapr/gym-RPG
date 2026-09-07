@@ -16,6 +16,47 @@ export type KeyLiftRoles = {
   legCurl: string;
 };
 
+/**
+ * M1: the user's real machines (character-sheet key lifts). The seeded
+ * fixture stays barbell-named, so machine-flavored chains bind to the 6
+ * fixture ids via CHAIN_ROLE below (documented deviation — editable seed
+ * data). This list is the canonical display order for key-lift UI.
+ */
+export const KEY_LIFT_DISPLAY = [
+  'Chest Press (M)',
+  'Leg Press (M)',
+  'Leg Press Horizontal (M)',
+  'Seated Row (M)',
+  'Lat Pulldown (Cable)',
+  'Seated Shoulder Press (M)',
+  'Seated Leg Curl (M)',
+  'Lateral Raise (M)',
+  'Preacher Curl (M)',
+  'Torso Rotation',
+  'Crunch',
+] as const;
+
+/** One-time bodyweight milestone Feats (M1 §2): +750 XP each, earned the
+ *  first day a weigh-in lands strictly below the threshold. */
+export const BODYWEIGHT_FEAT_XP = 750;
+
+/** M1 §1: user goal — sub-100 kg. Argus briefing distance-to-target anchor. */
+export const BODYWEIGHT_TARGET_LB = 220;
+
+export interface BodyweightFeatDef {
+  id: string;
+  label: string;
+  threshold_lb: number;
+}
+
+export const BODYWEIGHT_FEATS: BodyweightFeatDef[] = [
+  { id: 'bodyweight-sub-250', label: 'Sub 250 Bodyweight', threshold_lb: 250 },
+  { id: 'bodyweight-sub-240', label: 'Sub 240 Bodyweight', threshold_lb: 240 },
+  { id: 'bodyweight-sub-230', label: 'Sub 230 Bodyweight', threshold_lb: 230 },
+  { id: 'bodyweight-sub-225', label: 'Sub 225 Bodyweight', threshold_lb: 225 },
+  { id: 'bodyweight-sub-220', label: 'Sub 220 Bodyweight (100 kg)', threshold_lb: 220 },
+];
+
 export const RPG_SETTINGS_KEYS = {
   targetBodyweight: 'target_bodyweight_lb',
   xpMode: 'xp_mode',
@@ -75,62 +116,53 @@ function chain(
   }));
 }
 
-/** ~70 nodes across 4 branches. Starters have no parent; everything else
+/**
+ * M1: 8 strength chains × 5 tiers, anchored to the user's real Consensus
+ * e1RMs (spec §6). Chains bind to the 6 fixture exercise ids — machine
+ * variants share an id with their barbell fixture counterpart (documented
+ * deviation; the binding is editable seed data).
+ */
+const CHAIN_ROLE = {
+  'push-h': 'bench',
+  'push-v': 'ohp',
+  'pull-h': 'latPulldown',
+  'pull-v': 'latPulldown',
+  squat: 'squat',
+  'squat-h': 'squat',
+  hinge: 'legCurl',
+  lateral: 'ohp',
+} as const;
+
+/** [sub, machine title, 5 tier thresholds lb] */
+const STRENGTH_CHAINS: Array<[keyof typeof CHAIN_ROLE, string, number[]]> = [
+  ['push-h', 'Chest Press', [100, 130, 157, 185, 215]],
+  ['push-v', 'Seated Shoulder Press', [60, 85, 106, 130, 155]],
+  ['pull-h', 'Seated Row', [85, 115, 140, 170, 200]],
+  ['pull-v', 'Lat Pulldown', [50, 55, 61, 75, 90]],
+  ['squat', 'Leg Press', [150, 220, 299, 370, 450]],
+  ['squat-h', 'Leg Press Horizontal', [150, 250, 373, 450, 525]],
+  ['hinge', 'Seated Leg Curl', [70, 90, 113, 135, 160]],
+  ['lateral', 'Lateral Raise', [45, 60, 84, 100, 120]],
+];
+
+const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
+
+/** ~80 nodes across 4 branches. Starters have no parent; everything else
  *  chains within its sub-branch. */
 export function buildSkillNodes(ids: KeyLiftRoles): SkillNode[] {
   const specs: NodeSpec[] = [
-    // ---- STRENGTH · Horizontal Push (machine first, DB substitution) ----
-    ...chain('push-h', ['Machine Press I', 'Machine Press II', 'Machine Press III', 'Machine Press IV', 'DB Press I', 'DB Press II'], [
-      { type: 'metric_threshold', exercise_id: ids.bench, e1rm_lb: 95 },
-      { type: 'metric_threshold', exercise_id: ids.bench, e1rm_lb: 135 },
-      { type: 'metric_threshold', exercise_id: ids.bench, e1rm_lb: 185 },
-      { type: 'metric_threshold', exercise_id: ids.bench, e1rm_lb: 225 },
-      { type: 'metric_threshold', exercise_id: ids.bench, e1rm_lb: 60 },
-      { type: 'metric_threshold', exercise_id: ids.bench, e1rm_lb: 80 },
-    ]),
-    // ---- STRENGTH · Vertical Push ----
-    ...chain('push-v', ['Machine Shoulder I', 'Machine Shoulder II', 'Machine Shoulder III', 'DB Shoulder I', 'DB Shoulder II'], [
-      { type: 'metric_threshold', exercise_id: ids.ohp, e1rm_lb: 65 },
-      { type: 'metric_threshold', exercise_id: ids.ohp, e1rm_lb: 95 },
-      { type: 'metric_threshold', exercise_id: ids.ohp, e1rm_lb: 125 },
-      { type: 'metric_threshold', exercise_id: ids.ohp, e1rm_lb: 50 },
-      { type: 'metric_threshold', exercise_id: ids.ohp, e1rm_lb: 70 },
-    ]),
-    // ---- STRENGTH · Horizontal Pull ----
-    ...chain('pull-h', ['Machine Row I', 'Machine Row II', 'Machine Row III', 'Machine Row IV', 'DB Row I', 'DB Row II'], [
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 95 },
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 135 },
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 165 },
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 195 },
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 60 },
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 80 },
-    ]),
-    // ---- STRENGTH · Vertical Pull ----
-    ...chain('pull-v', ['Lat Pulldown I', 'Lat Pulldown II', 'Lat Pulldown III', 'Lat Pulldown IV', 'Assisted Pull-up I', 'Assisted Pull-up II'], [
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 100 },
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 140 },
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 170 },
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 200 },
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 120 },
-      { type: 'metric_threshold', exercise_id: ids.latPulldown, e1rm_lb: 150 },
-    ]),
-    // ---- STRENGTH · Squat Pattern ----
-    ...chain('squat', ['Leg Press I', 'Leg Press II', 'Leg Press III', 'Leg Press IV', 'Hack Squat I', 'Hack Squat II'], [
-      { type: 'metric_threshold', exercise_id: ids.squat, e1rm_lb: 135 },
-      { type: 'metric_threshold', exercise_id: ids.squat, e1rm_lb: 185 },
-      { type: 'metric_threshold', exercise_id: ids.squat, e1rm_lb: 225 },
-      { type: 'metric_threshold', exercise_id: ids.squat, e1rm_lb: 275 },
-      { type: 'metric_threshold', exercise_id: ids.squat, e1rm_lb: 115 },
-      { type: 'metric_threshold', exercise_id: ids.squat, e1rm_lb: 155 },
-    ]),
-    // ---- STRENGTH · Hinge ----
-    ...chain('hinge', ['DB RDL I', 'DB RDL II', 'DB RDL III', 'Hip Thrust Machine I', 'Hip Thrust Machine II'], [
-      { type: 'metric_threshold', exercise_id: ids.legCurl, e1rm_lb: 45 },
-      { type: 'metric_threshold', exercise_id: ids.legCurl, e1rm_lb: 60 },
-      { type: 'metric_threshold', exercise_id: ids.legCurl, e1rm_lb: 80 },
-      { type: 'metric_threshold', exercise_id: ids.deadlift, e1rm_lb: 135 },
-      { type: 'metric_threshold', exercise_id: ids.deadlift, e1rm_lb: 225 },
-    ]),
+    // ---- STRENGTH · 8 machine chains × 5 tiers (user's real lifts) ----
+    ...STRENGTH_CHAINS.flatMap(([sub, machine, thresholds]) =>
+      chain(
+        sub,
+        thresholds.map((_, i) => `${machine} ${ROMAN[i]}`),
+        thresholds.map((lb) => ({
+          type: 'metric_threshold' as const,
+          exercise_id: ids[CHAIN_ROLE[sub]],
+          e1rm_lb: lb,
+        })),
+      ),
+    ),
     // ---- POWER · lifetime volume per muscle, 3 tiers ----
     ...(['chest', 'back', 'shoulders', 'legs', 'hamstrings', 'arms', 'glutes', 'calves'] as const).flatMap((muscle) =>
       chain(`power-${muscle}`, ['Mover I', 'Mover II', 'Mover III'], [

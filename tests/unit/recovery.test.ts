@@ -146,6 +146,7 @@ describe('gate service — one-time apply contract', () => {
       sleep_hours: 7,
       resting_hr: 52,
       body_weight: null,
+      body_fat_pct: null,
       source: 'whoop',
       created_at: `${SEED_TODAY}T07:00:00.000Z`,
     });
@@ -247,6 +248,7 @@ describe('gate service — one-time apply contract', () => {
       sleep_hours: null,
       resting_hr: null,
       body_weight: null,
+      body_fat_pct: null,
       source: 'manual',
       created_at: `${SEED_TODAY}T07:00:00.000Z`,
     });
@@ -349,6 +351,7 @@ describe('WHOOP client', () => {
       resting_hr: 51,
       sleep_score: null,
       body_weight: null,
+      body_fat_pct: null,
       source: 'whoop',
     });
     expect(full.syncedAt).toBeTruthy();

@@ -256,6 +256,7 @@ export function buildSeedChallengeContext(today: string = SEED_TODAY): EvalConte
     cardio: SEED_CARDIO_RUNS.map((c) => ({
       activity: 'run',
       distance_m: c.miles * MILES_TO_METERS,
+      duration_seconds: null,
       training_date: c.training_date,
     })),
     exercises: fixture.exercises.map((e) => ({ id: e.id, category: e.category })),

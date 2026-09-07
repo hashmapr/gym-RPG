@@ -11,11 +11,30 @@ import { getTrainingDate } from '@/lib/day-boundary';
 import { buildEvalContext } from '@/lib/challenges/service';
 import { evaluateChallenge, targetOf } from '@/lib/challenges/engine';
 import { buildQuestBoard } from '@/lib/rpg/quests';
-import { defaultPrMilestones, RPG_SETTINGS_KEYS } from '@/lib/rpg/config';
+import {
+  BODYWEIGHT_FEATS,
+  defaultPrMilestones,
+  RPG_SETTINGS_KEYS,
+} from '@/lib/rpg/config';
 import { loadRpgData } from '@/lib/rpg/retro';
 import { computeRpg } from '@/lib/rpg/ledger';
 import { RPG_COPY } from '@/lib/rpg/copy';
 import type { QuestView } from '@/lib/rpg/quests';
+import type { DailyMetric } from '@/lib/types';
+
+function latestWeighIn(metrics: DailyMetric[]): number | null {
+  const rows = metrics
+    .filter((m) => m.body_weight != null)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  return rows.length ? (rows[rows.length - 1]!.body_weight ?? null) : null;
+}
+
+function minWeighIn(metrics: DailyMetric[]): number | null {
+  const vals = metrics
+    .map((m) => m.body_weight)
+    .filter((w): w is number => w != null);
+  return vals.length ? Math.min(...vals) : null;
+}
 
 const KIND_ORDER = ['trial', 'arc', 'deed', 'feat'] as const;
 
@@ -102,6 +121,9 @@ export default function QuestsPage() {
         programRuns: data.programRuns,
         goals: data.goals,
         prMilestones: milestones,
+        bodyweightFeats: BODYWEIGHT_FEATS,
+        latestBodyweight: latestWeighIn(data.metrics),
+        minBodyweight: minWeighIn(data.metrics),
         stats: computation.stats,
         character: computation.character,
         e1rmFormula: 'consensus',

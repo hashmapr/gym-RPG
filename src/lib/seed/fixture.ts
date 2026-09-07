@@ -258,6 +258,7 @@ export function generateFixture(): Fixture {
     category: def.primary_muscle,
     primary_muscle: def.primary_muscle,
     is_custom: false,
+    machine_type: null,
     created_at: new Date(WEEK0_MS).toISOString(),
   }));
 

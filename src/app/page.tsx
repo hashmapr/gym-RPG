@@ -78,7 +78,7 @@ export default function HomePage() {
           ]
             .filter(Boolean)
             .join(' ');
-          return { name: exerciseName(ex ?? { id: exId, wger_id: null, custom_name: null, category: null, primary_muscle: null, is_custom: false, created_at: '' }), target };
+          return { name: exerciseName(ex ?? { id: exId, wger_id: null, custom_name: null, category: null, primary_muscle: null, is_custom: false, machine_type: null, created_at: '' }), target };
         });
         setCardExercises(rows);
       } else {

@@ -104,6 +104,7 @@ export async function ensureWgerCatalog(signal?: AbortSignal): Promise<void> {
         category: mapped.category,
         primary_muscle: mapped.primaryMuscle,
         is_custom: false,
+        machine_type: null,
         created_at: new Date().toISOString(),
       });
     }
@@ -148,6 +149,7 @@ export async function cacheWgerExercise(sel: WgerSearchResult): Promise<Exercise
     category: sel.category,
     primary_muscle: sel.primaryMuscle,
     is_custom: false,
+    machine_type: null,
     created_at: new Date().toISOString(),
   };
   await db.exercises.put(row);
@@ -163,6 +165,7 @@ export async function createCustomExercise(name: string): Promise<Exercise> {
     category: null,
     primary_muscle: null,
     is_custom: true,
+    machine_type: null,
     created_at: new Date().toISOString(),
   };
   await db.exercises.put(row);

@@ -97,6 +97,7 @@ export function mapWhoopMetric(dto: Partial<WhoopMetricDto>): DailyMetric {
     sleep_hours: typeof dto.sleep_hours === 'number' ? dto.sleep_hours : null,
     resting_hr: typeof dto.resting_hr === 'number' ? dto.resting_hr : null,
     body_weight: null,
+    body_fat_pct: null,
     source: 'whoop',
     created_at: dto.created_at ?? nowIso(),
     syncedAt: nowIso(), // pulled rows are marked synced — never re-pushed

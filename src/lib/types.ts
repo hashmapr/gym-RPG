@@ -14,9 +14,13 @@ export interface Exercise {
   category: string | null;
   primary_muscle: string | null;
   is_custom: boolean;
+  /** Equipment calibration (M1): 45deg | horizontal | selectorized | cable | cardio. */
+  machine_type: MachineType | null;
   created_at: string;
   syncedAt?: string; // client-only sync bookkeeping
 }
+
+export type MachineType = '45deg' | 'horizontal' | 'selectorized' | 'cable' | 'cardio';
 
 export interface GymProfile {
   id: string;
@@ -88,6 +92,8 @@ export interface DailyMetric {
   resting_hr: number | null;
   recovery_percentage: number | null;
   body_weight: number | null;
+  /** Body fat % from Hevy measurement_data.csv (M1). */
+  body_fat_pct: number | null;
   source: string;
   created_at: string;
   syncedAt?: string;
@@ -159,7 +165,8 @@ export type XpSourceKind =
   | 'program_week'
   | 'program'
   | 'goal'
-  | 'skill';
+  | 'skill'
+  | 'feat';
 
 /** One XP event. `id` is deterministic (`${source_kind}:${source_id}`) so
  *  reprocessing the same source can never double-award. */
@@ -388,6 +395,7 @@ export type ChallengeType =
   | 'session_count'
   | 'streak'
   | 'distance'
+  | 'cardio_time'
   | 'pr_count'
   | 'e1rm_gain'
   | 'prescriptive';
@@ -423,6 +431,8 @@ export interface ChallengeParams {
   // distance
   activity?: 'run' | 'ride' | 'all';
   target_miles?: number;
+  // cardio_time (M1: duration-based cardio — user's cardio has no distance data)
+  target_hours?: number;
   // pr_count
   target_n?: number;
   // e1rm_gain

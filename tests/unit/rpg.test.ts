@@ -62,11 +62,11 @@ describe('Sprint 7 RPG — goldens', () => {
     expectGoldenMatch('xp');
   });
 
-  it('body-state golden matches (8 A1 cases + seed series)', () => {
+  it('body-state golden matches (9 A1 cases + seed series)', () => {
     expectGoldenMatch('body-state');
   });
 
-  it('skills golden matches (74 nodes, branch counts, progress)', () => {
+  it('skills golden matches (80 nodes, branch counts, progress)', () => {
     expectGoldenMatch('skills');
   });
 

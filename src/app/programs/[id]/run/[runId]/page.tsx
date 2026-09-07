@@ -60,6 +60,7 @@ export default function RunDetailPage() {
           category: null,
           primary_muscle: null,
           is_custom: false,
+          machine_type: null,
           created_at: '',
         },
       );
@@ -244,6 +245,7 @@ function SessionRow({
               category: null,
               primary_muscle: null,
               is_custom: false,
+              machine_type: null,
               created_at: '',
             },
           );
@@ -255,6 +257,7 @@ function SessionRow({
               category: null,
               primary_muscle: null,
               is_custom: false,
+              machine_type: null,
               created_at: '',
             },
           );

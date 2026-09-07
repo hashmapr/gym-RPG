@@ -1,3 +1,46 @@
+# M1 Report — Real-Data Calibration (migration 0008 + Dexie v8)
+
+## Test counts
+
+| Suite | Result |
+|---|---|
+| Unit (`tests/unit/hevy-real.test.ts`) | 18 new — all pass (real-export parse: cardio anomalies, 1-rep heavies, separate Leg Press machines, empty RPE, `d MMM yyyy` dates, zero-dup re-import, name evolution) |
+| Unit (`tests/unit/csv-export.test.ts`) | 1 new — round-trip proof: exported CSV re-imports with zero new inserts; measurements CSV re-parses to the same rows |
+| RPG goldens | regenerated — 80 skill nodes, 9 body-state cases, 4 bodyweight feats (4 × 750 XP) shift level-ups; `rpg.test.ts` 18/18 |
+| Recovery goldens | regenerated — briefing-input gains `bodyweight_trend` ('down'), `bodyweight_target_lb` 220, `bodyweight_distance_lb` 2.5 |
+| `tsc --noEmit` | clean |
+| `npm run build` | pass |
+| `npm run seed:verify` | zero golden diffs (after reseed — fixture hash changed with new columns) |
+| Playwright `rpg.spec.ts` | 4/4 pass |
+
+### Environment note
+Full-suite parallel vitest runs on this shared machine starve under load (load avg ~4.7): rpg/argus golden tests hit their 5s timeouts with 15-min wall times. Every affected file passes in isolation (rpg 18/18 ×2, argus 37/37, recovery 22/23 + 1 timing flake that passes solo). Same pre-existing parallel jsdom flakes as Sprint 7 (program-builder ×2, workout-logger ×1, argus ×1).
+
+## What shipped
+
+1. **Schema (migration 0008 + Dexie v8)** — `daily_metrics.body_fat_pct DECIMAL`, `exercises.machine_type TEXT` (45deg | horizontal | selectorized | cable | cardio).
+2. **Importer** — `measurement_data.csv` → daily_metrics (weight + fat %); cardio rows (empty reps + duration) → cardio_entries with distance null and anomalies preserved; 0-based set_index preserved (was clamped to 1, collapsing 275→244 sets); CRLF/LF mixed line endings normalized (Papa glues rows when header is CRLF and a data row is bare LF — root-caused via minimal repro).
+3. **Equipment calibration** — `machine_type` per the user's real machines; `effective_load = weight × angle_factor` (45deg 0.707, horizontal 1.0): 45deg Leg Press 240 loaded ≈ 168 lb effective vs Horizontal 235 = 235 lb — Horizontal is the heavier lifter by mechanical fact.
+4. **RPG** — 8 strength chains × 5 tiers anchored to the user's real Consensus e1RMs (80 nodes); bodyweight Feats sub-250/240/230/225/220 at +750 XP each; character sheet binds the user's 11 actual machines; real weigh-in series (251.33/252/252.21/252.2) → CUT via sparse fallback.
+5. **Cardio time challenge** — new `cardio_time` type (cumulative hours, `target_hours`), reward 400 XP, gauntlet-validated; starter "10 Hours of Cardio This Month" added, miles-based 25mi starter deprioritized to last (user cardio has no distance data).
+6. **Argus briefing** — inputs gain bodyweight trend direction (≥0.5 lb delta over last two weigh-ins) + distance to the 220 lb target; narration guardrail unchanged.
+7. **CSV export** — Settings → Export CSV: Hevy-compatible workouts CSV (same column schema as import) + measurements CSV, one tap, two downloads; timestamps export as `YYYY-MM-DD HH:mm:ss` UTC so re-import round-trips exactly (zero duplicates, proven by test).
+
+## Deviations from spec
+
+1. `CHAIN_ROLE` binds 8 chains to the 6 seeded key-lift ids (duplicate ids would double-count strength XP); documented pattern from Sprint 7.
+2. Export timestamps use `YYYY-MM-DD HH:mm:ss` instead of Hevy's `d MMM yyyy, HH:mm` — the minute-precision format loses seconds and would break the zero-duplicate round-trip guarantee; the parser accepts both.
+3. Export `title` comes from `workout_sessions.notes` (where the importer stores the Hevy workout title); manual sessions export their notes as title.
+4. `top_set` exports as `normal` (app-only type, lossy — mirrors the documented import mapping).
+
+## Files
+
+**New:** `supabase/migrations/0008_calibration.sql`, `src/lib/equipment.ts`, `tests/fixtures/hevy-real.csv`, `tests/fixtures/hevy-real-measurements.csv`, `tests/unit/hevy-real.test.ts`, `tests/unit/csv-export.test.ts`.
+
+**Modified:** `src/lib/db.ts` (v8), `src/lib/hevy-csv.ts` (line-ending normalization, 0-based set_order, cardio + measurements parsing), `src/lib/rpg/{config,ledger,quests,xp}.ts`, `src/lib/seed/{rpg-fixture,recovery-fixture,challenge-fixture,fixture,program-fixture}.ts`, `src/lib/challenges/{engine,service}.ts`, `src/lib/argus/{briefing,gauntlet}.ts`, `src/lib/export.ts`, `src/lib/{types,wger,whoop}.ts`, `src/app/{import,settings,quests,page,challenges/*,programs/*}/page.tsx`, `src/components/FinishWorkoutModal.tsx`, goldens (xp/body-state/skills/quests/rpg-character/briefing-input), test literals for the two new columns.
+
+---
+
 # Sprint 7 Report — The RPG
 
 ## Test counts

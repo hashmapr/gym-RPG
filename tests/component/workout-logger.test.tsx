@@ -59,6 +59,7 @@ const exercise: Exercise = {
   category: 'Barbell',
   primary_muscle: 'Chest',
   is_custom: false,
+  machine_type: null,
   created_at: '2024-01-01T00:00:00.000Z',
 };
 
