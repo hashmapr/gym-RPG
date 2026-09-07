@@ -1,5 +1,7 @@
 'use client';
 
+import { COLORS } from '@/lib/tokens';
+
 // LAB EXERCISE DETAIL — plateau + velocity + e1RM trend (API-driven).
 
 import { useEffect, useState } from 'react';
@@ -74,7 +76,7 @@ export default function LabExercisePage({
       <main className="p-6">
         <p className="text-rose-400">{error}</p>
         <Link href="/lab" className="text-emerald-400">
-          ← The Lab
+          ← Overload
         </Link>
       </main>
     );
@@ -89,7 +91,7 @@ export default function LabExercisePage({
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
         <Link href="/lab" className="min-h-12 px-2 py-3 text-zinc-400">
-          ← The Lab
+          ← Overload
         </Link>
         <h1 className="text-xl font-bold">{name}</h1>
         <span className="w-16" />
@@ -151,16 +153,16 @@ export default function LabExercisePage({
         <div className="mt-2 h-64 rounded-xl bg-zinc-900 border border-zinc-800 p-2">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={detail.e1rm_series}>
-              <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke="#52525b" />
-              <YAxis domain={['auto', 'auto']} tick={{ fontSize: 10 }} stroke="#52525b" width={40} />
+              <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke={COLORS.textMuted} />
+              <YAxis domain={['auto', 'auto']} tick={{ fontSize: 10 }} stroke={COLORS.textMuted} width={40} />
               <Tooltip
-                contentStyle={{ background: '#18181b', border: '1px solid #27272a' }}
+                contentStyle={{ background: COLORS.surfaceRaised, border: `1px solid ${COLORS.border}` }}
                 formatter={(value) => [Number(value).toFixed(1), 'e1RM']}
               />
               <Line
                 type="monotone"
                 dataKey="e1rm"
-                stroke="#34d399"
+                stroke={COLORS.good}
                 dot={false}
                 strokeWidth={2}
               />

@@ -1,5 +1,7 @@
 'use client';
 
+import { COLORS } from '@/lib/tokens';
+
 // Sprint 7 — Character sheet. Level ring, four branch gauges, streaks, and
 // the body-state chip. All copy from RPG_COPY; theme via ember tokens.
 
@@ -20,13 +22,13 @@ function Ring({ level, progress }: { level: number; progress: number }) {
   const c = 2 * Math.PI * r;
   return (
     <svg viewBox="0 0 120 120" className="h-36 w-36" data-testid="level-ring">
-      <circle cx="60" cy="60" r={r} fill="none" stroke="#27272a" strokeWidth="8" />
+      <circle cx="60" cy="60" r={r} fill="none" stroke={COLORS.border} strokeWidth="8" />
       <circle
         cx="60"
         cy="60"
         r={r}
         fill="none"
-        stroke="#d4a24e"
+        stroke={COLORS.ember}
         strokeWidth="8"
         strokeLinecap="round"
         strokeDasharray={`${c * progress} ${c}`}

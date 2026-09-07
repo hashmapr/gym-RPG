@@ -105,7 +105,7 @@ export class LabDB extends Dexie {
       settings: 'key',
       hevy_mappings: 'hevy_name',
     });
-    // Sprint 2: goals table (The Lab analytics).
+    // Sprint 2: goals table (Overload analytics).
     this.version(2).stores({
       goals: 'id, exercise_id, achieved_at',
     });

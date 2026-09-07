@@ -1,4 +1,4 @@
-// The Lab — analytics engine (Sprint 2 "Intelligence Layer").
+// Overload — analytics engine (Sprint 2 "Intelligence Layer").
 //
 // PURE functions over {exercises, sessions, sets, goals} + a `now` instant.
 // No IO, no Dexie, no fetch — the API layer feeds rows in (Supabase or the

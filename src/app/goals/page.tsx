@@ -86,7 +86,7 @@ export default function GoalsPage() {
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
         <Link href="/lab" className="min-h-12 px-2 py-3 text-zinc-400">
-          ← The Lab
+          ← Overload
         </Link>
         <h1 className="text-xl font-bold">Goals</h1>
         <span className="w-16" />

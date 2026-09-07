@@ -1,11 +1,11 @@
 {
-  "name": "The Lab",
-  "short_name": "The Lab",
+  "name": "Overload",
+  "short_name": "Overload",
   "description": "Personal Human Performance OS — log every set, everywhere.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#09090b",
-  "theme_color": "#09090b",
+  "background_color": "#0a0a0b",
+  "theme_color": "#0a0a0b",
   "orientation": "portrait",
   "icons": [
     {

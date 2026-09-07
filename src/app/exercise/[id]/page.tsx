@@ -1,5 +1,7 @@
 'use client';
 
+import { COLORS } from '@/lib/tokens';
+
 // EXERCISE DETAIL — set history table + e1RM trend chart (Recharts).
 
 import { use } from 'react';
@@ -90,19 +92,19 @@ export default function ExerciseDetailPage({
           <div data-testid="e1rm-chart" className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
-                <XAxis dataKey="date" stroke="#71717a" fontSize={10} />
-                <YAxis stroke="#71717a" fontSize={10} domain={['auto', 'auto']} />
+                <XAxis dataKey="date" stroke={COLORS.textMuted} fontSize={10} />
+                <YAxis stroke={COLORS.textMuted} fontSize={10} domain={['auto', 'auto']} />
                 <Tooltip
                   contentStyle={{
-                    background: '#18181b',
-                    border: '1px solid #3f3f46',
+                    background: COLORS.surfaceRaised,
+                    border: `1px solid ${COLORS.border}`,
                     borderRadius: 8,
                   }}
                 />
                 <Line
                   type="monotone"
                   dataKey="e1rm"
-                  stroke="#34d399"
+                  stroke={COLORS.good}
                   strokeWidth={2}
                   dot={false}
                 />

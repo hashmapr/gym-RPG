@@ -1,6 +1,6 @@
 // Lab analytics service — shared by the /api/lab/* routes.
 //
-// The Lab is READ-ONLY over workout data: the only write it performs is the
+// Overload is READ-ONLY over workout data: the only write it performs is the
 // analytics cache row in settings ('analytics_cache'), which the read-only
 // E2E regression explicitly allows.
 //

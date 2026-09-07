@@ -1,5 +1,7 @@
 'use client';
 
+import { COLORS } from '@/lib/tokens';
+
 // Home recovery surfaces: today's badge, 30-day sparkline, Argus briefing.
 
 import { useEffect, useState } from 'react';
@@ -74,9 +76,9 @@ export function RecoverySparkline({ today }: { today: string }) {
         role="img"
         aria-label="Recovery sparkline"
       >
-        <line x1="0" y1={ys(67)} x2={w} y2={ys(67)} stroke="#3f3f46" strokeDasharray="3 3" strokeWidth="1" />
-        <line x1="0" y1={ys(34)} x2={w} y2={ys(34)} stroke="#3f3f46" strokeDasharray="3 3" strokeWidth="1" />
-        <path d={path} fill="none" stroke="#34d399" strokeWidth="2" />
+        <line x1="0" y1={ys(67)} x2={w} y2={ys(67)} stroke={COLORS.border} strokeDasharray="3 3" strokeWidth="1" />
+        <line x1="0" y1={ys(34)} x2={w} y2={ys(34)} stroke={COLORS.border} strokeDasharray="3 3" strokeWidth="1" />
+        <path d={path} fill="none" stroke={COLORS.good} strokeWidth="2" />
       </svg>
     </section>
   );
@@ -146,5 +148,64 @@ export function RecoveryHomeSurfaces() {
       <RecoverySparkline today={today} />
       <BriefingCard today={today} />
     </>
+  );
+}
+/** Empty state: no recovery data for today → inline manual check-in. */
+export function ManualCheckIn({ today }: { today: string }) {
+  const metric = useLiveQuery(() => db.daily_metrics.get(today), [today]);
+  const [recovery, setRecovery] = useState('');
+  const [saved, setSaved] = useState(false);
+  if (metric?.recovery_percentage != null) return null;
+
+  const submit = async () => {
+    if (recovery.trim() === '') return;
+    const existing = await db.daily_metrics.get(today);
+    if (existing?.source === 'whoop') return;
+    await db.daily_metrics.put({
+      date: today,
+      sleep_score: existing?.sleep_score ?? null,
+      recovery_percentage: Number(recovery),
+      hrv: existing?.hrv ?? null,
+      sleep_hours: existing?.sleep_hours ?? null,
+      resting_hr: existing?.resting_hr ?? null,
+      body_weight: existing?.body_weight ?? null,
+      body_fat_pct: existing?.body_fat_pct ?? null,
+      source: 'manual',
+      created_at: existing?.created_at ?? new Date().toISOString(),
+    });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  return (
+    <section
+      data-testid="manual-checkin"
+      className="mt-3 rounded-xl bg-surface-raised border border-border p-3"
+    >
+      <p className="text-sm text-zinc-400 mb-2">
+        No recovery data today. Log a manual check-in:
+      </p>
+      <div className="flex gap-2">
+        <input
+          type="number"
+          min={0}
+          max={100}
+          inputMode="numeric"
+          placeholder="Recovery %"
+          value={recovery}
+          onChange={(e) => setRecovery(e.target.value)}
+          aria-label="Recovery percentage"
+          className="min-h-12 w-28 rounded-lg bg-base border border-border px-3 text-zinc-100 tabular-nums"
+        />
+        <button
+          type="button"
+          onClick={submit}
+          data-testid="manual-checkin-save"
+          className="min-h-12 flex-1 rounded-lg bg-ember-dim border border-ember-border font-semibold text-ember active:bg-ember-deep"
+        >
+          {saved ? 'Saved ✓' : 'Save'}
+        </button>
+      </div>
+    </section>
   );
 }

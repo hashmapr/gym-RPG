@@ -1,4 +1,4 @@
-// The Lab — analytics engine output types.
+// Overload — analytics engine output types.
 // All numeric outputs are rounded to 4 decimals for stable golden comparison.
 // Stddev is POPULATION stddev everywhere (documented in the Sprint 2 spec).
 

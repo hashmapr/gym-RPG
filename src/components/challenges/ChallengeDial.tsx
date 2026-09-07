@@ -1,5 +1,7 @@
 'use client';
 
+import { COLORS } from '@/lib/tokens';
+
 // ChallengeDial — SVG progress ring. 48px minimum touch target, tabular-nums,
 // dark-mode native (zinc palette).
 
@@ -12,10 +14,10 @@ interface Props {
   state?: 'active' | 'complete' | 'fail';
 }
 
-const COLORS = {
-  active: '#34d399',
-  complete: '#34d399',
-  fail: '#f87171',
+const STATE_COLORS = {
+  active: COLORS.good,
+  complete: COLORS.good,
+  fail: COLORS.bad,
 } as const;
 
 export default function ChallengeDial({ pct, size = 72, label, sub, state = 'active' }: Props) {
@@ -23,12 +25,12 @@ export default function ChallengeDial({ pct, size = 72, label, sub, state = 'act
   const stroke = 6;
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
-  const color = COLORS[state];
+  const color = STATE_COLORS[state];
 
   return (
     <div className="flex flex-col items-center shrink-0" style={{ width: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={`${Math.round(clamped * 100)}% complete`}>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#27272a" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={COLORS.border} strokeWidth={stroke} />
         <circle
           cx={size / 2}
           cy={size / 2}

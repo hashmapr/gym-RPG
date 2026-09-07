@@ -40,7 +40,7 @@ export function runSyncNow(): void {
           new Date().toISOString(),
           result.errors.length ? result.errors[0].message : null,
         );
-      // Data changed — invalidate the Lab analytics cache (fire-and-forget).
+      // Data changed — invalidate the analytics cache (fire-and-forget).
       if (result.errors.length === 0) {
         fetch('/api/lab/refresh', { method: 'POST' }).catch(() => {});
         // Resolution is lazy: re-run after sync batches (spec A3).

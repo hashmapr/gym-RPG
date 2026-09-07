@@ -3,7 +3,7 @@
 // Sprint 1 kept this inline in the mock-sync route with in-memory state.
 // Sprint 2 needs READ access from the /api/lab routes, plus persistence
 // across dev-server restarts (mock-db.json, written by `npm run seed:dev`)
-// and per-table write counters so tests can prove the Lab is read-only.
+// and per-table write counters so tests can prove the analytics engine is read-only.
 //
 // Semantics (unchanged from Sprint 1):
 //   - last-write-wins upsert, dedup by conflict key
@@ -82,7 +82,7 @@ export function mockClear(): void {
   s.cleared = true;
 }
 
-/** Full snapshot for /api/mock-sync/state and the Lab engine input. */
+/** Full snapshot for /api/mock-sync/state and the analytics engine input. */
 export function mockSnapshot(): Record<string, Record<string, unknown>[]> {
   const s = mockStore();
   const tables: Record<string, Record<string, unknown>[]> = {};

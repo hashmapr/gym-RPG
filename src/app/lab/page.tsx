@@ -1,6 +1,8 @@
 'use client';
 
-// THE LAB — analytics dashboard: plateaus, velocity, anomalies, landmarks.
+import { COLORS } from '@/lib/tokens';
+
+// OVERLOAD — analytics dashboard: plateaus, velocity, anomalies, landmarks.
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -69,7 +71,7 @@ export default function LabPage() {
         <Link href="/" className="min-h-12 px-2 py-3 text-zinc-400">
           ← Home
         </Link>
-        <h1 className="text-xl font-bold">The Lab</h1>
+        <h1 className="text-xl font-bold">Overload</h1>
         <span className="w-16" />
       </header>
       <SeedBanner />
@@ -254,7 +256,7 @@ function Scatter({
       aria-label={`${yLabel} vs ${xLabel} scatter`}
     >
       {points.map((p, i) => (
-        <circle key={i} cx={xs(p.x)} cy={ys(p.y)} r={3} fill="#34d399" opacity={0.75} />
+        <circle key={i} cx={xs(p.x)} cy={ys(p.y)} r={3} fill={COLORS.good} opacity={0.75} />
       ))}
     </svg>
   );

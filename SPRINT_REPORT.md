@@ -1,3 +1,35 @@
+# Sprint Report
+
+# Sprint 7.6 Report — "The Face" (identity, shell, home, visual baselines)
+
+## Test counts
+
+| Suite | Result |
+|---|---|
+| `tests/unit/identity.test.ts` (new) | 3/3 — APP_NAME audit, zero `/the lab/i` in src/, zero hardcoded hex outside globals.css + tokens.ts |
+| Home/component tests (`home-states`, rpg components) | 15/15 |
+| `tsc --noEmit` | clean |
+| `npm run seed:verify` | zero golden diffs (identity sweep didn't move the fixture hash) |
+| Playwright `visual.spec.ts` | 7/7 — 14 baselines (7 surfaces × mobile 390 / desktop 1440) |
+| Playwright `rpg.spec.ts` | 4/4 |
+
+## What shipped
+
+1. **Identity** — `src/lib/identity.ts`: APP_NAME "Overload", wordmark, tagline, motto ("Ghost Division — the log that never misses."). Full sweep: zero "The Lab" left in src/ (pages, comments, coach_name, mock server). Manifest renamed.
+2. **Tokens** — `src/lib/tokens.ts` mirrors globals.css `@theme`: base `#0a0a0b`, surface/surface-raised, border + border-gold, ember family, text tiers, good/warn/bad. All component hex moved to tokens (character SVG, recharts strokes, ChallengeDial, sparkline, themeColor). Audit test enforces it.
+3. **AppShell** — desktop ≥1024px icon rail (9 items), mobile bottom nav (Home/Programs/Challenges/Character/More) + More sheet (Lab/Argus/History/Import/Settings), centered max-w-xl column. Wired in layout.tsx inside SyncProvider.
+4. **Home composition** — exact spec order: wordmark + CharacterChip (LV ring, streak, freeze count) → today/rest card → START/RESUME CTA → ChallengeStrip (active dials or starter teaser) → WeekTiles (Sessions/Volume/PRs/Streak, last-7d) → last workout / no-history nudge → no-program teaser. Recovery (sparkline, briefing, new ManualCheckIn) in expandable details. All legacy testids preserved.
+5. **Empty states** — no-history nudge (→ Import), no-program teaser (→ builder), ManualCheckIn when no recovery data today.
+6. **Visual baselines** — `tests/e2e/visual.spec.ts`: 7 surfaces × 2 viewports, frozen clock at SEED_TODAY (`page.clock.install`), animations disabled, fullPage. CI drift detection via `toHaveScreenshot`.
+
+## Key findings
+
+- **Deep-link + seed-pull race**: one-shot loaders (skilltree/quests `useEffect`) read Dexie before the E2E seed pull lands when tests deep-link. Visual tests now land on `/` first, wait for `lab.e2eSeedPulled`, then navigate — same flow as rpg.spec. Reactive `useLiveQuery` pages (home/character) masked this.
+- **Visual test budget**: chart-heavy fullPage screenshots starve on the shared machine; visual describe sets `test.setTimeout(300_000)`.
+
+## Deviations from spec
+- None functional. Desktop rail item set is 9 (spec said "nav items"); More sheet groups secondary destinations per the 5-tab mobile constraint.
+
 # M1 Report — Real-Data Calibration (migration 0008 + Dexie v8)
 
 ## Test counts

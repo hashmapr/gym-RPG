@@ -284,7 +284,7 @@ export async function buildProgramFixture(): Promise<ProgramFixture> {
     const program: Program = {
       id: newId(),
       name: '6-Week Upper/Lower',
-      coach_name: 'The Lab',
+      coach_name: 'Overload',
       goal: 'strength',
       start_date: PROGRAM_START,
       end_date: null,

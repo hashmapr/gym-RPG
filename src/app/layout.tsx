@@ -1,9 +1,12 @@
+import { COLORS } from '@/lib/tokens';
 import type { Metadata, Viewport } from 'next';
-import { Cinzel } from 'next/font/google';
+import { Cinzel, Inter } from 'next/font/google';
 import './globals.css';
 import SyncProvider from '@/components/SyncProvider';
 import OfflineIndicator from '@/components/OfflineIndicator';
 import ServiceWorkerRegistrar from '@/components/ServiceWorkerRegistrar';
+import AppShell from '@/components/AppShell';
+import { APP_NAME, APP_TAGLINE } from '@/lib/identity';
 
 const cinzel = Cinzel({
   subsets: ['latin'],
@@ -12,14 +15,20 @@ const cinzel = Cinzel({
   display: 'swap',
 });
 
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
-  title: 'The Lab',
-  description: 'Personal Human Performance OS — log every set, everywhere.',
+  title: APP_NAME,
+  description: APP_TAGLINE,
   manifest: '/manifest.webmanifest',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'The Lab',
+    title: APP_NAME,
   },
   icons: {
     icon: '/icons/icon-192.png',
@@ -28,7 +37,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#09090b',
+  themeColor: COLORS.base,
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -40,9 +49,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${cinzel.variable} min-h-dvh bg-zinc-950 text-zinc-100 antialiased`}>
+      <body
+        className={`${cinzel.variable} ${inter.variable} min-h-dvh bg-base font-sans text-zinc-100 antialiased`}
+      >
         <OfflineIndicator />
-        <SyncProvider>{children}</SyncProvider>
+        <SyncProvider>
+          <AppShell>{children}</AppShell>
+        </SyncProvider>
         <ServiceWorkerRegistrar />
       </body>
     </html>
