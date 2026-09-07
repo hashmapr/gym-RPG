@@ -1,6 +1,10 @@
-// Generates PWA icons (192/512) + Apple touch (180) as raw PNGs with zero
-// image dependencies: hand-rolled zlib deflate (stored blocks) + CRC32.
-// Icon: dark rounded square, emerald barbell glyph.
+// Generates all Overload icons as raw PNGs with zero image dependencies:
+// hand-rolled zlib deflate (stored blocks) + CRC32.
+// Sprint 7.5 branding: white sigil-eye on pure black — the Instrument
+// Panel Monochrome face. Outputs:
+//   public/icons/icon-{192,512,180}.png   (PWA)
+//   ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png (1024)
+//   ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732*.png
 
 import { deflateSync } from 'node:zlib';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -39,7 +43,6 @@ function png(width, height, rgba) {
   ihdr.writeUInt32BE(height, 4);
   ihdr[8] = 8; // bit depth
   ihdr[9] = 6; // RGBA
-  // raw scanlines with filter byte 0
   const stride = width * 4;
   const raw = Buffer.alloc((stride + 1) * height);
   for (let y = 0; y < height; y++) {
@@ -54,51 +57,51 @@ function png(width, height, rgba) {
   ]);
 }
 
-function drawIcon(size) {
+// White sigil-eye on pure black: almond outline (lens shape) + solid
+// pupil. `eyeScale` sizes the mark relative to the canvas.
+function drawSigilEye(size, { eyeScale = 0.5, bg = [0, 0, 0] } = {}) {
   const rgba = Buffer.alloc(size * size * 4);
-  const bg = [9, 9, 11]; // zinc-950
-  const fg = [52, 211, 153]; // emerald-400
-  const radius = Math.round(size * 0.18);
-  const bar = Math.round(size * 0.075); // bar thickness
-  const plateW = Math.round(size * 0.09);
-  const plateH = Math.round(size * 0.42);
-  const barLen = Math.round(size * 0.52);
+  const fg = [255, 255, 255];
   const cx = size / 2;
   const cy = size / 2;
+  const a = (size * eyeScale) / 2; // half-width
+  const b = a * 0.52; // half-height (almond proportion)
+  const stroke = Math.max(2, Math.round(size * 0.028));
+  const pupilR = a * 0.34;
 
-  const inRoundedRect = (x, y, x0, y0, w, h, r) => {
-    if (x < x0 || x >= x0 + w || y < y0 || y >= y0 + h) return false;
-    const dx = Math.max(x0 + r - x, x - (x0 + w - 1 - r), 0);
-    const dy = Math.max(y0 + r - y, y - (y0 + h - 1 - r), 0);
-    return dx * dx + dy * dy <= r * r;
+  const inLens = (x, y) => {
+    const dx = (x - cx) / a;
+    const dy = (y - cy) / b;
+    if (Math.abs(dx) > 1) return false;
+    return Math.abs(dy) <= Math.sqrt(Math.max(0, 1 - dx * dx));
   };
 
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
-      let color = null;
-      if (inRoundedRect(x, y, 0, 0, size, size, radius)) {
-        color = bg;
-        // barbell: horizontal bar + two plates
-        const inBar =
-          Math.abs(y - cy) <= bar / 2 &&
-          Math.abs(x - cx) <= barLen / 2;
-        const inLeftPlate = inRoundedRect(
-          x, y,
-          Math.round(cx - barLen / 2 - plateW), Math.round(cy - plateH / 2),
-          plateW, plateH, Math.round(plateW * 0.3),
-        );
-        const inRightPlate = inRoundedRect(
-          x, y,
-          Math.round(cx + barLen / 2), Math.round(cy - plateH / 2),
-          plateW, plateH, Math.round(plateW * 0.3),
-        );
-        if (inBar || inLeftPlate || inRightPlate) color = fg;
+      let on = false;
+      if (inLens(x, y)) {
+        // outline: lens minus an eroded lens
+        const eroded =
+          inLens(x - stroke, y) &&
+          inLens(x + stroke, y) &&
+          inLens(x, y - stroke) &&
+          inLens(x, y + stroke);
+        const dx = x - cx;
+        const dy = y - cy;
+        const inPupil = dx * dx + dy * dy <= pupilR * pupilR;
+        on = !eroded || inPupil;
       }
-      if (color) {
+      if (on) {
         const i = (y * size + x) * 4;
-        rgba[i] = color[0];
-        rgba[i + 1] = color[1];
-        rgba[i + 2] = color[2];
+        rgba[i] = fg[0];
+        rgba[i + 1] = fg[1];
+        rgba[i + 2] = fg[2];
+        rgba[i + 3] = 255;
+      } else if (bg[0] || bg[1] || bg[2]) {
+        const i = (y * size + x) * 4;
+        rgba[i] = bg[0];
+        rgba[i + 1] = bg[1];
+        rgba[i + 2] = bg[2];
         rgba[i + 3] = 255;
       }
     }
@@ -106,9 +109,23 @@ function drawIcon(size) {
   return png(size, size, rgba);
 }
 
+// PWA icons (transparent bg — page provides the black)
 const outDir = join(root, 'public', 'icons');
 mkdirSync(outDir, { recursive: true });
 for (const size of [192, 512, 180]) {
-  writeFileSync(join(outDir, `icon-${size}.png`), drawIcon(size));
+  writeFileSync(join(outDir, `icon-${size}.png`), drawSigilEye(size, { eyeScale: 0.56 }));
   console.log(`icon-${size}.png written`);
+}
+
+// iOS AppIcon: single 1024, opaque black
+const iconDir = join(root, 'ios', 'App', 'App', 'Assets.xcassets', 'AppIcon.appiconset');
+writeFileSync(join(iconDir, 'AppIcon-512@2x.png'), drawSigilEye(1024, { eyeScale: 0.56 }));
+console.log('AppIcon-512@2x.png (1024) written');
+
+// Splash: 2732 black canvas, small centered mark
+const splashDir = join(root, 'ios', 'App', 'Assets.xcassets', 'Splash.imageset');
+mkdirSync(splashDir, { recursive: true });
+for (const name of ['splash-2732x2732.png', 'splash-2732x2732-1.png', 'splash-2732x2732-2.png']) {
+  writeFileSync(join(splashDir, name), drawSigilEye(2732, { eyeScale: 0.16 }));
+  console.log(`${name} written`);
 }

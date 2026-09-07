@@ -6,6 +6,7 @@
 import Link from 'next/link';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/lib/db';
+import { programRunHref } from '@/lib/links';
 import { adherencePct } from '@/lib/coach/engine';
 import { getTrainingDate } from '@/lib/day-boundary';
 import { useSettings } from '@/lib/settings';
@@ -110,7 +111,7 @@ function RunCard({
 }) {
   return (
     <Link
-      href={`/programs/${data.program.id}/run/${data.run.id}`}
+      href={programRunHref(data.program.id, data.run.id)}
       data-testid={testid}
       className="block mt-3 rounded-xl bg-zinc-900 border border-zinc-800 p-4 active:bg-zinc-800"
     >

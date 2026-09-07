@@ -12,6 +12,8 @@ import { getTrainingDate } from '@/lib/day-boundary';
 import { useSettings } from '@/lib/settings';
 import { getDailyBriefing } from '@/lib/argus/briefing';
 import { ARGUS_ENABLED } from '@/lib/argus/config';
+import { isNativeShell } from '@/lib/native/platform';
+import { readHealthKitCheckIn } from '@/lib/native/live-activity';
 import type { AIBriefing, DailyMetric } from '@/lib/types';
 
 function levelOf(recovery: number | null): 'green' | 'yellow' | 'red' | 'none' {
@@ -155,6 +157,7 @@ export function ManualCheckIn({ today }: { today: string }) {
   const metric = useLiveQuery(() => db.daily_metrics.get(today), [today]);
   const [recovery, setRecovery] = useState('');
   const [saved, setSaved] = useState(false);
+  const settings = useSettings();
   if (metric?.recovery_percentage != null) return null;
 
   const submit = async () => {
@@ -208,4 +211,42 @@ export function ManualCheckIn({ today }: { today: string }) {
       </div>
     </section>
   );
+}
+
+/**
+ * Sprint 7.5 (native shell): HealthKit auto-fill — bodyweight + sleep from
+ * HealthKit land in today's daily_metrics with source 'healthkit'. Never
+ * overwrites WHOOP/manual rows; only fills null fields. No-op on the web
+ * and when the toggle is off (entitlement failure → silent fallback to
+ * manual check-in, documented in SPRINT_REPORT.md).
+ */
+export function HealthKitCheckInFill({ today }: { today: string }) {
+  const settings = useSettings();
+  useEffect(() => {
+    if (!isNativeShell() || !settings.healthkit_checkin_enabled) return;
+    let cancelled = false;
+    void (async () => {
+      const data = await readHealthKitCheckIn();
+      if (cancelled || data === null) return;
+      if (data.bodyweightLb === null && data.sleepHours === null) return;
+      const existing = await db.daily_metrics.get(today);
+      if (existing?.source === 'whoop' || existing?.source === 'healthkit') return;
+      await db.daily_metrics.put({
+        date: today,
+        sleep_score: existing?.sleep_score ?? null,
+        recovery_percentage: existing?.recovery_percentage ?? null,
+        hrv: existing?.hrv ?? null,
+        sleep_hours: existing?.sleep_hours ?? data.sleepHours,
+        resting_hr: existing?.resting_hr ?? null,
+        body_weight: existing?.body_weight ?? data.bodyweightLb,
+        body_fat_pct: existing?.body_fat_pct ?? null,
+        source: 'healthkit',
+        created_at: existing?.created_at ?? new Date().toISOString(),
+      });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [today, settings.healthkit_checkin_enabled]);
+  return null;
 }

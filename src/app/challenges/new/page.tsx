@@ -6,6 +6,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { challengeRunHref } from '@/lib/links';
 import { createCustomChallenge, joinChallenge, validateCustomChallenge } from '@/lib/challenges/service';
 import { db } from '@/lib/db';
 import { AI_NAME, ARGUS_ENABLED } from '@/lib/argus/config';
@@ -93,7 +94,7 @@ function NewChallengeInner() {
     if (argusDef) {
       try {
         const run = await joinChallenge(argusDef);
-        router.push(`/challenges/${run.id}`);
+        router.push(challengeRunHref(run.id));
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Could not start challenge.');
       }

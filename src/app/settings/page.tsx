@@ -205,6 +205,91 @@ export default function SettingsPage() {
         </label>
       </section>
 
+      <section
+        className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4"
+        data-testid="native-notifications-section"
+      >
+        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+          Notifications
+        </h2>
+        <label className="flex items-center justify-between min-h-12">
+          <span>Rest expiry</span>
+          <input
+            type="checkbox"
+            data-testid="setting-notify-rest"
+            checked={settings.notify_rest_expiry}
+            onChange={(e) =>
+              saveSettings({ notify_rest_expiry: e.target.checked })
+            }
+            className="w-6 h-6 accent-white"
+          />
+        </label>
+        <label className="flex items-center justify-between min-h-12">
+          <span>Morning briefing (7:00)</span>
+          <input
+            type="checkbox"
+            data-testid="setting-notify-briefing"
+            checked={settings.notify_morning_briefing}
+            onChange={(e) =>
+              saveSettings({ notify_morning_briefing: e.target.checked })
+            }
+            className="w-6 h-6 accent-white"
+          />
+        </label>
+        <label className="flex items-center justify-between min-h-12">
+          <span>Workout reminder</span>
+          <input
+            type="checkbox"
+            data-testid="setting-notify-reminder"
+            checked={settings.notify_workout_reminder}
+            onChange={(e) =>
+              saveSettings({ notify_workout_reminder: e.target.checked })
+            }
+            className="w-6 h-6 accent-white"
+          />
+        </label>
+        <label className="flex items-center justify-between min-h-12">
+          <span>Streak-at-risk nudge</span>
+          <input
+            type="checkbox"
+            data-testid="setting-notify-streak"
+            checked={settings.notify_streak_nudge}
+            onChange={(e) =>
+              saveSettings({ notify_streak_nudge: e.target.checked })
+            }
+            className="w-6 h-6 accent-white"
+          />
+        </label>
+        <label className="flex items-center justify-between min-h-12">
+          <span>HealthKit check-in auto-fill</span>
+          <input
+            type="checkbox"
+            data-testid="setting-healthkit"
+            checked={settings.healthkit_checkin_enabled}
+            onChange={(e) =>
+              saveSettings({ healthkit_checkin_enabled: e.target.checked })
+            }
+            className="w-6 h-6 accent-white"
+          />
+        </label>
+      </section>
+
+      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
+        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+          Logger
+        </h2>
+        <label className="flex items-center justify-between min-h-12">
+          <span>Warm-up ramp suggestions</span>
+          <input
+            type="checkbox"
+            data-testid="setting-warmups"
+            checked={settings.warmups_enabled}
+            onChange={(e) => saveSettings({ warmups_enabled: e.target.checked })}
+            className="w-6 h-6 accent-white"
+          />
+        </label>
+      </section>
+
       <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
         <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
           RPE

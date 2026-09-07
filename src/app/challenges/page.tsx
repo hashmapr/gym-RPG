@@ -6,6 +6,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { challengeRunHref } from '@/lib/links';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/lib/db';
 import { useSettings } from '@/lib/settings';
@@ -90,7 +91,7 @@ export default function ChallengesPage() {
     try {
       const run = await joinChallenge(def);
       setNoticeDef(null);
-      router.push(`/challenges/${run.id}`);
+      router.push(challengeRunHref(run.id));
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not join challenge.');
     } finally {
@@ -116,7 +117,7 @@ export default function ChallengesPage() {
       {ARGUS_ENABLED && (
         <SuggestionCard
           onAccepted={(runId) => {
-            if (runId) router.push(`/challenges/${runId}`);
+            if (runId) router.push(challengeRunHref(runId));
           }}
         />
       )}
@@ -136,7 +137,7 @@ export default function ChallengesPage() {
             return (
               <Link
                 key={run.id}
-                href={`/challenges/${run.id}`}
+                href={challengeRunHref(run.id)}
                 className="flex items-center gap-3 rounded-xl bg-zinc-900 border border-zinc-800 p-4 min-h-12"
               >
                 <ChallengeDial pct={pct} label={progressLabel(def, run.progress_value)} />
@@ -211,7 +212,7 @@ export default function ChallengesPage() {
               return (
                 <Link
                   key={run.id}
-                  href={`/challenges/${run.id}`}
+                  href={challengeRunHref(run.id)}
                   className="flex items-center justify-between rounded-xl bg-zinc-900 border border-zinc-800 p-4 min-h-12"
                 >
                   <div className="min-w-0">

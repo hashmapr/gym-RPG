@@ -13,6 +13,8 @@ import type { Exercise } from '@/lib/types';
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
   usePathname: () => '/lab',
+  useParams: () => ({ id: 'a1000000-0000-4000-8000-000000000001' }),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 import LabPage from '@/app/lab/page';
@@ -113,7 +115,7 @@ describe('Lab pages', () => {
   it('exercise detail renders plateau/velocity cards and the e1RM chart', async () => {
     render(
       <Suspense fallback={null}>
-        <LabExercisePage params={Promise.resolve({ id: BENCH })} />
+        <LabExercisePage />
       </Suspense>,
     );
     const plateau = await screen.findByTestId('lab-ex-plateau');

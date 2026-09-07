@@ -1,5 +1,64 @@
 # Sprint Report
 
+# Sprint 7.5 Report — "Overload Native" (iOS Capacitor shell, sideload edition)
+
+## Test counts
+
+| Suite | Result |
+|---|---|
+| `tests/unit/native-modules.test.ts` (NEW) | 15/15 — warmup ramp goldens (185/235/130/90 lb incl. user's real machine loads), backup 4-generation prune, notification nextOccurrence (today/tomorrow/month-rollover), iOS 16.2 gate |
+| Full vitest (`--maxWorkers 2`) | **393/393 pass** (378 prior + 15 new) |
+| `tsc --noEmit` | clean |
+| `npm run build` (web) | clean |
+| `npm run build:native` (static export) | clean — all routes, query twins, no _next/data |
+| `xcodebuild` (App + OverloadWidget, SPM) | **BUILD SUCCEEDED**; `OverloadWidget.appex` verified embedded in `App.app/PlugIns/` |
+| `npm run seed:verify` | zero golden diffs (analytics, challenge, Argus, recovery, RPG) |
+| Monochrome identity test | green (boot.ts now imports `COLORS.base` instead of raw hex) |
+
+## What shipped
+
+1. **Capacitor 8 shell** — `capacitor.config.ts` (`personal.overload.app`, appName Overload, webDir out, black bg, always insets), `npx cap add ios` (Swift Package Manager — no CocoaPods), static-export pipeline via `npm run build:native` (api stash → NATIVE_SHELL=1 → restore). SceneDelegate boots `MainViewController` (CAPBridgeViewController subclass) which registers the plugin in `capacitorDidLoad()`.
+2. **OverloadNative Swift plugin** (`ios/App/App/OverloadNative.swift`) — `startRestActivity`/`stopRestActivity` (ActivityKit, iOS 16.2 gate), `readLatestBodyweight` (HKQuantityType bodyMass → lb + ISO date), `readSleepHours` (sleepAnalysis asleep stages 2–5, sum → hours). All failures reject → JS catches → documented fallback.
+3. **Live Activity widget extension** (`ios/App/OverloadWidget/`) — full pbxproj target surgery: `OverloadWidgetBundle` with `ActivityConfiguration` lock-screen view (REST eyebrow + `Text(timerInterval:)` self-updating countdown, monospaced, white-on-black) + Dynamic Island compact/minimal. `RestActivityAttributes` duplicated app/widget (name + Codable fields match). App target embeds the appex via "Embed Foundation Extensions" copy phase + target dependency. **The committed Live Activity is fully wired end-to-end** — no notification-only fallback needed.
+4. **Native rest timer** — RestTimer schedules local notification (ID 1001) at expiry + starts the Live Activity; cancels both on set log/stop. Haptics: light impact on set-complete, success pattern on PR.
+5. **Notification inventory** (all local, each toggleable in Settings) — rest expiry 1001, morning briefing 2001 (07:00, summary from latest cached `ai_briefings`), program reminder 2002 (usual training hour from session-start histogram, fallback 18), streak nudge 2003 (20:00, only when streak live + no session today). Permission requested once on first launch (localStorage guard).
+6. **HealthKit check-in auto-fill** — `HealthKitCheckInFill` on Recovery Home fills bodyweight/sleep into today's `daily_metrics` with source `healthkit`, never overwrites whoop/healthkit rows. HealthKit entitlement wired (`App.entitlements` + `NSHealthShareUsageDescription`); documented fallback: delete entitlements → manual check-in.
+7. **Background sync** — `@capacitor/background-task` beforeExit → existing sync engine; foreground sync unchanged.
+8. **Weekly auto-backup** — JSON export → `Documents/OverloadBackups/overload-backup-YYYY-MM-DD.json`, 7-day throttle, pruned to 4 generations; `UIFileSharingEnabled` + `LSSupportsOpeningDocumentsInPlace` → visible in Files app.
+9. **Warm-up generator** — `buildWarmupRamp` (50%×5 → 70%×3 → 90%×1, roundTo5, drops ≤0/reaching-target), expander UI in SetLogger (program + freeform), LOG/LOG ALL with set_type `warmup` (0 XP, excluded from volume landmarks — verified against pr/stats/xp rules), settings toggle.
+10. **Icon + splash** — `scripts/gen-icons.mjs` rewritten: white sigil-eye on pure black (almond outline + pupil, hand-rolled PNG) → PWA 192/512/180, iOS 1024 AppIcon, 2732 splash ×3.
+11. **Polish** — safe-area utilities (`.pb-safe`/`.pt-safe`) on bottom nav + rest bar, StatusBar Dark/#000000, SW skip in shell, iOS version + Live Activity capability logged at boot.
+
+## Native smoke checklist (manual on device — recorded for the user's first build)
+
+| # | Item | Status |
+|---|---|---|
+| 1 | AltStore install → Dexie hydrates → Supabase rehydrates | ⏳ pending user device run (SIGNING.md §3) |
+| 2 | Log set → lock → Live Activity countdown on lock screen → rest notification → haptic | ⏳ pending (widget extension built + embedded; ActivityKit request wired) |
+| 3 | Airplane mode: full workout loggable → syncs on reconnect | ⏳ pending (offline-first Dexie unchanged) |
+| 4 | HealthKit bodyweight auto-fills check-in | ⏳ pending (entitlement wired; fallback documented) |
+| 5 | Delete app → reinstall → full rehydration | ⏳ pending |
+| 6 | Weekly backup JSON in Files app | ⏳ pending (UIFileSharingEnabled set) |
+| 7 | 7-day expiry → AltStore refresh → data intact | ⏳ pending (SIGNING.md §4) |
+| 8 | Briefing notification at 07:00 | ⏳ pending |
+| 9 | Notification toggles silence each category | ⏳ pending |
+| 10 | Warm-up expander shows ramp; warmups excluded from volume | ✅ verified in unit tests (exclusion rules) + component tests |
+
+## Deviations from spec
+
+- **Live Activity gate is iOS 16.2, not 16.1**: the 16.1 ActivityKit `request`/`end` signatures are obsoleted in current SDKs (renamed to the `ActivityContent` API in 16.2). Device is 16.1+ confirmed; every 16.1 device ships 16.2+. `LIVE_ACTIVITY_MIN_IOS = '16.2'` in boot.ts, mirrored by `#available(iOS 16.2, *)` in Swift. Documented, not a functional gap.
+- **WHOOP shows disconnected in the shell** (server-mocked backend) — manual check-in fallback is the documented path; HealthKit bodyweight/sleep auto-fill covers the check-in loop.
+- **Lab pages fetch `/api/lab/*`** — in the native shell these calls fail gracefully; the lab remains a web-PWA-first surface (data lives in Dexie; API-backed views need the dev server). Not a 7.5 blocker; noted for a future sprint.
+- **Hydration warning**: the static HTML renders web-shaped hrefs, then the client re-renders native-shaped query-twin links — React 19 recoverable warning, accepted.
+- **Pre-existing flake note**: full vitest at default 36 workers drops 6–10 rotating failures (fake-indexeddb timing under parallel workers); HEAD fails identically. `--maxWorkers 2` → 393/393. Unchanged from prior sprints.
+
+## Files
+
+- New: `ios/App/App/{OverloadNative,MainViewController}.swift`, `ios/App/App/App.entitlements`, `ios/App/OverloadWidget/{OverloadWidgetBundle.swift,Info.plist}`, `src/lib/native/{notifications,haptics,live-activity,backup,background-sync,schedule,boot,platform}.ts`, `src/lib/warmups.ts`, `tests/unit/native-modules.test.ts`, `SIGNING.md`, `capacitor.config.ts`
+- Modified: `ios/App/App/{SceneDelegate.swift,Info.plist}`, `ios/App/App.xcodeproj/project.pbxproj` (2 Swift files + widget target + entitlements), `scripts/gen-icons.mjs` (sigil-eye), `src/components/{RestTimer,SetLogger,SyncProvider,ServiceWorkerRegistrar,RecoveryHome,AppShell}.tsx`, `src/app/{page,settings/page}.tsx`, `src/app/globals.css`, `src/lib/{types,settings}.ts`, `package.json`, icons + splash assets
+
+---
+
 # Sprint 8a Report — "The Feature Store" (two-column RPE + ML harness)
 
 ## Test counts

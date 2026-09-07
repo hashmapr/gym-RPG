@@ -15,6 +15,11 @@ import { maybePullE2ESeed } from '@/lib/e2e-seed';
 import { useSyncStore } from '@/lib/sync/store';
 import { ensureStarters, resolveChallenges, getStreakDisplay } from '@/lib/challenges/service';
 import { runGovernorSweep } from '@/lib/argus/governor';
+import { requestPermissionOnce } from '@/lib/native/notifications';
+import { registerBackgroundSync } from '@/lib/native/background-sync';
+import { maybeRunWeeklyBackup } from '@/lib/native/backup';
+import { refreshNativeSchedule } from '@/lib/native/schedule';
+import { runNativeBoot } from '@/lib/native/boot';
 
 /** Lazy challenge work: install starters + resolve runs + governor (idempotent). */
 export function runChallengeSweep(): void {
@@ -87,6 +92,17 @@ export default function SyncProvider({
       runSyncNow();
       runChallengeSweep();
     });
+
+    // Sprint 7.5 (native shell only — every call guards on isNativeShell):
+    // status bar + capability log, permission once on first launch,
+    // background-sync handoff, weekly backup, notification schedule.
+    void runNativeBoot();
+    void requestPermissionOnce();
+    registerBackgroundSync(runSyncNow);
+    void maybeRunWeeklyBackup().then((ran) => {
+      if (ran) void refreshNativeSchedule();
+    });
+    void refreshNativeSchedule();
 
     // Periodic retry while rows are queued (also covers failed pushes)
     const interval = setInterval(() => {

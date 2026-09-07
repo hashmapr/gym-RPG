@@ -1,6 +1,7 @@
 'use client';
 
 import { COLORS } from '@/lib/tokens';
+import { challengeRunHref } from '@/lib/links';
 
 // HOME — Sprint 7.6 (The Face) composition, exact order:
 // 1. header row (wordmark + character chip)  2. today card  3. START/RESUME CTA
@@ -23,7 +24,7 @@ import { ARGUS_ENABLED } from '@/lib/argus/config';
 import { ML_V1_ACTIVE } from '@/lib/ml/registry';
 import { SuggestionCard } from '@/components/argus/ArgusUI';
 import ChallengeDial from '@/components/challenges/ChallengeDial';
-import { RecoveryBadge, RecoverySparkline, BriefingCard, ManualCheckIn } from '@/components/RecoveryHome';
+import { RecoveryBadge, RecoverySparkline, BriefingCard, ManualCheckIn, HealthKitCheckInFill } from '@/components/RecoveryHome';
 import { maybeRetroCompute } from '@/lib/rpg/retro';
 import { xpToNextLevel } from '@/lib/rpg/levels';
 import { RPG_COPY } from '@/lib/rpg/copy';
@@ -155,7 +156,7 @@ export default function HomePage() {
       {ARGUS_ENABLED && (
         <SuggestionCard
           onAccepted={(runId) => {
-            if (runId) router.push(`/challenges/${runId}`);
+            if (runId) router.push(challengeRunHref(runId));
           }}
         />
       )}
@@ -337,6 +338,7 @@ export default function HomePage() {
         <RecoverySparkline today={today} />
         <BriefingCard today={today} />
         <ManualCheckIn today={today} />
+        <HealthKitCheckInFill today={today} />
       </details>
     </main>
   );
@@ -437,7 +439,7 @@ function ChallengeStrip({ today }: { today: string }) {
           return (
             <Link
               key={run.id}
-              href={`/challenges/${run.id}`}
+              href={challengeRunHref(run.id)}
               className="flex min-w-44 items-center gap-3 rounded-xl bg-surface border border-border p-3"
             >
               <ChallengeDial pct={pct} size={56} label={`${Math.round(pct * 100)}%`} />

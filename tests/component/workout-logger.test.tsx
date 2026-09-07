@@ -11,6 +11,8 @@ import { useState } from 'react';
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
   usePathname: () => '/',
+  useParams: () => ({}),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 // Rest timer sound/vibration are spied, store stays real.

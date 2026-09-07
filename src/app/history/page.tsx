@@ -5,6 +5,7 @@
 import Link from 'next/link';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/lib/db';
+import { sessionHref } from '@/lib/links';
 import { getTrainingDate } from '@/lib/day-boundary';
 import { sessionVolume } from '@/lib/volume';
 import { formatVolume } from '@/lib/format';
@@ -39,7 +40,7 @@ export default function HistoryPage() {
         {(sessions ?? []).map(({ session, sets }) => (
           <li key={session.id}>
             <Link
-              href={`/history/${session.id}`}
+              href={sessionHref(session.id)}
               className="block rounded-xl bg-zinc-900 border border-zinc-800 p-4 active:bg-zinc-800"
             >
               <div className="flex justify-between items-baseline">

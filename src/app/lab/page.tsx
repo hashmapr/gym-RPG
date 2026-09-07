@@ -1,6 +1,7 @@
 'use client';
 
 import { COLORS } from '@/lib/tokens';
+import { labExerciseHref } from '@/lib/links';
 
 // OVERLOAD — analytics dashboard: plateaus, velocity, anomalies, landmarks.
 
@@ -113,7 +114,7 @@ export default function LabPage() {
           {Object.entries(stats?.plateaus ?? {}).map(([id, p]) => (
             <li key={id}>
               <Link
-                href={`/lab/exercise/${id}`}
+                href={labExerciseHref(id)}
                 className="flex justify-between items-baseline rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-3 active:bg-zinc-800"
               >
                 <span className="font-semibold">{nameOf(id)}</span>
@@ -135,7 +136,7 @@ export default function LabPage() {
           {Object.entries(stats?.velocity ?? {}).map(([id, v]) => (
             <li key={id}>
               <Link
-                href={`/lab/exercise/${id}`}
+                href={labExerciseHref(id)}
                 className="flex justify-between items-baseline rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-3 active:bg-zinc-800"
               >
                 <span className="font-semibold">{nameOf(id)}</span>

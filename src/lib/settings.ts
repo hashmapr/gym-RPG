@@ -21,6 +21,13 @@ export const DEFAULT_SETTINGS: Settings = {
   // Sprint 8a: two-column RPE. Prefill on by default; blind mode is opt-in.
   blind_rpe: false,
   rpe_nudge_enabled: true,
+  // Sprint 7.5: native shell.
+  notify_rest_expiry: true,
+  notify_morning_briefing: true,
+  notify_workout_reminder: true,
+  notify_streak_nudge: true,
+  healthkit_checkin_enabled: true,
+  warmups_enabled: true,
 };
 
 export async function getSettings(): Promise<Settings> {

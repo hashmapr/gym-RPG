@@ -72,7 +72,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Mobile bottom nav */}
       <nav
         data-testid="bottom-nav"
-        className="fixed inset-x-0 bottom-0 z-40 flex h-16 items-stretch border-t border-border bg-base/95 backdrop-blur lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 flex h-16 items-stretch border-t border-border bg-base/95 backdrop-blur pb-safe lg:hidden"
       >
         {PRIMARY.map((item) => (
           <Link

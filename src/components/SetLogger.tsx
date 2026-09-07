@@ -12,6 +12,8 @@ import { formatE1RM, formatWeight } from '@/lib/format';
 import { e1rm } from '@/lib/e1rm';
 import { exerciseName } from '@/lib/wger';
 import { setBadge, formatTargetLine, type SetBadge } from '@/lib/coach/ui';
+import { hapticSetComplete, hapticPr } from '@/lib/native/haptics';
+import { buildWarmupRamp } from '@/lib/warmups';
 import type { PRResult } from '@/lib/pr';
 import type { Exercise, SetType, WorkoutSet } from '@/lib/types';
 
@@ -57,6 +59,7 @@ export default function SetLogger({
   const [reps, setReps] = useState('');
   const [rpe, setRpe] = useState<number | null>(null);
   const [setType, setSetType] = useState<SetType>('working');
+  const [showWarmups, setShowWarmups] = useState(false);
   const [lastPR, setLastPR] = useState<{ pr: PRResult; set: WorkoutSet } | null>(
     null,
   );
@@ -74,6 +77,33 @@ export default function SetLogger({
     [sets],
   );
   const last = sorted[sorted.length - 1];
+
+  // Sprint 7.5: auto warm-up ramp from the working target (settings toggle).
+  const warmupRamp = useMemo(
+    () =>
+      settings.warmups_enabled
+        ? buildWarmupRamp(target?.target_weight ?? target?.lastWeight ?? 0)
+        : [],
+    [settings.warmups_enabled, target?.target_weight, target?.lastWeight],
+  );
+
+  const logWarmup = async (ws: { weightLb: number; reps: number }) => {
+    // set_type 'warmup' → 0 XP, excluded from volume landmarks, no PR/goal
+    // side effects (gated to working sets in log-set/pr).
+    await logSet({
+      workoutId,
+      exerciseId: exercise.id,
+      weight: ws.weightLb,
+      reps: ws.reps,
+      rpe: null,
+      setType: 'warmup',
+    });
+  };
+
+  const logAllWarmups = async () => {
+    for (const ws of warmupRamp) await logWarmup(ws);
+    setShowWarmups(false);
+  };
 
   // Program mode: prefill the input with the prescribed weight.
   const [prefilled, setPrefilled] = useState(false);
@@ -119,7 +149,11 @@ export default function SetLogger({
       rpe,
       setType,
     });
-    if (pr.isPR) setLastPR({ pr, set });
+    if (pr.isPR) {
+      setLastPR({ pr, set });
+      void hapticPr();
+    }
+    void hapticSetComplete();
     setWeight(String(w ?? ''));
     setReps(String(r ?? ''));
     setShowNudge(false);
@@ -209,6 +243,57 @@ export default function SetLogger({
             ` · e1RM ${formatE1RM(
               e1rm(lastPR.set.weight, lastPR.set.reps, settings.e1rm_formula),
             )}`}
+        </div>
+      )}
+
+      {warmupRamp.length > 0 && (
+        <div className="mb-3">
+          <button
+            type="button"
+            data-testid={`warmups-toggle-${exercise.id}`}
+            onClick={() => setShowWarmups((v) => !v)}
+            className="text-xs uppercase tracking-wider text-zinc-400 font-semibold active:text-zinc-200"
+          >
+            Warm-ups {showWarmups ? '−' : '+'}
+          </button>
+          {showWarmups && (
+            <div
+              data-testid={`warmups-ramp-${exercise.id}`}
+              className="mt-2 rounded-lg bg-zinc-900 border border-zinc-800 p-3"
+            >
+              {warmupRamp.map((ws) => (
+                <div
+                  key={ws.pct}
+                  className="flex items-center justify-between py-1 text-sm"
+                >
+                  <span className="text-zinc-300 tabular-nums">
+                    {formatWeight(ws.weightLb)} × {ws.reps}
+                    <span className="ml-2 text-xs text-zinc-500">
+                      {Math.round(ws.pct * 100)}%
+                    </span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => void logWarmup(ws)}
+                    className="min-h-9 px-3 rounded-md bg-zinc-800 border border-zinc-700 text-xs font-semibold text-zinc-200 active:bg-zinc-700"
+                  >
+                    LOG
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                data-testid={`warmups-log-all-${exercise.id}`}
+                onClick={() => void logAllWarmups()}
+                className="mt-2 min-h-9 w-full rounded-md bg-zinc-800 border border-zinc-700 text-xs font-semibold text-zinc-200 active:bg-zinc-700"
+              >
+                LOG ALL
+              </button>
+              <p className="mt-2 text-xs text-zinc-500">
+                0 XP · excluded from volume
+              </p>
+            </div>
+          )}
         </div>
       )}
 

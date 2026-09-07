@@ -396,6 +396,15 @@ export interface Settings {
   blind_rpe: boolean;
   /** Show the once-per-session divergence nudge ("physics says N, you said M"). */
   rpe_nudge_enabled: boolean;
+  // Sprint 7.5: native shell (all no-ops on the web).
+  notify_rest_expiry: boolean;
+  notify_morning_briefing: boolean;
+  notify_workout_reminder: boolean;
+  notify_streak_nudge: boolean;
+  /** Auto-fill the daily check-in from HealthKit (bodyweight + sleep). */
+  healthkit_checkin_enabled: boolean;
+  /** Show the auto-generated warm-up ramp expander in the logger. */
+  warmups_enabled: boolean;
 }
 
 // ---------------------------------------------------------------------------

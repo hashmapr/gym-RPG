@@ -6,6 +6,7 @@
 // create). Saving creates the program AND starts its first run.
 
 import { useMemo, useState } from 'react';
+import { programRunHref } from '@/lib/links';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { db, newId, nowIso } from '@/lib/db';
@@ -265,7 +266,7 @@ export default function ProgramBuilderPage() {
         }
       }
       const run = await startRun(program.id);
-      router.push(`/programs/${program.id}/run/${run.id}`);
+      router.push(programRunHref(program.id, run.id));
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to save program.');
       setSaving(false);

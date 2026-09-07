@@ -52,6 +52,16 @@ input[type='number'] {
   appearance: textfield;
 }
 
+/* Sprint 7.5 (native shell): respect the notch/home-indicator. viewport-fit
+   is already 'cover'; these paddings keep chrome clear of the insets. The
+   Capacitor config also sets contentInset 'always' as a belt-and-braces. */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

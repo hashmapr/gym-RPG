@@ -7,9 +7,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useRestTimer, playCompletionSound, vibrate, remainingSeconds } from '@/lib/rest-timer';
 import { useSettings } from '@/lib/settings';
 import { formatDuration } from '@/lib/format';
+import { scheduleRestExpiry, cancelRestExpiry } from '@/lib/native/notifications';
+import { startRestActivity, stopRestActivity } from '@/lib/native/live-activity';
 
 export default function RestTimer() {
   const endsAt = useRestTimer((s) => s.endsAt);
+  const durationSec = useRestTimer((s) => s.durationSec);
   const cancel = useRestTimer((s) => s.cancel);
   const start = useRestTimer((s) => s.start);
   const settings = useSettings();
@@ -37,6 +40,24 @@ export default function RestTimer() {
     }
   }, [endsAt, remaining, settings.sound_enabled, settings.vibration_enabled]);
 
+  // Sprint 7.5 (native shell): lock-screen coverage for the rest timer —
+  // local notification at expiry + Live Activity countdown. All no-ops on
+  // the web; the in-app bar above remains the primary UI everywhere.
+  useEffect(() => {
+    if (endsAt === null) {
+      void cancelRestExpiry();
+      void stopRestActivity();
+      return;
+    }
+    if (!settings.notify_rest_expiry) {
+      void cancelRestExpiry();
+    } else {
+      void scheduleRestExpiry(endsAt, durationSec ?? 0);
+    }
+    void startRestActivity(endsAt, durationSec ?? 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endsAt, durationSec, settings.notify_rest_expiry]);
+
   if (endsAt === null) return null;
 
   const done = remaining <= 0;
@@ -44,7 +65,7 @@ export default function RestTimer() {
   return (
     <div
       data-testid="rest-timer"
-      className={`fixed bottom-0 inset-x-0 z-40 flex items-center justify-between gap-3 px-4 py-3 border-t ${
+      className={`fixed bottom-0 inset-x-0 z-40 flex items-center justify-between gap-3 px-4 py-3 border-t pb-safe ${
         done ? 'bg-white text-black' : 'bg-zinc-900 text-zinc-100'
       } border-zinc-800`}
     >

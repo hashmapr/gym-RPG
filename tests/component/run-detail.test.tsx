@@ -8,6 +8,7 @@ vi.mock('next/navigation', () => ({
   useParams: () => ({ id: 'prog-1', runId: 'run-1' }),
   useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
   usePathname: () => '/programs/prog-1/run/run-1',
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 import { db, nowIso } from '@/lib/db';
