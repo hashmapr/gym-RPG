@@ -200,6 +200,8 @@ describe('offline indicator', () => {
       weight: 100,
       reps: 5,
       rpe: null,
+      rpe_estimated: null,
+      rpe_confidence: null,
       rir: null,
       tempo: null,
       set_type: 'working',

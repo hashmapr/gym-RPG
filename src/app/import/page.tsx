@@ -152,6 +152,8 @@ export default function ImportPage() {
             weight: toLb(s.weight),
             reps: s.reps,
             rpe: s.rpe,
+            rpe_estimated: null,
+            rpe_confidence: null,
             rir: null,
             tempo: null,
             set_type: hevySetTypeToApp(s.setType),
@@ -208,6 +210,11 @@ export default function ImportPage() {
         unmatched,
       });
       setStatus(null);
+
+      // Sprint 8a: feature-store backfill runs automatically after every
+      // import (idempotent upsert on set_id).
+      const { backfillMlFeatures } = await import('@/lib/ml/features');
+      await backfillMlFeatures();
 
       // Sprint 7: first materialization shows the one-time "Character
       // Materialized" screen (spec: import → character appears).

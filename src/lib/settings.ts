@@ -18,6 +18,9 @@ export const DEFAULT_SETTINGS: Settings = {
   // Sprint 7: The RPG — Body-State Protocol + XP mode.
   target_bodyweight_lb: null,
   xp_mode: 'auto',
+  // Sprint 8a: two-column RPE. Prefill on by default; blind mode is opt-in.
+  blind_rpe: false,
+  rpe_nudge_enabled: true,
 };
 
 export async function getSettings(): Promise<Settings> {

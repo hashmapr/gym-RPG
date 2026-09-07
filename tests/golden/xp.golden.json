@@ -221,8 +221,8 @@
   },
   "seedLedgerSummary": {
     "rows": 720,
-    "total_xp": 19242,
-    "level": 19,
+    "total_xp": 18421,
+    "level": 18,
     "byKind": {
       "pr": 30,
       "session": 35,

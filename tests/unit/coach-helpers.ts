@@ -252,6 +252,8 @@ export function makeWorkoutSet(opts: {
     weight: opts.weight,
     reps: opts.reps,
     rpe: opts.rpe ?? null,
+    rpe_estimated: null,
+    rpe_confidence: null,
     rir: null,
     tempo: null,
     set_type: opts.setType ?? 'working',

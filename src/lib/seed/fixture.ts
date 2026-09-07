@@ -291,6 +291,8 @@ export function generateFixture(): Fixture {
           weight: st.weight,
           reps: st.reps,
           rpe,
+          rpe_estimated: null,
+          rpe_confidence: null,
           rir: null,
           tempo: null,
           set_type: 'working',

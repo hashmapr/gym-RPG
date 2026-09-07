@@ -66,6 +66,8 @@ const mkSet = (id: string, timestamp: string): WorkoutSet => ({
   weight: 102.5,
   reps: 5,
   rpe: 8,
+  rpe_estimated: null,
+  rpe_confidence: null,
   rir: null,
   tempo: null,
   set_type: 'working',

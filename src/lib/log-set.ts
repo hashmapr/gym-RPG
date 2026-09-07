@@ -4,6 +4,7 @@
 
 import { db, newId, nowIso } from './db';
 import { evaluatePR, type PRResult } from './pr';
+import { estimateRpe } from './ml/rpe-estimator';
 import type { SetType, SetSource, WorkoutSet } from './types';
 
 export interface LogSetInput {
@@ -53,6 +54,8 @@ export async function logSet(input: LogSetInput): Promise<LoggedSet> {
     weight: input.weight,
     reps: input.reps,
     rpe: input.rpe,
+    rpe_estimated: null,
+    rpe_confidence: null,
     rir: null,
     tempo: null,
     set_type: setType,
@@ -66,9 +69,21 @@ export async function logSet(input: LogSetInput): Promise<LoggedSet> {
     local_id: newId(),
     created_at: nowIso(),
   };
+  // Sprint 8a: live estimate at log time (self-inclusive pool — the new set
+  // is its own session's top until a heavier set lands). Failure sets and
+  // null-e1RM sets abstain (null/null).
+  const estimate = estimateRpe(set, [...priorSets, set]);
+  set.rpe_estimated = estimate.rpe_estimated;
+  set.rpe_confidence = estimate.rpe_confidence;
   await db.workout_sets.put(set);
   await achieveGoalsFor(set);
   return { set, pr };
+}
+
+// Felt-RPE answer from the two-column flow: writes the USER column only —
+// the estimate columns are never touched here (independence lock).
+export async function updateSetRpe(setId: string, rpe: number | null): Promise<void> {
+  await db.workout_sets.update(setId, { rpe });
 }
 
 // Goal-achieve hook: when a logged set first satisfies an unachieved goal

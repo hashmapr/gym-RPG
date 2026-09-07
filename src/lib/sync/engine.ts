@@ -69,6 +69,10 @@ export const SYNC_TABLE_ORDER: TableName[] = [
   'skill_nodes',
   'user_skills',
   'xp_ledger',
+  // Sprint 8a (ML harness): feature rows reference sets (already synced
+  // above); the registry is independent. Sync up only.
+  'ml_features',
+  'ml_model_registry',
 ];
 
 export const DEFAULT_BATCH_SIZE = 200;

@@ -5,7 +5,7 @@
 
 import { useMemo, useState } from 'react';
 import { db } from '@/lib/db';
-import { logSet } from '@/lib/log-set';
+import { logSet, updateSetRpe } from '@/lib/log-set';
 import { useRestTimer } from '@/lib/rest-timer';
 import { useSettings } from '@/lib/settings';
 import { formatE1RM, formatWeight } from '@/lib/format';
@@ -14,6 +14,10 @@ import { exerciseName } from '@/lib/wger';
 import { setBadge, formatTargetLine, type SetBadge } from '@/lib/coach/ui';
 import type { PRResult } from '@/lib/pr';
 import type { Exercise, SetType, WorkoutSet } from '@/lib/types';
+
+// Divergence nudge fires at most once per workout session (module-level —
+// survives exercise switches within the same workout).
+const nudgedSessions = new Set<string>();
 
 const SET_TYPES: { value: SetType; label: string }[] = [
   { value: 'working', label: 'Working' },
@@ -56,6 +60,12 @@ export default function SetLogger({
   const [lastPR, setLastPR] = useState<{ pr: PRResult; set: WorkoutSet } | null>(
     null,
   );
+  // Two-column felt-vs-physics flow: the just-logged set awaiting a felt RPE,
+  // the prefill (estimate, hidden under blind_rpe), and the post-answer reveal.
+  const [pending, setPending] = useState<{ set: WorkoutSet; estimate: number | null } | null>(null);
+  const [feltAnswer, setFeltAnswer] = useState<number | null>(null);
+  const [revealed, setRevealed] = useState(false);
+  const [showNudge, setShowNudge] = useState(false);
   const startRest = useRestTimer((s) => s.start);
   const settings = useSettings();
 
@@ -71,6 +81,29 @@ export default function SetLogger({
     setWeight(String(target.target_weight));
     setPrefilled(true);
   }
+
+  const maybeNudge = (user: number | null, estimate: number | null) => {
+    if (user == null || estimate == null) return;
+    if (settings.blind_rpe || !settings.rpe_nudge_enabled) return;
+    if (user - estimate >= 2 && !nudgedSessions.has(workoutId)) {
+      nudgedSessions.add(workoutId);
+      setShowNudge(true);
+    }
+  };
+
+  const answerFelt = async (value: number) => {
+    if (!pending) return;
+    await updateSetRpe(pending.set.id, value);
+    setFeltAnswer(value);
+    setRevealed(true);
+    maybeNudge(value, pending.estimate);
+  };
+
+  const skipFelt = () => {
+    // Skip = no user RPE. The estimate is revealed but the user column
+    // stays null (independence lock — nothing auto-writes rpe).
+    setRevealed(true);
+  };
 
   const submit = async () => {
     const w = weight.trim() === '' ? null : Number(weight);
@@ -89,6 +122,17 @@ export default function SetLogger({
     if (pr.isPR) setLastPR({ pr, set });
     setWeight(String(w ?? ''));
     setReps(String(r ?? ''));
+    setShowNudge(false);
+    // Felt-RPE prompt unless the user already picked an RPE inline.
+    if (set.rpe == null) {
+      setPending({ set, estimate: set.rpe_estimated });
+      setFeltAnswer(settings.blind_rpe ? null : set.rpe_estimated);
+      setRevealed(false);
+    } else {
+      setPending({ set, estimate: set.rpe_estimated });
+      setRevealed(true);
+      maybeNudge(set.rpe, set.rpe_estimated);
+    }
     if (setType !== 'warmup') startRest(settings.rest_default_seconds);
   };
 
@@ -305,6 +349,64 @@ export default function SetLogger({
           ))}
         </div>
       </div>
+
+      {pending && !revealed && (
+        <div
+          data-testid="felt-rpe-card"
+          className="mt-3 rounded-lg bg-zinc-800/60 border border-zinc-700 px-3 py-2"
+        >
+          <p className="text-sm text-zinc-300 font-semibold mb-2">
+            How did that feel?
+          </p>
+          <div className="flex gap-1 items-center">
+            {[6, 7, 8, 9, 10].map((v) => (
+              <button
+                key={v}
+                type="button"
+                data-testid={`felt-${v}`}
+                onClick={() => answerFelt(v)}
+                className={`w-10 h-10 rounded-lg text-sm font-semibold ${
+                  feltAnswer === v
+                    ? 'bg-white text-black ring-2 ring-white/60'
+                    : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
+                }`}
+              >
+                {v}
+              </button>
+            ))}
+            <button
+              type="button"
+              data-testid="felt-skip"
+              onClick={skipFelt}
+              className="ml-auto min-h-10 px-3 rounded-lg bg-zinc-800 border border-zinc-700 text-sm font-semibold text-zinc-400 active:bg-zinc-700"
+            >
+              SKIP
+            </button>
+          </div>
+        </div>
+      )}
+
+      {pending && revealed && !settings.blind_rpe && pending.estimate !== null && (
+        <p
+          data-testid="estimate-reveal"
+          className="mt-2 text-sm text-zinc-400"
+        >
+          Argus estimated:{' '}
+          <span className="text-zinc-200 font-semibold tabular-nums">
+            {pending.estimate.toFixed(1)}
+          </span>
+        </p>
+      )}
+
+      {showNudge && pending && (
+        <p
+          data-testid="divergence-nudge"
+          className="mt-1 text-sm text-zinc-400"
+        >
+          physics says {pending.estimate?.toFixed(1) ?? '—'}, you said{' '}
+          {feltAnswer} — rough day?
+        </p>
+      )}
     </section>
   );
 }

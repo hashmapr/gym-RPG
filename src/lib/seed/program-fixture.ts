@@ -401,6 +401,8 @@ export async function buildProgramFixture(): Promise<ProgramFixture> {
             weight: ex.weight,
             reps: ex.reps,
             rpe: ex.rpe,
+            rpe_estimated: null,
+            rpe_confidence: null,
             rir: null,
             tempo: null,
             set_type: 'working',

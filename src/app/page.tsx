@@ -20,6 +20,7 @@ import { exerciseName } from '@/lib/wger';
 import { diffDays } from '@/lib/streak';
 import { starterDefs } from '@/lib/challenges/service';
 import { ARGUS_ENABLED } from '@/lib/argus/config';
+import { ML_V1_ACTIVE } from '@/lib/ml/registry';
 import { SuggestionCard } from '@/components/argus/ArgusUI';
 import ChallengeDial from '@/components/challenges/ChallengeDial';
 import { RecoveryBadge, RecoverySparkline, BriefingCard, ManualCheckIn } from '@/components/RecoveryHome';
@@ -172,6 +173,15 @@ export default function HomePage() {
           <div className="mb-3">
             <RecoveryBadge today={today} />
           </div>
+          {/* Sprint 8a: forecast chip stub — hidden until ML_V1_ACTIVE (8b). */}
+          {ML_V1_ACTIVE && (
+            <p
+              data-testid="forecast-chip"
+              className="mb-3 text-xs text-zinc-500"
+            >
+              Forecast: ready
+            </p>
+          )}
           <h2 className="font-display text-xl font-bold text-zinc-100 mb-3">
             {todayCard.plannedSession.workout_name}
           </h2>

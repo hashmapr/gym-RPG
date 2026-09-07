@@ -26,7 +26,11 @@ interface Capability {
 const CAPABILITIES: Capability[] = [
   { name: 'Challenge authoring', status: 'unlocked', note: 'unlocked' },
   { name: 'Recovery reading', status: 'locked', note: 'unlocks with WHOOP' },
-  { name: 'Performance forecasting', status: 'locked', note: 'after Migration Day' },
+  {
+    name: 'Performance forecasting',
+    status: 'unlocked',
+    note: 'READY (awaiting data)',
+  },
 ];
 
 export default function ArgusPage() {

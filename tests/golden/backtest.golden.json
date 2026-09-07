@@ -1,0 +1,3021 @@
+{
+  "meta": {
+    "protocol": "walk-forward 12w train / 2w holdout / 1d stride",
+    "seed_today": "2026-09-05",
+    "folds": 28,
+    "rows": 315,
+    "note": "Deterministic baselines (persistence + deterministic_velocity) walk-forward backtest over the 16-week synthetic fixture. ml_v1 (8b) must beat this by >5% MAE on BOTH strata; mlPassesGate is FALSE until then."
+  },
+  "mae": {
+    "sparse": 7.7747,
+    "rich": 7.5101,
+    "combined": 7.5807
+  },
+  "folds": [
+    {
+      "train_end": "2026-08-10",
+      "holdout_start": "2026-08-11",
+      "holdout_end": "2026-08-24",
+      "n": 15
+    },
+    {
+      "train_end": "2026-08-11",
+      "holdout_start": "2026-08-12",
+      "holdout_end": "2026-08-25",
+      "n": 12
+    },
+    {
+      "train_end": "2026-08-12",
+      "holdout_start": "2026-08-13",
+      "holdout_end": "2026-08-26",
+      "n": 15
+    },
+    {
+      "train_end": "2026-08-13",
+      "holdout_start": "2026-08-14",
+      "holdout_end": "2026-08-27",
+      "n": 15
+    },
+    {
+      "train_end": "2026-08-14",
+      "holdout_start": "2026-08-15",
+      "holdout_end": "2026-08-28",
+      "n": 12
+    },
+    {
+      "train_end": "2026-08-15",
+      "holdout_start": "2026-08-16",
+      "holdout_end": "2026-08-29",
+      "n": 15
+    },
+    {
+      "train_end": "2026-08-16",
+      "holdout_start": "2026-08-17",
+      "holdout_end": "2026-08-30",
+      "n": 15
+    },
+    {
+      "train_end": "2026-08-17",
+      "holdout_start": "2026-08-18",
+      "holdout_end": "2026-08-31",
+      "n": 12
+    },
+    {
+      "train_end": "2026-08-18",
+      "holdout_start": "2026-08-19",
+      "holdout_end": "2026-09-01",
+      "n": 15
+    },
+    {
+      "train_end": "2026-08-19",
+      "holdout_start": "2026-08-20",
+      "holdout_end": "2026-09-02",
+      "n": 15
+    },
+    {
+      "train_end": "2026-08-20",
+      "holdout_start": "2026-08-21",
+      "holdout_end": "2026-09-03",
+      "n": 12
+    },
+    {
+      "train_end": "2026-08-21",
+      "holdout_start": "2026-08-22",
+      "holdout_end": "2026-09-04",
+      "n": 15
+    },
+    {
+      "train_end": "2026-08-22",
+      "holdout_start": "2026-08-23",
+      "holdout_end": "2026-09-05",
+      "n": 15
+    },
+    {
+      "train_end": "2026-08-23",
+      "holdout_start": "2026-08-24",
+      "holdout_end": "2026-09-06",
+      "n": 12
+    },
+    {
+      "train_end": "2026-08-24",
+      "holdout_start": "2026-08-25",
+      "holdout_end": "2026-09-07",
+      "n": 15
+    },
+    {
+      "train_end": "2026-08-25",
+      "holdout_start": "2026-08-26",
+      "holdout_end": "2026-09-08",
+      "n": 15
+    },
+    {
+      "train_end": "2026-08-26",
+      "holdout_start": "2026-08-27",
+      "holdout_end": "2026-09-09",
+      "n": 12
+    },
+    {
+      "train_end": "2026-08-27",
+      "holdout_start": "2026-08-28",
+      "holdout_end": "2026-09-10",
+      "n": 12
+    },
+    {
+      "train_end": "2026-08-28",
+      "holdout_start": "2026-08-29",
+      "holdout_end": "2026-09-11",
+      "n": 12
+    },
+    {
+      "train_end": "2026-08-29",
+      "holdout_start": "2026-08-30",
+      "holdout_end": "2026-09-12",
+      "n": 9
+    },
+    {
+      "train_end": "2026-08-30",
+      "holdout_start": "2026-08-31",
+      "holdout_end": "2026-09-13",
+      "n": 9
+    },
+    {
+      "train_end": "2026-08-31",
+      "holdout_start": "2026-09-01",
+      "holdout_end": "2026-09-14",
+      "n": 9
+    },
+    {
+      "train_end": "2026-09-01",
+      "holdout_start": "2026-09-02",
+      "holdout_end": "2026-09-15",
+      "n": 6
+    },
+    {
+      "train_end": "2026-09-02",
+      "holdout_start": "2026-09-03",
+      "holdout_end": "2026-09-16",
+      "n": 6
+    },
+    {
+      "train_end": "2026-09-03",
+      "holdout_start": "2026-09-04",
+      "holdout_end": "2026-09-17",
+      "n": 6
+    },
+    {
+      "train_end": "2026-09-04",
+      "holdout_start": "2026-09-05",
+      "holdout_end": "2026-09-18",
+      "n": 3
+    },
+    {
+      "train_end": "2026-09-05",
+      "holdout_start": "2026-09-06",
+      "holdout_end": "2026-09-19",
+      "n": 3
+    },
+    {
+      "train_end": "2026-09-06",
+      "holdout_start": "2026-09-07",
+      "holdout_end": "2026-09-20",
+      "n": 3
+    }
+  ],
+  "rows": [
+    {
+      "set_id": "fx-s28-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-11",
+      "actual_e1rm": 275.6679,
+      "predicted_e1rm": 275.7,
+      "abs_error": 0.0321,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s28-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-11",
+      "actual_e1rm": 267.221,
+      "predicted_e1rm": 275.7,
+      "abs_error": 8.479,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s28-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-11",
+      "actual_e1rm": 259.1561,
+      "predicted_e1rm": 275.7,
+      "abs_error": 16.5439,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 214.5824,
+      "predicted_e1rm": 214.6,
+      "abs_error": 0.0176,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 208.0072,
+      "predicted_e1rm": 214.6,
+      "abs_error": 6.5928,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 201.7295,
+      "predicted_e1rm": 214.6,
+      "abs_error": 12.8705,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 278.8005,
+      "predicted_e1rm": 278.8,
+      "abs_error": 0.0005,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 270.2576,
+      "predicted_e1rm": 278.8,
+      "abs_error": 8.5424,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 262.1011,
+      "predicted_e1rm": 278.8,
+      "abs_error": 16.6989,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 217.715,
+      "predicted_e1rm": 217.7,
+      "abs_error": 0.015,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 211.0438,
+      "predicted_e1rm": 217.7,
+      "abs_error": 6.6562,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 204.6744,
+      "predicted_e1rm": 217.7,
+      "abs_error": 13.0256,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 214.5824,
+      "predicted_e1rm": 214.6,
+      "abs_error": 0.0176,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 208.0072,
+      "predicted_e1rm": 214.6,
+      "abs_error": 6.5928,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 201.7295,
+      "predicted_e1rm": 214.6,
+      "abs_error": 12.8705,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 278.8005,
+      "predicted_e1rm": 278.8,
+      "abs_error": 0.0005,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 270.2576,
+      "predicted_e1rm": 278.8,
+      "abs_error": 8.5424,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 262.1011,
+      "predicted_e1rm": 278.8,
+      "abs_error": 16.6989,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 217.715,
+      "predicted_e1rm": 217.7,
+      "abs_error": 0.015,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 211.0438,
+      "predicted_e1rm": 217.7,
+      "abs_error": 6.6562,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 204.6744,
+      "predicted_e1rm": 217.7,
+      "abs_error": 13.0256,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 214.5824,
+      "predicted_e1rm": 214.6,
+      "abs_error": 0.0176,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 208.0072,
+      "predicted_e1rm": 214.6,
+      "abs_error": 6.5928,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 201.7295,
+      "predicted_e1rm": 214.6,
+      "abs_error": 12.8705,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 278.8005,
+      "predicted_e1rm": 278.8,
+      "abs_error": 0.0005,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 270.2576,
+      "predicted_e1rm": 278.8,
+      "abs_error": 8.5424,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 262.1011,
+      "predicted_e1rm": 278.8,
+      "abs_error": 16.6989,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 217.715,
+      "predicted_e1rm": 217.7,
+      "abs_error": 0.015,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 211.0438,
+      "predicted_e1rm": 217.7,
+      "abs_error": 6.6562,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 204.6744,
+      "predicted_e1rm": 217.7,
+      "abs_error": 13.0256,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 214.5824,
+      "predicted_e1rm": 214.6,
+      "abs_error": 0.0176,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 208.0072,
+      "predicted_e1rm": 214.6,
+      "abs_error": 6.5928,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s29-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-14",
+      "actual_e1rm": 201.7295,
+      "predicted_e1rm": 214.6,
+      "abs_error": 12.8705,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 278.8005,
+      "predicted_e1rm": 278.8,
+      "abs_error": 0.0005,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 270.2576,
+      "predicted_e1rm": 278.8,
+      "abs_error": 8.5424,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 262.1011,
+      "predicted_e1rm": 278.8,
+      "abs_error": 16.6989,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 217.715,
+      "predicted_e1rm": 217.7,
+      "abs_error": 0.015,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 211.0438,
+      "predicted_e1rm": 217.7,
+      "abs_error": 6.6562,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 204.6744,
+      "predicted_e1rm": 217.7,
+      "abs_error": 13.0256,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 278.8005,
+      "predicted_e1rm": 278.8,
+      "abs_error": 0.0005,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 270.2576,
+      "predicted_e1rm": 278.8,
+      "abs_error": 8.5424,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 262.1011,
+      "predicted_e1rm": 278.8,
+      "abs_error": 16.6989,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 217.715,
+      "predicted_e1rm": 217.7,
+      "abs_error": 0.015,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 211.0438,
+      "predicted_e1rm": 217.7,
+      "abs_error": 6.6562,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 204.6744,
+      "predicted_e1rm": 217.7,
+      "abs_error": 13.0256,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 278.8005,
+      "predicted_e1rm": 278.8,
+      "abs_error": 0.0005,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 270.2576,
+      "predicted_e1rm": 278.8,
+      "abs_error": 8.5424,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 262.1011,
+      "predicted_e1rm": 278.8,
+      "abs_error": 16.6989,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 217.715,
+      "predicted_e1rm": 217.7,
+      "abs_error": 0.015,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 211.0438,
+      "predicted_e1rm": 217.7,
+      "abs_error": 6.6562,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 204.6744,
+      "predicted_e1rm": 217.7,
+      "abs_error": 13.0256,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 278.8005,
+      "predicted_e1rm": 278.8,
+      "abs_error": 0.0005,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 270.2576,
+      "predicted_e1rm": 278.8,
+      "abs_error": 8.5424,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s30-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-17",
+      "actual_e1rm": 262.1011,
+      "predicted_e1rm": 278.8,
+      "abs_error": 16.6989,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 217.715,
+      "predicted_e1rm": 217.7,
+      "abs_error": 0.015,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 211.0438,
+      "predicted_e1rm": 217.7,
+      "abs_error": 6.6562,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 204.6744,
+      "predicted_e1rm": 217.7,
+      "abs_error": 13.0256,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 217.715,
+      "predicted_e1rm": 217.7,
+      "abs_error": 0.015,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 211.0438,
+      "predicted_e1rm": 217.7,
+      "abs_error": 6.6562,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 204.6744,
+      "predicted_e1rm": 217.7,
+      "abs_error": 13.0256,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 217.715,
+      "predicted_e1rm": 217.7,
+      "abs_error": 0.015,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 211.0438,
+      "predicted_e1rm": 217.7,
+      "abs_error": 6.6562,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 204.6744,
+      "predicted_e1rm": 217.7,
+      "abs_error": 13.0256,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 217.715,
+      "predicted_e1rm": 217.7,
+      "abs_error": 0.015,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 211.0438,
+      "predicted_e1rm": 217.7,
+      "abs_error": 6.6562,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s31-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-20",
+      "actual_e1rm": 204.6744,
+      "predicted_e1rm": 217.7,
+      "abs_error": 13.0256,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s32-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 281.9331,
+      "predicted_e1rm": 281.9,
+      "abs_error": 0.0331,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 273.2942,
+      "predicted_e1rm": 281.9,
+      "abs_error": 8.6058,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s32-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-23",
+      "actual_e1rm": 265.046,
+      "predicted_e1rm": 281.9,
+      "abs_error": 16.854,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s33-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 220.8476,
+      "predicted_e1rm": 220.8,
+      "abs_error": 0.0476,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 214.0804,
+      "predicted_e1rm": 220.8,
+      "abs_error": 6.7196,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s33-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-08-26",
+      "actual_e1rm": 207.6194,
+      "predicted_e1rm": 220.8,
+      "abs_error": 13.1806,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s34-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 285.0657,
+      "predicted_e1rm": 285.1,
+      "abs_error": 0.0343,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 276.3308,
+      "predicted_e1rm": 285.1,
+      "abs_error": 8.7692,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s34-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-08-29",
+      "actual_e1rm": 267.991,
+      "predicted_e1rm": 285.1,
+      "abs_error": 17.109,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s35-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 223.9802,
+      "predicted_e1rm": 224,
+      "abs_error": 0.0198,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 217.117,
+      "predicted_e1rm": 224,
+      "abs_error": 6.883,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s35-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-01",
+      "actual_e1rm": 210.5643,
+      "predicted_e1rm": 224,
+      "abs_error": 13.4357,
+      "stratum": "rich"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-0",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 288.1982,
+      "predicted_e1rm": 288.2,
+      "abs_error": 0.0018,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-1",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 279.3674,
+      "predicted_e1rm": 288.2,
+      "abs_error": 8.8326,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s36-2",
+      "exercise_id": "ex-squat",
+      "training_date": "2026-09-04",
+      "actual_e1rm": 270.9359,
+      "predicted_e1rm": 288.2,
+      "abs_error": 17.2641,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-0",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 227.1127,
+      "predicted_e1rm": 227.1,
+      "abs_error": 0.0127,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-1",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 220.1536,
+      "predicted_e1rm": 227.1,
+      "abs_error": 6.9464,
+      "stratum": "sparse"
+    },
+    {
+      "set_id": "fx-s37-2",
+      "exercise_id": "ex-bench",
+      "training_date": "2026-09-07",
+      "actual_e1rm": 213.5093,
+      "predicted_e1rm": 227.1,
+      "abs_error": 13.5907,
+      "stratum": "sparse"
+    }
+  ]
+}

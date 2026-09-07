@@ -42,6 +42,7 @@ import {
   type BodyStateSeries,
 } from './body-state';
 import { computeStats, highWater, trainingDateOf, type ComputedStats } from './stats';
+import { xpRpeValue } from '../ml/rpe-estimator';
 import { evaluateSkillTree, type ExtraFacts, type SkillEvaluation } from './skill-tree';
 import { levelForXp } from './levels';
 
@@ -195,7 +196,9 @@ export function computeRpg(data: RpgData): RpgComputation {
     const xp = isWarmup ? 0 : setXp({
       weight: set.weight,
       reps: set.reps,
-      rpe: set.rpe,
+      // Sprint 8a: XP stakes ride the engine estimate (medium/high
+      // confidence) — the user-reported rpe has ZERO XP stakes.
+      rpe: xpRpeValue(set),
       set_type: set.set_type,
       body_state: state,
     });

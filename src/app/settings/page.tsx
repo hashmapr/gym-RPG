@@ -207,6 +207,34 @@ export default function SettingsPage() {
 
       <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
         <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+          RPE
+        </h2>
+        <label className="flex items-center justify-between min-h-12">
+          <span>Blind RPE (hide Argus estimates)</span>
+          <input
+            type="checkbox"
+            data-testid="setting-blind-rpe"
+            checked={settings.blind_rpe}
+            onChange={(e) => saveSettings({ blind_rpe: e.target.checked })}
+            className="w-6 h-6 accent-white"
+          />
+        </label>
+        <label className="flex items-center justify-between min-h-12">
+          <span>Felt vs physics nudge</span>
+          <input
+            type="checkbox"
+            data-testid="setting-rpe-nudge"
+            checked={settings.rpe_nudge_enabled}
+            onChange={(e) =>
+              saveSettings({ rpe_nudge_enabled: e.target.checked })
+            }
+            className="w-6 h-6 accent-white"
+          />
+        </label>
+      </section>
+
+      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
+        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
           e1RM formula
         </h2>
         <div className="grid grid-cols-2 gap-2">

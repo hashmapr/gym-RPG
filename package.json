@@ -17,7 +17,9 @@
     "seed:goldens-recovery": "tsx scripts/goldens-recovery.ts",
     "seed:rpg": "tsx scripts/seed-rpg.ts",
     "seed:goldens-rpg": "tsx scripts/goldens-rpg.ts",
-    "icons": "node scripts/gen-icons.mjs"
+    "seed:goldens-rpe": "tsx scripts/goldens-rpe.ts",
+    "icons": "node scripts/gen-icons.mjs",
+    "seed:goldens-features": "tsx scripts/goldens-features.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.115.0",

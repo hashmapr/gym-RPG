@@ -91,6 +91,8 @@ describe('PR scoping + timestamp ordering (via Dexie)', () => {
     weight,
     reps,
     rpe: null,
+    rpe_estimated: null,
+    rpe_confidence: null,
     rir: null,
     tempo: null,
     set_type,

@@ -43,6 +43,8 @@ import type {
   SkillNode,
   UserSkill,
   XpLedgerRow,
+  MLFeature,
+  MLModelRegistryRow,
 } from './types';
 
 export class LabDB extends Dexie {
@@ -66,6 +68,8 @@ export class LabDB extends Dexie {
   session_exercises!: Table<SessionExercise, [string, string]>;
   settings!: Table<{ key: string; value: unknown }, string>;
   hevy_mappings!: Table<HevyMapping, string>;
+  ml_features!: Table<MLFeature, string>;
+  ml_model_registry!: Table<MLModelRegistryRow, string>;
   // Sprint 4: Challenges + Streak v3.
   challenge_defs!: Table<ChallengeDef, string>;
   challenge_runs!: Table<ChallengeRun, string>;
@@ -160,6 +164,13 @@ export class LabDB extends Dexie {
     // M1: calibration columns (daily_metrics.body_fat_pct, exercises.machine_type)
     // live in the mock backend (migration 0008); Dexie needs no new indexes.
     this.version(8).stores({});
+    // Sprint 8a: ML harness. workout_sets.rpe_estimated/rpe_confidence are plain
+    // columns (no new indexes); the feature store keys by set_id (one row per
+    // set) and the registry by id with a model_version index for pinning.
+    this.version(9).stores({
+      ml_features: 'set_id',
+      ml_model_registry: 'id, model_version, is_active',
+    });
     // P0 sync rule: any mutation to a synced row re-queues it (data layer).
     installRequeueHooks(this, SYNC_TABLE_ORDER);
   }

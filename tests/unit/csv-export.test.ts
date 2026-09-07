@@ -56,6 +56,8 @@ describe('Hevy CSV export — round trip', () => {
       weight,
       reps,
       rpe: null,
+      rpe_estimated: null,
+      rpe_confidence: null,
       rir: null,
       tempo: null,
       set_type: type,

@@ -54,6 +54,10 @@ export interface WorkoutSet {
   weight: number | null; // lb, 0.25 increments
   reps: number | null;
   rpe: number | null;
+  // Sprint 8a: two-column RPE. rpe is the user-reported value (never
+  // overwritten); rpe_estimated is engine-computed (never user-editable).
+  rpe_estimated: number | null;
+  rpe_confidence: RpeConfidence | null;
   rir: number | null;
   tempo: string | null;
   set_type: SetType;
@@ -360,6 +364,9 @@ export type TableName =
   | 'skill_nodes'
   | 'user_skills'
   | 'xp_ledger'
+  // Sprint 8a (ML harness): feature store + model registry sync up.
+  | 'ml_features'
+  | 'ml_model_registry'
   | 'rpg_character';
 
 export interface Settings {
@@ -384,6 +391,67 @@ export interface Settings {
   target_bodyweight_lb: number | null;
   /** 'auto' derives from check-ins; any BodyState value forces that mode. */
   xp_mode: 'auto' | BodyState;
+  // Sprint 8a: two-column RPE.
+  /** Strict purity: hide the engine estimate until after the set is logged. */
+  blind_rpe: boolean;
+  /** Show the once-per-session divergence nudge ("physics says N, you said M"). */
+  rpe_nudge_enabled: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 8a — ML harness: two-column RPE + feature store
+// ---------------------------------------------------------------------------
+
+export type RpeConfidence = 'high' | 'medium' | 'low';
+
+export type RpeSource = 'logged' | 'estimated' | 'missing';
+
+export type FeatureCompleteness = 'sparse' | 'rich';
+
+export type ModelVersion = 'deterministic_velocity' | 'persistence' | 'ml_v1';
+
+/** One row per set — deterministic derivation, missing inputs stay NULL (no imputation). */
+export interface MLFeature {
+  set_id: string; // PK, FK → workout_sets(id) ON DELETE CASCADE
+  training_date: string; // YYYY-MM-DD (4AM boundary)
+  exercise_id: string;
+  weight: number | null;
+  reps: number | null;
+  e1rm: number | null;
+  rpe_source: RpeSource;
+  rpe_value: number | null;
+  set_type: SetType | null;
+  set_order: number | null;
+  exercise_order_in_session: number | null;
+  days_since_last_same_exercise: number | null;
+  recovery_value: number | null;
+  hrv_z: number | null;
+  sleep_hours: number | null;
+  body_state: string | null;
+  gate_level: string | null;
+  caffeine: boolean | null;
+  mood: number | null;
+  energy: number | null;
+  rolling_7d_volume: number | null;
+  rolling_28d_volume: number | null;
+  velocity_slope_12w: number | null;
+  divergence: number | null; // rpe_user − rpe_estimated
+  source: SetSource;
+  feature_completeness: FeatureCompleteness;
+  created_at: string;
+  syncedAt?: string;
+}
+
+/** Version pinning for inference: empty registry → deterministic baselines. */
+export interface MLModelRegistryRow {
+  id: string;
+  model_version: ModelVersion;
+  artifact_path: string | null;
+  trained_at: string | null;
+  metrics: Record<string, number> | null;
+  is_active: boolean;
+  created_at: string;
+  syncedAt?: string;
 }
 
 // ---------------------------------------------------------------------------

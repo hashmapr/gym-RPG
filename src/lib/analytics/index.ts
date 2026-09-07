@@ -40,6 +40,7 @@ import { e1rm } from '../e1rm';
 import { evaluatePR } from '../pr';
 import { setVolume } from '../volume';
 import { getTrainingDate } from '../day-boundary';
+import { lsqSlopePerWeek } from '../ml/features';
 
 export * from './types';
 
@@ -261,23 +262,14 @@ function computeVelocity(p: Prep): Record<string, VelocityEntry | null> {
       x: daysBetween(p.today, p.trainingDateOf.get(s.id) as string), // negative
       y: p.sessionBestE1rm.get(`${s.id}|${ex.id}`) as number,
     }));
-    const n = pts.length;
-    const mx = mean(pts.map((q) => q.x));
-    const my = mean(pts.map((q) => q.y));
-    let sxy = 0;
-    let sxx = 0;
-    let syy = 0;
-    for (const q of pts) {
-      sxy += (q.x - mx) * (q.y - my);
-      sxx += (q.x - mx) ** 2;
-      syy += (q.y - my) ** 2;
+    const fit = lsqSlopePerWeek(pts);
+    if (!fit) {
+      out[ex.id] = null;
+      continue;
     }
-    const slopePerDay = sxx > 0 ? sxy / sxx : 0;
-    const slope = slopePerDay * 7;
-    // Guard: perfectly flat series (syy === 0) is a perfect fit, not NaN.
-    const r2 = syy === 0 ? 1 : sxx === 0 ? 0 : (sxy * sxy) / (sxx * syy);
+    const { slope, r2 } = fit;
     const status = slope >= 1 ? 'progressing' : slope <= -1 ? 'declining' : 'stalled';
-    out[ex.id] = { slope_per_week: r4(slope), r2: r4(r2), status, sessions: n };
+    out[ex.id] = { slope_per_week: r4(slope), r2: r4(r2), status, sessions: pts.length };
   }
   return out;
 }

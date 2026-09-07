@@ -143,6 +143,8 @@ describe('topWorkingSet', () => {
     weight,
     reps,
     rpe: 8,
+    rpe_estimated: null,
+    rpe_confidence: null,
     rir: null,
     tempo: null,
     set_type: setType,
