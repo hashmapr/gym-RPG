@@ -41,8 +41,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh">
       {/* Desktop icon rail */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-16 flex-col items-center border-r border-ember-border/30 bg-base py-4 lg:flex">
-        <Link href="/" aria-label={APP_WORDMARK} className="mb-6 font-display text-lg font-bold text-ember">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-16 flex-col items-center border-r border-border bg-base py-4 lg:flex">
+        <Link href="/" aria-label={APP_WORDMARK} className="mb-6 font-display text-lg font-bold text-white">
           O
         </Link>
         <nav className="flex flex-1 flex-col gap-1">
@@ -54,7 +54,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               data-testid={`rail-${item.label.toLowerCase()}`}
               className={`flex h-12 w-12 items-center justify-center rounded-xl text-xl transition-colors ${
                 isActive(pathname, item.href)
-                  ? 'bg-ember-dim text-ember'
+                  ? 'bg-surface-raised text-white'
                   : 'text-zinc-500 hover:bg-surface hover:text-zinc-200'
               }`}
             >
@@ -72,14 +72,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Mobile bottom nav */}
       <nav
         data-testid="bottom-nav"
-        className="fixed inset-x-0 bottom-0 z-40 flex h-16 items-stretch border-t border-ember-border/30 bg-base/95 backdrop-blur lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 flex h-16 items-stretch border-t border-border bg-base/95 backdrop-blur lg:hidden"
       >
         {PRIMARY.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             className={`flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] uppercase tracking-wider ${
-              isActive(pathname, item.href) ? 'text-ember' : 'text-zinc-500'
+              isActive(pathname, item.href) ? 'text-white' : 'text-zinc-500'
             }`}
           >
             <span className="text-lg leading-none">{item.icon}</span>
@@ -92,7 +92,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           data-testid="nav-more"
           aria-expanded={moreOpen}
           className={`flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] uppercase tracking-wider ${
-            moreActive ? 'text-ember' : 'text-zinc-500'
+            moreActive ? 'text-white' : 'text-zinc-500'
           }`}
         >
           <span className="text-lg leading-none">⋯</span>
@@ -106,7 +106,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div className="absolute inset-0 bg-black/60" />
           <div
             data-testid="more-sheet"
-            className="absolute inset-x-0 bottom-16 rounded-t-2xl border-t border-ember-border/40 bg-surface p-4"
+            className="absolute inset-x-0 bottom-16 rounded-t-2xl border-t border-border bg-surface p-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="grid grid-cols-5 gap-2">
@@ -117,7 +117,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   onClick={() => setMoreOpen(false)}
                   className={`flex min-h-20 flex-col items-center justify-center gap-1 rounded-xl border text-xs ${
                     isActive(pathname, item.href)
-                      ? 'border-ember-border bg-ember-dim text-ember'
+                      ? 'border-white/60 bg-surface-raised text-white'
                       : 'border-border bg-surface-raised text-zinc-300'
                   }`}
                 >

@@ -3,7 +3,7 @@
 import { COLORS } from '@/lib/tokens';
 
 // Sprint 7 — Character sheet. Level ring, four branch gauges, streaks, and
-// the body-state chip. All copy from RPG_COPY; theme via ember tokens.
+// the body-state chip. All copy from RPG_COPY; theme via monochrome tokens.
 
 import Link from 'next/link';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -28,7 +28,7 @@ function Ring({ level, progress }: { level: number; progress: number }) {
         cy="60"
         r={r}
         fill="none"
-        stroke={COLORS.ember}
+        stroke={COLORS.textPrimary}
         strokeWidth="8"
         strokeLinecap="round"
         strokeDasharray={`${c * progress} ${c}`}
@@ -38,12 +38,12 @@ function Ring({ level, progress }: { level: number; progress: number }) {
         x="60"
         y="56"
         textAnchor="middle"
-        className="fill-zinc-100"
-        style={{ fontSize: 30, fontWeight: 700 }}
+        className="fill-white"
+        style={{ fontSize: 44, fontWeight: 700 }}
       >
         {level}
       </text>
-      <text x="60" y="76" textAnchor="middle" className="fill-ember" style={{ fontSize: 10 }}>
+      <text x="60" y="76" textAnchor="middle" className="fill-white" style={{ fontSize: 10 }}>
         {RPG_COPY.levelShort}
       </text>
     </svg>
@@ -65,15 +65,15 @@ function Gauge({
 }) {
   const pct = total > 0 ? Math.min(100, Math.round((earned / total) * 100)) : 0;
   return (
-    <div className="rounded-xl border border-ember-border/40 bg-zinc-900 p-4" data-testid={`gauge-${branch}`}>
+    <div className="rounded-xl border border-border bg-surface p-4" data-testid={`gauge-${branch}`}>
       <div className="flex items-baseline justify-between">
-        <span className="font-display text-sm font-bold text-ember">{branch}</span>
+        <span className="font-display text-sm font-bold text-white">{branch}</span>
         <span className="text-xs text-zinc-400">
           {xp.toLocaleString()} {RPG_COPY.xp}
         </span>
       </div>
-      <div className="mt-2 h-2 rounded-full bg-zinc-800">
-        <div className="h-2 rounded-full bg-ember" style={{ width: `${pct}%` }} />
+      <div className="mt-2 h-[2px] rounded-full bg-border">
+        <div className="h-[2px] rounded-full bg-white" style={{ width: `${pct}%` }} />
       </div>
       <p className="mt-2 text-xs text-zinc-500">{hint}</p>
     </div>
@@ -159,24 +159,25 @@ export default function CharacterPage() {
         <span className="w-16" />
       </header>
 
-      <section className="rounded-xl border border-ember-border/40 bg-zinc-900 p-5">
+      <section className="rounded-xl border border-border bg-surface p-5">
         <div className="flex items-center gap-5">
           <Ring level={character.level} progress={Math.max(0, Math.min(1, progress))} />
           <div>
-            <h2 className="font-display text-xl font-bold text-ember">{RPG_COPY.powerLevel}</h2>
-            <p className="mt-1 text-sm text-zinc-300">
-              {character.total_xp.toLocaleString()} {RPG_COPY.xp}
+            <h2 className="eyebrow text-zinc-400">{RPG_COPY.powerLevel}</h2>
+            <p className="mt-1 font-display text-2xl font-bold text-white tabular-nums">
+              {character.total_xp.toLocaleString()}{' '}
+              <span className="text-sm font-medium text-zinc-400">{RPG_COPY.xp}</span>
             </p>
             <p className="text-xs text-zinc-500">{RPG_COPY.toNext(prog.remaining)}</p>
             <div className="mt-3 flex gap-2 text-xs">
               <span
                 data-testid="body-state-chip"
-                className="rounded-full border border-ember-border/60 bg-ember-dim px-3 py-1 text-ember"
+                className="rounded-full border border-border bg-surface-raised px-3 py-1 text-white"
               >
                 {RPG_COPY.bodyState[body.state]}
               </span>
               {body.lastShift && (
-                <span className="rounded-full border border-zinc-700 px-3 py-1 text-zinc-400">
+                <span className="rounded-full border border-border px-3 py-1 text-zinc-400">
                   {body.lastShift.from === 'CUT'
                     ? '↑'
                     : body.lastShift.from === 'GAIN'
@@ -190,7 +191,7 @@ export default function CharacterPage() {
           </div>
         </div>
         {settings.target_bodyweight_lb == null && (
-          <p className="mt-4 rounded-lg border border-ember-border/40 bg-ember-dim p-3 text-xs text-ember">
+          <p className="mt-4 rounded-lg border border-border bg-surface-raised p-3 text-xs text-white">
             {RPG_COPY.targetPrompt}
           </p>
         )}
@@ -213,14 +214,14 @@ export default function CharacterPage() {
       </section>
 
       <section className="mt-4 grid grid-cols-2 gap-3 text-center">
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-          <p className="text-2xl font-bold text-ember" data-testid="best-streak">
+        <div className="rounded-xl border border-border bg-surface p-4">
+          <p className="font-display text-3xl font-bold text-white tabular-nums" data-testid="best-streak">
             {character.best_streak}
           </p>
           <p className="text-xs text-zinc-500">Best streak</p>
         </div>
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-          <p className="text-2xl font-bold text-ember" data-testid="current-streak">
+        <div className="rounded-xl border border-border bg-surface p-4">
+          <p className="font-display text-3xl font-bold text-white tabular-nums" data-testid="current-streak">
             {character.current_streak}
           </p>
           <p className="text-xs text-zinc-500">Current streak</p>
@@ -230,13 +231,13 @@ export default function CharacterPage() {
       <section className="mt-4 flex gap-3">
         <Link
           href="/skilltree"
-          className="min-h-12 flex-1 rounded-xl border border-ember-border/60 bg-ember-dim px-4 py-3 text-center font-display text-sm font-bold text-ember"
+          className="min-h-12 flex-1 rounded-xl border border-border bg-surface-raised px-4 py-3 text-center font-display text-sm font-bold text-white"
         >
           Skill Tree
         </Link>
         <Link
           href="/quests"
-          className="min-h-12 flex-1 rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-center font-display text-sm font-bold text-zinc-200"
+          className="min-h-12 flex-1 rounded-xl border border-border bg-surface px-4 py-3 text-center font-display text-sm font-bold text-zinc-200"
         >
           Quests
         </Link>

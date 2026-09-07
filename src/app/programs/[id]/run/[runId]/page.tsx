@@ -116,7 +116,7 @@ export default function RunDetailPage() {
     return (
       <main className="p-6">
         <p className="text-zinc-400 mb-4">Run not found.</p>
-        <Link href="/programs" className="text-emerald-400">
+        <Link href="/programs" className="text-white">
           ← Programs
         </Link>
       </main>
@@ -131,7 +131,7 @@ export default function RunDetailPage() {
         <Link href="/programs" className="text-sm text-zinc-400 hover:text-zinc-100">
           ← Programs
         </Link>
-        <h1 className="text-lg font-black tracking-tight text-emerald-400 text-right">
+        <h1 className="text-lg font-black tracking-tight text-white text-right">
           {program.name}
         </h1>
       </header>
@@ -140,7 +140,7 @@ export default function RunDetailPage() {
         Week <span className="text-zinc-100 tabular-nums">{run.current_week}</span> of{' '}
         <span className="tabular-nums">{totalWeeks}</span> · started{' '}
         <span className="tabular-nums">{run.started_on}</span> ·{' '}
-        <span className={`uppercase font-bold ${run.status === 'active' ? 'text-emerald-400' : 'text-zinc-500'}`}>
+        <span className={`uppercase font-bold ${run.status === 'active' ? 'text-white' : 'text-zinc-500'}`}>
           {run.status}
         </span>
       </p>
@@ -225,17 +225,17 @@ function SessionRow({
 }) {
   const badge =
     session.status === 'completed'
-      ? { label: 'DONE', cls: 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300' }
+      ? { label: 'DONE', cls: 'bg-white/10 border-white/40 text-white' }
       : session.status === 'missed'
         ? { label: 'MISSED', cls: 'bg-red-500/15 border-red-500/40 text-red-300' }
         : session.planned_date != null && session.planned_date <= today
-          ? { label: 'DUE', cls: 'bg-amber-500/15 border-amber-500/40 text-amber-300' }
+          ? { label: 'DUE', cls: 'bg-white/10 border-white/40 text-white' }
           : { label: 'UPCOMING', cls: 'bg-zinc-700/40 border-zinc-600 text-zinc-300' };
   return (
     <li className="flex items-center justify-between text-sm">
       <span className="text-zinc-300">
         D{session.day_number} · {session.workout_name}
-        {session.is_deload && <span className="ml-1 text-xs text-sky-300">DELOAD</span>}
+        {session.is_deload && <span className="ml-1 text-xs text-zinc-300">DELOAD</span>}
         {subs.map(({ fromId, toId }) => {
           const fromName = exerciseName(
             exById.get(fromId) ?? {
@@ -265,7 +265,7 @@ function SessionRow({
             <span
               key={`${fromId}-${toId}`}
               data-testid="substitution-row"
-              className="ml-1 text-xs text-amber-300"
+              className="ml-1 text-xs text-zinc-300"
             >
               ⇄ {fromName} → {toName}
             </span>

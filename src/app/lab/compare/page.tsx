@@ -52,7 +52,7 @@ function MetricCard({ title, r, exercises }: { title: string; r: CompareResult; 
           {Object.entries(r.per_exercise_e1rm_delta).map(([id, d]) => (
             <li key={id} className="flex justify-between">
               <span className="text-zinc-400">{exercises[id]?.name ?? id.slice(0, 8)}</span>
-              <span className={d.delta > 0 ? 'text-emerald-400' : d.delta < 0 ? 'text-rose-400' : 'text-zinc-500'}>
+              <span className={d.delta > 0 ? 'text-white' : d.delta < 0 ? 'text-zinc-400' : 'text-zinc-500'}>
                 {d.delta > 0 ? '+' : ''}
                 {d.delta.toFixed(4)}
               </span>
@@ -85,7 +85,7 @@ export default function ComparePage() {
         <span className="w-16" />
       </header>
       <SeedBanner />
-      {error && <p className="mt-4 text-rose-400 text-sm">{error}</p>}
+      {error && <p className="mt-4 text-zinc-300 text-sm">{error}</p>}
       <div className="mt-4 space-y-4">
         {data && (
           <>

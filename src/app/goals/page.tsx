@@ -92,7 +92,7 @@ export default function GoalsPage() {
         <span className="w-16" />
       </header>
       <SeedBanner />
-      {error && <p className="mt-4 text-rose-400 text-sm">{error}</p>}
+      {error && <p className="mt-4 text-zinc-300 text-sm">{error}</p>}
 
       <ul className="mt-4 space-y-3" data-testid="goals-list">
         {rows.map((g) => (
@@ -109,14 +109,14 @@ export default function GoalsPage() {
               </span>
             </div>
             {g.achieved ? (
-              <p className="mt-2 text-sm text-emerald-400" data-testid="goal-achieved">
+              <p className="mt-2 text-sm text-white" data-testid="goal-achieved">
                 Achieved{g.achievedAt ? ` · ${g.achievedAt.slice(0, 10)}` : ''}
               </p>
             ) : (
               <>
                 <div className="mt-3 h-2 rounded-full bg-zinc-800 overflow-hidden">
                   <div
-                    className="h-full bg-emerald-500 rounded-full"
+                    className="h-full bg-white rounded-full"
                     style={{ width: `${Math.min(100, g.progress_pct)}%` }}
                     data-testid="goal-progress"
                   />

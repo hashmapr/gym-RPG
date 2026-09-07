@@ -17,10 +17,10 @@ type CalendarResponse = {
 function heatClass(volume: number, max: number): string {
   if (volume <= 0) return 'bg-zinc-900 border-zinc-800';
   const t = volume / max;
-  if (t < 0.25) return 'bg-emerald-950 border-emerald-900';
-  if (t < 0.5) return 'bg-emerald-900 border-emerald-800';
-  if (t < 0.75) return 'bg-emerald-700 border-emerald-600';
-  return 'bg-emerald-500 border-emerald-400';
+  if (t < 0.25) return 'bg-zinc-800 border-zinc-700';
+  if (t < 0.5) return 'bg-zinc-600 border-zinc-500';
+  if (t < 0.75) return 'bg-zinc-400 border-zinc-300';
+  return 'bg-white border-white';
 }
 
 export default function CalendarPage() {
@@ -60,7 +60,7 @@ export default function CalendarPage() {
         <span className="w-16" />
       </header>
       <SeedBanner />
-      {error && <p className="mt-4 text-rose-400 text-sm">{error}</p>}
+      {error && <p className="mt-4 text-zinc-300 text-sm">{error}</p>}
 
       <section className="mt-4" data-testid="calendar-heatmap">
         <div className="space-y-1">

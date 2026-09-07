@@ -39,8 +39,8 @@ function minWeighIn(metrics: DailyMetric[]): number | null {
 const KIND_ORDER = ['trial', 'arc', 'deed', 'feat'] as const;
 
 const STATE_STYLE: Record<string, string> = {
-  completed: 'border-ember bg-ember-dim text-ember',
-  active: 'border-ember-border/60 bg-zinc-900 text-zinc-200',
+  completed: 'border-white/80 bg-white/10 text-white',
+  active: 'border-zinc-600 bg-zinc-900 text-zinc-400',
   failed: 'border-zinc-800 bg-zinc-950 text-zinc-500',
   locked: 'border-zinc-800 bg-zinc-950 text-zinc-600',
 };
@@ -64,9 +64,9 @@ function QuestCard({ q }: { q: QuestView }) {
       <p className="mt-1 text-xs opacity-75">{q.subtitle}</p>
       {q.progress && q.state === 'active' && (
         <div className="mt-2">
-          <div className="h-1.5 rounded-full bg-zinc-800">
+          <div className="h-[2px] rounded-full bg-border">
             <div
-              className="h-1.5 rounded-full bg-ember"
+              className="h-[2px] rounded-full bg-white"
               style={{
                 width: `${Math.min(100, Math.round((q.progress.current / Math.max(1, q.progress.required)) * 100))}%`,
               }}
@@ -153,7 +153,7 @@ export default function QuestsPage() {
           if (quests.length === 0) return null;
           return (
             <section key={kind} className="mb-6" data-testid={`quest-kind-${kind}`}>
-              <h2 className="font-display mb-2 text-sm font-bold text-ember">
+              <h2 className="font-display mb-2 text-sm font-bold text-white">
                 {RPG_COPY.questKinds[kind]}
               </h2>
               <div className="grid grid-cols-1 gap-2">

@@ -48,7 +48,9 @@ describe('Character page', () => {
     for (const branch of ['Strength', 'Power', 'Conditioning', 'Discipline']) {
       expect(screen.getByTestId(`gauge-${branch}`)).toBeInTheDocument();
     }
-    expect(screen.getByText(new RegExp(`${c.total_xp.toLocaleString()} XP`))).toBeInTheDocument();
+    // v2: numeral and unit live in separate spans (giant-numeral treatment).
+    expect(screen.getByText(new RegExp(`^${c.total_xp.toLocaleString()}`))).toBeInTheDocument();
+    expect(screen.getByText(RPG_COPY.xp)).toBeInTheDocument();
   });
 
   it('shows the target prompt when target bodyweight is unset', async () => {
@@ -95,11 +97,18 @@ describe('Celebration overlay', () => {
 });
 
 describe('Theme + copy rules', () => {
-  it('globals.css defines the ember tokens', () => {
+  it('globals.css defines the monochrome tokens (7.6 v2)', () => {
     const css = readFileSync(resolve(__dirname, '../../src/app/globals.css'), 'utf8');
-    expect(css).toContain('--color-ember:');
-    expect(css).toContain('--color-ember-deep:');
+    expect(css).toContain('--color-base:');
+    expect(css).toContain('--color-surface:');
+    expect(css).toContain('--color-border:');
+    expect(css).toContain('--color-good:');
+    expect(css).toContain('--color-warn:');
+    expect(css).toContain('--color-bad:');
     expect(css).toContain('--font-display:');
+    expect(css).toContain('--font-mono:');
+    // Ember tokens are dead in v2.
+    expect(css).not.toContain('--color-ember');
   });
 
   it('RPG_COPY contains zero fantasy nouns', () => {

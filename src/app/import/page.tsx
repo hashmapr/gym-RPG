@@ -293,7 +293,7 @@ export default function ImportPage() {
                 onClick={() => void saveSettings({ hevy_unit: u })}
                 className={`min-h-12 px-4 text-sm font-semibold ${
                   settings.hevy_unit === u
-                    ? 'bg-emerald-600 text-white'
+                    ? 'bg-white text-black'
                     : 'bg-zinc-800 text-zinc-300'
                 }`}
               >
@@ -313,7 +313,7 @@ export default function ImportPage() {
           }}
           className="block w-full text-sm text-zinc-300
             file:mr-3 file:py-3 file:px-4 file:rounded-lg file:border-0
-            file:bg-emerald-600 file:text-white file:font-semibold file:cursor-pointer"
+            file:bg-white file:text-black file:font-semibold file:cursor-pointer"
         />
         {importing && <p className="mt-3 text-sm text-zinc-400">Importing…</p>}
         {error && (
@@ -323,15 +323,15 @@ export default function ImportPage() {
         )}
         {result && (
           <div data-testid="import-result" className="mt-3 text-sm">
-            <p className="text-emerald-400 font-semibold">
+            <p className="text-white font-semibold">
               Imported {result.sessions} sessions, {result.sets} sets
               {result.cardio > 0 && `, ${result.cardio} cardio entries`}.
             </p>
             {result.skipped > 0 && (
-              <p className="text-amber-400">{result.skipped} rows skipped.</p>
+              <p className="text-zinc-300">{result.skipped} rows skipped.</p>
             )}
             {result.unmatched > 0 && (
-              <p className="text-amber-400">
+              <p className="text-zinc-300">
                 {result.unmatched} sets skipped — exercise not in library.
               </p>
             )}
@@ -359,7 +359,7 @@ export default function ImportPage() {
             file:bg-zinc-700 file:text-white file:font-semibold file:cursor-pointer"
         />
         {measResult != null && (
-          <p data-testid="measurements-result" className="mt-3 text-sm text-emerald-400 font-semibold">
+          <p data-testid="measurements-result" className="mt-3 text-sm text-white font-semibold">
             Imported {measResult} measurement{measResult === 1 ? '' : 's'}.
           </p>
         )}
@@ -368,9 +368,9 @@ export default function ImportPage() {
       {materialized && (
         <section
           data-testid="character-materialized"
-          className="rounded-xl border border-ember-border bg-ember-dim p-6 text-center"
+          className="rounded-xl border border-border bg-surface-raised p-6 text-center"
         >
-          <h2 className="font-display text-xl font-bold text-ember">
+          <h2 className="font-display text-xl font-bold text-white">
             {RPG_COPY.materializedTitle}
           </h2>
           <p className="mt-2 text-sm text-zinc-300">
@@ -378,7 +378,7 @@ export default function ImportPage() {
           </p>
           <Link
             href="/character"
-            className="mt-4 inline-block min-h-12 rounded-xl border border-ember-border bg-zinc-900 px-6 py-3 font-display text-sm font-bold text-ember"
+            className="mt-4 inline-block min-h-12 rounded-xl border border-border bg-zinc-900 px-6 py-3 font-display text-sm font-bold text-white"
           >
             View character
           </Link>

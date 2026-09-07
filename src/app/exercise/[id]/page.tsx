@@ -45,7 +45,7 @@ export default function ExerciseDetailPage({
     return (
       <main className="p-6">
         <p className="text-zinc-400">Exercise not found.</p>
-        <Link href="/history" className="text-emerald-400">
+        <Link href="/history" className="text-white">
           ← History
         </Link>
       </main>
@@ -78,7 +78,7 @@ export default function ExerciseDetailPage({
       {best && (
         <p className="mb-4 text-sm text-zinc-400">
           Best set:{' '}
-          <span data-testid="best-set" className="text-emerald-400 font-bold">
+          <span data-testid="best-set" className="text-white font-bold">
             {formatWeight(best.weight as number)} × {best.reps}
           </span>
         </p>
@@ -92,8 +92,8 @@ export default function ExerciseDetailPage({
           <div data-testid="e1rm-chart" className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
-                <XAxis dataKey="date" stroke={COLORS.textMuted} fontSize={10} />
-                <YAxis stroke={COLORS.textMuted} fontSize={10} domain={['auto', 'auto']} />
+                <XAxis dataKey="date" stroke={COLORS.textTertiary} fontSize={10} />
+                <YAxis stroke={COLORS.textTertiary} fontSize={10} domain={['auto', 'auto']} />
                 <Tooltip
                   contentStyle={{
                     background: COLORS.surfaceRaised,

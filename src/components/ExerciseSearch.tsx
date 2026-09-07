@@ -139,7 +139,7 @@ export default function ExerciseSearch({
               <button
                 type="button"
                 onClick={addCustom}
-                className="w-full text-left min-h-12 px-4 py-2 hover:bg-zinc-800 text-emerald-400"
+                className="w-full text-left min-h-12 px-4 py-2 hover:bg-zinc-800 text-white"
               >
                 + Add custom exercise “{query.trim()}”
               </button>

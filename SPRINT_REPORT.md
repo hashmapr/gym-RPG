@@ -1,5 +1,41 @@
 # Sprint Report
 
+# Sprint 7.6 v2 Report — "Instrument Panel Monochrome" (full re-skin)
+
+## Test counts
+
+| Suite | Result |
+|---|---|
+| `tests/unit/identity.test.ts` (strengthened) | 6/6 — +zero Cinzel, +zero decorative color classes (lime/amber/emerald/violet/rose/sky/…), +zero dead ember hexes |
+| `tests/component/rpg.test.tsx` (updated) | 8/8 — token test now asserts monochrome tokens + asserts ember tokens are DEAD |
+| Full vitest | 320/326 pass; 6 parallel-jsdom flakes pass solo (documented pattern) |
+| `tsc --noEmit` | clean |
+| `npm run build` | clean |
+| `npm run seed:verify` | zero golden diffs (skin-only — engines untouched) |
+| Playwright `visual.spec.ts` | 7/7 — 14 baselines regenerated for the new skin |
+| Playwright `rpg.spec.ts` | 4/4 |
+
+## What shipped
+
+1. **Tokens** — `tokens.ts` + `globals.css` rewritten: base `#000000` (OLED), surface `#141416`, surface-raised `#1c1c1f`, border `#27272a`, text white/`#a1a1aa`/`#52525b`. Accent = WHITE. Functional color only: good `#22c55e` / warn `#eab308` / bad `#ef4444` (recovery bands). Ember family + border-gold exterminated.
+2. **Typography** — Space Grotesk (display 500/600/700), IBM Plex Mono (eyebrows: 11px uppercase 0.08em tracking via `.eyebrow`), Inter body with `tabular-nums`. Cinzel removed everywhere.
+3. **Mechanical sweep** — every ember class/hex → monochrome across 30+ files; decorative color classes (emerald/violet/amber/rose/sky/lime) → white accent or zinc. Recovery visuals (RecoveryHome badge, RecoveryGate, sparkline) keep band colors via `good/warn/bad` tokens. Deliberate deviation: destructive/error red kept in settings (safety affordance, informational not decorative).
+4. **Design passes** — home CTAs `bg-white text-black rounded-md` (fixed the Tailwind v4 `text-base` = font-size trap that left white-on-white text); eyebrows on home cards; secondary buttons transparent + hairline + `active:bg-white/10`; XP/progress bars 2px white on `#27272a` track (quests, character gauges); skill-tree nodes white=done / zinc-400=available / zinc-600=locked; character POWER LEVEL ring numeral 44px + giant XP numeral; ChallengeDial monochrome (white active/complete, zinc fail); Celebration white glow + `navigator.vibrate(30)`; AppShell active `bg-white/10`; calendar heat = grayscale ramp; lab status colors → white/zinc; manifest `#000000`.
+5. **Audits** — identity.test.ts now enforces: zero "The Lab", zero hex outside tokens, zero Cinzel, zero decorative color classes, zero dead ember hexes. rpg.test.ts asserts ember tokens are gone.
+
+## Key findings
+
+- **Tailwind v4 `text-base` trap**: resolves to font-size (1rem), not color — old CTAs had invisible white-on-white text. Always `text-black` explicitly on white buttons.
+- **Split-text test trap**: breaking "19,242 XP" into numeral + unit spans breaks `getByText(/19,242 XP/)` — tests updated to match the numeral and unit separately.
+- **Parallel jsdom flake**: 6 failures under parallel load (load avg 3.2), all pass solo — same documented pattern as program-builder.
+
+## Deviations from spec
+
+- **No separate chat route**: argus hub (prompt + draft preview) IS the chat surface — skin-only constraint forbids new pages. 7 visual surfaces unchanged.
+- **Destructive red kept** in settings (delete confirm, errors): informational safety affordance; CI greps ban lime/gold, not red.
+
+---
+
 # Sprint 7.6 Report — "The Face" (identity, shell, home, visual baselines)
 
 ## Test counts

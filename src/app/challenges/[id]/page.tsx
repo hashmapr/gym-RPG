@@ -135,7 +135,7 @@ export default function ChallengeRunPage({ params }: { params: Promise<{ id: str
             <button
               onClick={() => setAmendOpen(true)}
               data-testid="open-amendment"
-              className="w-full min-h-12 rounded-lg bg-violet-600 text-white font-semibold mb-4"
+              className="w-full min-h-12 rounded-lg bg-white text-black font-semibold mb-4"
             >
               Review {AI_NAME}'s proposed adjustment
             </button>
@@ -145,8 +145,8 @@ export default function ChallengeRunPage({ params }: { params: Promise<{ id: str
 
       {/* Resolution banner */}
       {run.status === 'completed' && (
-        <div className="rounded-xl bg-emerald-950 border border-emerald-800 p-4 mb-4">
-          <p className="font-semibold text-emerald-400">
+        <div className="rounded-xl bg-surface-raised border border-white/40 p-4 mb-4">
+          <p className="font-semibold text-white">
             {early ? 'Finished early 🎉' : 'Completed 🎉'}
           </p>
           <p className="text-xs text-zinc-400 tabular-nums mt-1">
@@ -204,7 +204,7 @@ export default function ChallengeRunPage({ params }: { params: Promise<{ id: str
                     <span
                       className={`text-xs px-2 py-0.5 rounded-full ${
                         s.status === 'completed'
-                          ? 'bg-emerald-950 text-emerald-400'
+                          ? 'bg-white text-black'
                           : s.status === 'missed'
                             ? 'bg-red-950 text-red-400'
                             : 'bg-zinc-800 text-zinc-400'
@@ -318,7 +318,7 @@ export default function ChallengeRunPage({ params }: { params: Promise<{ id: str
               <button
                 onClick={submitAmendment}
                 data-testid="amend-submit"
-                className="flex-1 min-h-12 rounded-lg bg-violet-600 text-white font-semibold"
+                className="flex-1 min-h-12 rounded-lg bg-white text-black font-semibold"
               >
                 Apply
               </button>

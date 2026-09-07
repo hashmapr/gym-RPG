@@ -45,7 +45,7 @@ export default function RestTimer() {
     <div
       data-testid="rest-timer"
       className={`fixed bottom-0 inset-x-0 z-40 flex items-center justify-between gap-3 px-4 py-3 border-t ${
-        done ? 'bg-emerald-600 text-white' : 'bg-zinc-900 text-zinc-100'
+        done ? 'bg-white text-black' : 'bg-zinc-900 text-zinc-100'
       } border-zinc-800`}
     >
       <div className="flex items-baseline gap-2">

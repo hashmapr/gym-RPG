@@ -54,13 +54,13 @@ export default function ProgramsPage() {
         <Link href="/" className="text-sm text-zinc-400 hover:text-zinc-100">
           ← Home
         </Link>
-        <h1 className="text-xl font-black tracking-tight text-emerald-400">
+        <h1 className="text-xl font-black tracking-tight text-white">
           PROGRAMS
         </h1>
         <Link
           href="/programs/new"
           data-testid="new-program"
-          className="min-h-10 px-3 py-2 rounded-lg bg-emerald-600 font-bold text-white text-sm active:bg-emerald-500"
+          className="min-h-10 px-3 py-2 rounded-lg bg-white font-bold text-black text-sm active:bg-white/80"
         >
           + NEW
         </Link>
@@ -119,7 +119,7 @@ function RunCard({
         <span
           className={`text-xs font-bold uppercase tracking-wide ${
             data.run.status === 'active'
-              ? 'text-emerald-400'
+              ? 'text-white'
               : data.run.status === 'abandoned'
                 ? 'text-red-400'
                 : 'text-zinc-500'

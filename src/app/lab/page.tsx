@@ -31,16 +31,16 @@ const PLATEAU_LABEL: Record<PlateauEntry['status'], string> = {
 };
 
 const PLATEAU_COLOR: Record<PlateauEntry['status'], string> = {
-  progressing: 'text-emerald-400',
-  plateau: 'text-amber-400',
-  regressing: 'text-rose-400',
+  progressing: 'text-white',
+  plateau: 'text-zinc-400',
+  regressing: 'text-zinc-300',
   insufficient_data: 'text-zinc-500',
 };
 
 const VELOCITY_COLOR: Record<NonNullable<VelocityEntry>['status'], string> = {
-  progressing: 'text-emerald-400',
-  stalled: 'text-amber-400',
-  declining: 'text-rose-400',
+  progressing: 'text-white',
+  stalled: 'text-zinc-400',
+  declining: 'text-zinc-300',
 };
 
 export default function LabPage() {
@@ -103,7 +103,7 @@ export default function LabPage() {
         </Link>
       </nav>
 
-      {error && <p className="mt-4 text-rose-400 text-sm">{error}</p>}
+      {error && <p className="mt-4 text-zinc-300 text-sm">{error}</p>}
 
       <section className="mt-6" data-testid="lab-plateaus">
         <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
@@ -169,7 +169,7 @@ export default function LabPage() {
               >
                 <span className="font-semibold">{nameOf(a.exercise_id)}</span> ·{' '}
                 {a.training_date} — top set {a.top_weight} flagged{' '}
-                <span className={a.direction === 'high' ? 'text-amber-400' : 'text-rose-400'}>
+                <span className={a.direction === 'high' ? 'text-white' : 'text-zinc-300'}>
                   {a.direction}
                 </span>{' '}
                 (z {a.z.toFixed(4)})
@@ -181,7 +181,7 @@ export default function LabPage() {
                 className="rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm"
               >
                 Week of {a.week_start} — {a.tonnage} volume flagged{' '}
-                <span className={a.direction === 'high' ? 'text-amber-400' : 'text-rose-400'}>
+                <span className={a.direction === 'high' ? 'text-white' : 'text-zinc-300'}>
                   {a.direction}
                 </span>{' '}
                 (z {a.z.toFixed(4)})

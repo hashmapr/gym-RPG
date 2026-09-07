@@ -143,7 +143,7 @@ export default function HomePage() {
     <main className="pb-8">
       {/* 1. Header row: wordmark + character chip */}
       <header className="flex items-center justify-between gap-3 py-4">
-        <h1 className="flex items-center gap-2 font-display text-xl font-bold tracking-[0.2em] text-ember">
+        <h1 className="flex items-center gap-2 font-display text-xl font-bold tracking-[0.2em] text-white">
           <span aria-hidden className="text-base">◉</span>
           {APP_WORDMARK}
         </h1>
@@ -163,9 +163,9 @@ export default function HomePage() {
       {active ? null : todayCard?.state === 'today' && todayCard.plannedSession ? (
         <section
           data-testid="today-card"
-          className="rounded-2xl bg-surface border border-ember-border/40 p-4"
+          className="rounded-2xl bg-surface border border-border p-4"
         >
-          <p className="text-xs uppercase tracking-widest text-ember mb-1">
+          <p className="eyebrow text-zinc-400 mb-1">
             TODAY · WEEK {todayCard.run?.current_week}
             {todayCard.plannedSession.is_deload ? ' · DELOAD' : ''}
           </p>
@@ -187,7 +187,7 @@ export default function HomePage() {
             type="button"
             data-testid="start-program-session"
             onClick={startProgramSession}
-            className="w-full min-h-14 rounded-xl bg-ember font-black text-lg tracking-wide text-base active:bg-ember-deep"
+            className="w-full min-h-14 rounded-md bg-white font-black text-lg tracking-wide text-black active:bg-white/80"
           >
             START
           </button>
@@ -210,19 +210,19 @@ export default function HomePage() {
             type="button"
             data-testid="start-workout"
             onClick={start}
-            className="mt-4 w-full min-h-12 rounded-xl bg-surface-raised border border-border font-bold text-zinc-100 active:bg-border"
+            className="mt-4 w-full min-h-12 rounded-md border border-border bg-transparent font-bold text-white active:bg-white/10"
           >
             TRAIN ANYWAY (FREEFORM)
           </button>
         </section>
       ) : null}
 
-      {/* 3. START / RESUME — the one big ember CTA */}
+      {/* 3. START / RESUME — the one big white CTA */}
       {active ? (
         <Link
           href="/workout"
           data-testid="resume-workout"
-          className="block w-full min-h-20 rounded-2xl bg-ember text-base font-black text-xl tracking-wide text-center py-6 active:bg-ember-deep"
+          className="block w-full min-h-20 rounded-md bg-white text-black font-black text-xl tracking-wide text-center py-6 active:bg-white/80"
         >
           RESUME WORKOUT
         </Link>
@@ -231,7 +231,7 @@ export default function HomePage() {
           type="button"
           data-testid="start-workout"
           onClick={start}
-          className="w-full min-h-20 rounded-2xl bg-ember font-black text-xl tracking-wide text-base py-6 active:bg-ember-deep"
+          className="w-full min-h-20 rounded-md bg-white font-black text-xl tracking-wide text-black py-6 active:bg-white/80"
         >
           START WORKOUT
         </button>
@@ -249,13 +249,13 @@ export default function HomePage() {
           <div className="mt-3 flex gap-3">
             <Link
               href="/programs/new"
-              className="min-h-12 flex-1 rounded-xl border border-ember-border bg-ember-dim px-3 py-3 text-center font-semibold text-ember"
+              className="min-h-12 flex-1 rounded-md border border-border bg-transparent px-3 py-3 text-center font-semibold text-white active:bg-white/10"
             >
               Build a program
             </Link>
             <Link
               href="/programs"
-              className="min-h-12 flex-1 rounded-xl border border-border bg-surface-raised px-3 py-3 text-center text-zinc-300"
+              className="min-h-12 flex-1 rounded-md border border-border bg-transparent px-3 py-3 text-center text-zinc-300 active:bg-white/10"
             >
               Browse programs
             </Link>
@@ -278,12 +278,12 @@ export default function HomePage() {
       {lastSession ? (
         <section className="mt-4 rounded-xl bg-surface border border-border p-4">
           <div className="flex items-baseline justify-between mb-2">
-            <h2 className="text-sm uppercase tracking-wider text-zinc-500">
+            <h2 className="eyebrow text-zinc-500">
               Last workout
             </h2>
             <Link
               href={`/history/${lastSession.id}`}
-              className="text-sm text-ember"
+              className="text-sm text-white"
             >
               Details →
             </Link>
@@ -310,7 +310,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/import"
-            className="mt-3 inline-block min-h-12 rounded-xl border border-ember-border bg-ember-dim px-4 py-3 font-semibold text-ember"
+            className="mt-3 inline-block min-h-12 rounded-md border border-border bg-transparent px-4 py-3 font-semibold text-white active:bg-white/10"
           >
             Import history
           </Link>
@@ -320,7 +320,7 @@ export default function HomePage() {
       {/* Recovery surfaces: sparkline + briefing, expandable */}
       <details className="mt-4 rounded-xl bg-surface border border-border p-4">
         <summary className="cursor-pointer list-none">
-          <span className="text-sm uppercase tracking-wider text-zinc-500">
+          <span className="eyebrow text-zinc-500">
             Recovery &amp; briefing
           </span>
         </summary>
@@ -350,23 +350,23 @@ function CharacterChip({ character }: { character: RPGCharacter }) {
     <Link
       href="/character"
       data-testid="character-chip"
-      className="flex items-center gap-3 rounded-full border border-ember-border/50 bg-ember-dim px-3 py-1.5"
+      className="flex items-center gap-3 rounded-full border border-border bg-surface-raised px-3 py-1.5"
     >
       <span className="relative inline-flex h-10 w-10 items-center justify-center">
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0 -rotate-90">
-          <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={COLORS.emberDim} strokeWidth={stroke} />
+          <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={COLORS.border} strokeWidth={stroke} />
           <circle
             cx={size / 2}
             cy={size / 2}
             r={r}
             fill="none"
-            stroke={COLORS.ember}
+            stroke={COLORS.textPrimary}
             strokeWidth={stroke}
             strokeDasharray={`${c * Math.max(0, Math.min(1, pct))} ${c}`}
             strokeLinecap="round"
           />
         </svg>
-        <span className="font-display text-xs font-bold text-ember tabular-nums">
+        <span className="font-display text-xs font-bold text-white tabular-nums">
           {character.level}
         </span>
       </span>
@@ -396,8 +396,8 @@ function ChallengeStrip({ today }: { today: string }) {
         className="mt-4 rounded-xl bg-surface border border-border p-4"
       >
         <div className="flex items-baseline justify-between">
-          <h2 className="text-sm uppercase tracking-wider text-zinc-500">Challenges</h2>
-          <Link href="/challenges" className="text-sm text-ember">
+          <h2 className="eyebrow text-zinc-500">Challenges</h2>
+          <Link href="/challenges" className="text-sm text-white">
             Browse →
           </Link>
         </div>
@@ -412,8 +412,8 @@ function ChallengeStrip({ today }: { today: string }) {
   return (
     <section className="mt-4">
       <div className="flex items-baseline justify-between mb-2">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500">Challenges</h2>
-        <Link href="/challenges" className="text-sm text-ember">
+        <h2 className="eyebrow text-zinc-500">Challenges</h2>
+        <Link href="/challenges" className="text-sm text-white">
           All →
         </Link>
       </div>
@@ -506,8 +506,8 @@ function WeekTiles({ today }: { today: string }) {
         { label: 'Streak', value: character ? `${character.current_streak}🔥` : '—' },
       ].map((tile) => (
         <div key={tile.label} className="rounded-xl bg-surface border border-border p-3 text-center">
-          <p className="font-display text-lg font-bold text-ember tabular-nums">{tile.value}</p>
-          <p className="text-[10px] uppercase tracking-wider text-zinc-500">{tile.label}</p>
+          <p className="font-display text-lg font-bold text-white tabular-nums">{tile.value}</p>
+          <p className="eyebrow text-zinc-500">{tile.label}</p>
         </div>
       ))}
     </section>

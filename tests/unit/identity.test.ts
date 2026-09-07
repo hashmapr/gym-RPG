@@ -48,3 +48,32 @@ describe('token audit', () => {
     expect(offenders, `found in:\n${offenders.join('\n')}`).toEqual([]);
   });
 });
+
+describe('monochrome audit (Sprint 7.6 v2)', () => {
+  // "Instrument Panel Monochrome": color is information, not decoration.
+  // The only permitted color classes are the recovery band tokens
+  // (good/warn/bad) used in gate badges + recovery visuals. Everything else
+  // grayscale + white accent.
+
+  it('zero Cinzel references (font exterminated)', () => {
+    const offenders = files.filter((f) => /cinzel/i.test(readFileSync(f, 'utf8')));
+    expect(offenders, `found in:\n${offenders.join('\n')}`).toEqual([]);
+  });
+
+  it('zero decorative color classes (lime/gold/amber/emerald/violet/rose/sky)', () => {
+    const offenders = files.filter((f) => {
+      const text = readFileSync(f, 'utf8');
+      return /(?:text|bg|border|fill|stroke|accent|file:bg)-(?:lime|amber|yellow|gold|emerald|violet|rose|sky|fuchsia|teal|indigo|purple|orange)-/.test(
+        text,
+      );
+    });
+    expect(offenders, `found in:\n${offenders.join('\n')}`).toEqual([]);
+  });
+
+  it('zero dead ember hexes from the v1 theme', () => {
+    const offenders = files.filter((f) =>
+      /#d4a24e|#6b5426|#8a5f22|#3a2c14/i.test(readFileSync(f, 'utf8')),
+    );
+    expect(offenders, `found in:\n${offenders.join('\n')}`).toEqual([]);
+  });
+});

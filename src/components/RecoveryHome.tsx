@@ -22,9 +22,9 @@ function levelOf(recovery: number | null): 'green' | 'yellow' | 'red' | 'none' {
 }
 
 const LEVEL_STYLES: Record<string, string> = {
-  green: 'bg-emerald-950 border-emerald-800 text-emerald-300',
-  yellow: 'bg-amber-950 border-amber-800 text-amber-300',
-  red: 'bg-red-950 border-red-800 text-red-300',
+  green: 'bg-good/10 border-good/40 text-good',
+  yellow: 'bg-warn/10 border-warn/40 text-warn',
+  red: 'bg-bad/10 border-bad/40 text-bad',
   none: 'bg-zinc-900 border-zinc-800 text-zinc-400',
 };
 
@@ -132,7 +132,7 @@ export function BriefingCard({ today }: { today: string }) {
       <p data-testid="briefing-card" className="text-sm text-zinc-300 leading-relaxed">
         {briefing.content}
       </p>
-      <Link href="/lab" className="mt-2 inline-block text-xs text-emerald-400">
+      <Link href="/lab" className="mt-2 inline-block text-xs text-white">
         Open Lab →
       </Link>
     </section>
@@ -201,7 +201,7 @@ export function ManualCheckIn({ today }: { today: string }) {
           type="button"
           onClick={submit}
           data-testid="manual-checkin-save"
-          className="min-h-12 flex-1 rounded-lg bg-ember-dim border border-ember-border font-semibold text-ember active:bg-ember-deep"
+          className="min-h-12 flex-1 rounded-md border border-border bg-transparent font-semibold text-white active:bg-white/10"
         >
           {saved ? 'Saved ✓' : 'Save'}
         </button>

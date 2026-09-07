@@ -31,8 +31,8 @@ export interface SetTarget {
 }
 
 const BADGE_CLASS: Record<SetBadge, string> = {
-  'TARGET HIT': 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300',
-  EXCEEDED: 'bg-amber-500/15 border-amber-500/40 text-amber-300',
+  'TARGET HIT': 'bg-white/10 border-white/40 text-white',
+  EXCEEDED: 'bg-white/10 border-white/40 text-white',
   'BELOW TARGET': 'bg-red-500/15 border-red-500/40 text-red-300',
 };
 
@@ -147,7 +147,7 @@ export default function SetLogger({
       {lastPR && (
         <div
           data-testid="pr-banner"
-          className="mb-3 rounded-lg bg-amber-500/15 border border-amber-500/40 text-amber-300 px-3 py-2 text-sm font-semibold"
+          className="mb-3 rounded-lg bg-white/10 border border-white/40 text-white px-3 py-2 text-sm font-semibold"
         >
           🏆 PR!{' '}
           {lastPR.pr.isHeaviest && lastPR.pr.isRepsPR
@@ -272,7 +272,7 @@ export default function SetLogger({
           type="button"
           data-testid="log-set"
           onClick={submit}
-          className="flex-1 min-h-12 rounded-lg bg-emerald-600 font-bold text-white active:bg-emerald-500"
+          className="flex-1 min-h-12 rounded-lg bg-white font-bold text-black active:bg-white/80"
         >
           LOG SET
         </button>
@@ -296,7 +296,7 @@ export default function SetLogger({
               onClick={() => setRpe(rpe === v ? null : v)}
               className={`w-10 h-10 rounded-lg text-sm font-semibold ${
                 rpe === v
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-white text-black'
                   : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
               }`}
             >

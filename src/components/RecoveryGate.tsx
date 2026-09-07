@@ -70,7 +70,7 @@ export default function RecoveryGate({ plannedSessionId, isDeload }: Props) {
     return (
       <div
         data-testid="gate-badge-green"
-        className="rounded-lg bg-emerald-950 border border-emerald-800 px-3 py-2 text-sm text-emerald-300"
+        className="rounded-lg bg-good/10 border border-good/40 px-3 py-2 text-sm text-good"
       >
         Recovery green — full targets
       </div>
@@ -92,7 +92,7 @@ export default function RecoveryGate({ plannedSessionId, isDeload }: Props) {
     return (
       <div
         data-testid="gate-stale"
-        className="rounded-lg bg-amber-950 border border-amber-800 px-3 py-2 text-sm text-amber-300"
+        className="rounded-lg bg-warn/10 border border-warn/40 px-3 py-2 text-sm text-warn"
       >
         Recovery data is stale —{' '}
         <Link href="/settings" className="underline font-semibold">
@@ -144,14 +144,14 @@ export default function RecoveryGate({ plannedSessionId, isDeload }: Props) {
   return (
     <div
       data-testid="gate-banner"
-      className="rounded-lg bg-amber-950 border border-amber-800 px-4 py-3 text-amber-200"
+      className="rounded-lg bg-warn/10 border border-warn/40 px-4 py-3 text-warn"
     >
       <p className="font-bold mb-1">{gateBanner(decision)}</p>
       {decision.reasons.length > 0 && (
-        <p className="text-xs text-amber-300/80">{decision.reasons.join(' · ')}</p>
+        <p className="text-xs text-warn/80">{decision.reasons.join(' · ')}</p>
       )}
       {alreadyApplied ? (
-        <p className="text-xs mt-2 text-amber-300/70" data-testid="gate-applied-note">
+        <p className="text-xs mt-2 text-warn/70" data-testid="gate-applied-note">
           Eased targets applied today
         </p>
       ) : (
@@ -160,7 +160,7 @@ export default function RecoveryGate({ plannedSessionId, isDeload }: Props) {
           data-testid="gate-apply"
           disabled={busy}
           onClick={applyManually}
-          className="mt-3 min-h-12 px-6 rounded-lg bg-amber-600 font-bold text-white disabled:opacity-50"
+          className="mt-3 min-h-12 px-6 rounded-lg bg-white font-bold text-black disabled:opacity-50"
         >
           Apply eased targets
         </button>

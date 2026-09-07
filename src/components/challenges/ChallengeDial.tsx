@@ -2,8 +2,9 @@
 
 import { COLORS } from '@/lib/tokens';
 
-// ChallengeDial — SVG progress ring. 48px minimum touch target, tabular-nums,
-// dark-mode native (zinc palette).
+// ChallengeDial — SVG progress ring. Monochrome: white fill on hairline track
+// (color is information, not decoration). 48px minimum touch target,
+// tabular-nums.
 
 interface Props {
   /** 0..1 (clamped). */
@@ -15,9 +16,9 @@ interface Props {
 }
 
 const STATE_COLORS = {
-  active: COLORS.good,
-  complete: COLORS.good,
-  fail: COLORS.bad,
+  active: COLORS.textPrimary,
+  complete: COLORS.textPrimary,
+  fail: COLORS.textTertiary,
 } as const;
 
 export default function ChallengeDial({ pct, size = 72, label, sub, state = 'active' }: Props) {

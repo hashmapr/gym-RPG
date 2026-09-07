@@ -91,7 +91,7 @@ export default function SettingsPage() {
             }}
             disabled={suggestBusy || !online}
             data-testid="run-suggestion"
-            className="w-full min-h-12 rounded-lg bg-violet-600 text-white font-semibold disabled:opacity-50"
+            className="w-full min-h-12 rounded-lg bg-white text-black font-semibold disabled:opacity-50"
           >
             {suggestBusy ? 'Drafting…' : `Draft this week's ${AI_NAME} suggestion`}
           </button>
@@ -115,7 +115,7 @@ export default function SettingsPage() {
                 <span
                   className={
                     log.outcome === 'accepted'
-                      ? 'text-emerald-400'
+                      ? 'text-white'
                       : log.outcome === 'error'
                         ? 'text-red-400'
                         : 'text-zinc-500'
@@ -142,7 +142,7 @@ export default function SettingsPage() {
               onClick={() => saveSettings({ day_boundary_hour: h })}
               className={`flex-1 min-h-12 rounded-lg font-semibold ${
                 settings.day_boundary_hour === h
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-white text-black'
                   : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
               }`}
             >
@@ -167,7 +167,7 @@ export default function SettingsPage() {
               onClick={() => saveSettings({ rest_default_seconds: s })}
               className={`flex-1 min-h-12 rounded-lg font-semibold text-sm ${
                 settings.rest_default_seconds === s
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-white text-black'
                   : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
               }`}
             >
@@ -188,7 +188,7 @@ export default function SettingsPage() {
             data-testid="setting-sound"
             checked={settings.sound_enabled}
             onChange={(e) => saveSettings({ sound_enabled: e.target.checked })}
-            className="w-6 h-6 accent-emerald-600"
+            className="w-6 h-6 accent-white"
           />
         </label>
         <label className="flex items-center justify-between min-h-12">
@@ -200,7 +200,7 @@ export default function SettingsPage() {
             onChange={(e) =>
               saveSettings({ vibration_enabled: e.target.checked })
             }
-            className="w-6 h-6 accent-emerald-600"
+            className="w-6 h-6 accent-white"
           />
         </label>
       </section>
@@ -217,7 +217,7 @@ export default function SettingsPage() {
               onClick={() => saveSettings({ e1rm_formula: f.value })}
               className={`min-h-12 rounded-lg font-semibold ${
                 settings.e1rm_formula === f.value
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-white text-black'
                   : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
               }`}
             >
@@ -239,7 +239,7 @@ export default function SettingsPage() {
               onClick={() => setSync(m)}
               className={`flex-1 min-h-12 rounded-lg font-semibold capitalize ${
                 syncMode === m
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-white text-black'
                   : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
               }`}
             >
@@ -324,7 +324,7 @@ function AbandonProgramSection() {
         Active: <span className="font-semibold">{activeRun.program.name}</span>
       </p>
       {done && (
-        <p data-testid="abandoned-note" className="text-sm text-amber-300 mb-2">
+        <p data-testid="abandoned-note" className="text-sm text-zinc-300 mb-2">
           Program abandoned. Adherence frozen.
         </p>
       )}
@@ -535,7 +535,7 @@ function WhoopSection() {
             data-testid="whoop-connect"
             disabled={busy}
             onClick={connect}
-            className="flex-1 min-h-12 rounded-lg bg-emerald-600 font-bold text-white disabled:opacity-50"
+            className="flex-1 min-h-12 rounded-lg bg-white font-bold text-black disabled:opacity-50"
           >
             Connect WHOOP
           </button>
@@ -547,7 +547,7 @@ function WhoopSection() {
               data-testid="whoop-sync"
               disabled={busy}
               onClick={syncNow}
-              className="flex-1 min-h-12 rounded-lg bg-emerald-600 font-bold text-white disabled:opacity-50"
+              className="flex-1 min-h-12 rounded-lg bg-white font-bold text-black disabled:opacity-50"
             >
               Sync now
             </button>
@@ -588,7 +588,7 @@ function RecoverySection() {
             onClick={() => saveSettings({ gate_mode: m })}
             className={`flex-1 min-h-12 rounded-lg text-sm font-semibold ${
               settings.gate_mode === m
-                ? 'bg-emerald-600 text-white'
+                ? 'bg-white text-black'
                 : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
             }`}
           >
@@ -606,7 +606,7 @@ function RecoverySection() {
           data-testid="manual-gate-toggle"
           onClick={() => saveSettings({ manual_gate_enabled: !settings.manual_gate_enabled })}
           className={`w-12 h-7 rounded-full relative transition-colors ${
-            settings.manual_gate_enabled ? 'bg-emerald-600' : 'bg-zinc-700'
+            settings.manual_gate_enabled ? 'bg-white' : 'bg-zinc-700'
           }`}
         >
           <span
@@ -673,7 +673,7 @@ function CheckInSection() {
         type="button"
         data-testid="checkin-save"
         onClick={submit}
-        className="w-full min-h-12 rounded-lg bg-emerald-600 font-bold text-white"
+        className="w-full min-h-12 rounded-lg bg-white font-bold text-black"
       >
         {saved ? 'Saved ✓' : 'Save check-in'}
       </button>

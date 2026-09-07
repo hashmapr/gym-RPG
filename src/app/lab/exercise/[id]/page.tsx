@@ -35,9 +35,9 @@ const PLATEAU_LABEL: Record<PlateauEntry['status'], string> = {
 };
 
 const PLATEAU_COLOR: Record<PlateauEntry['status'], string> = {
-  progressing: 'text-emerald-400',
-  plateau: 'text-amber-400',
-  regressing: 'text-rose-400',
+  progressing: 'text-white',
+  plateau: 'text-zinc-400',
+  regressing: 'text-zinc-300',
   insufficient_data: 'text-zinc-500',
 };
 
@@ -74,8 +74,8 @@ export default function LabExercisePage({
   if (error) {
     return (
       <main className="p-6">
-        <p className="text-rose-400">{error}</p>
-        <Link href="/lab" className="text-emerald-400">
+        <p className="text-zinc-300">{error}</p>
+        <Link href="/lab" className="text-white">
           ← Overload
         </Link>
       </main>
@@ -153,8 +153,8 @@ export default function LabExercisePage({
         <div className="mt-2 h-64 rounded-xl bg-zinc-900 border border-zinc-800 p-2">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={detail.e1rm_series}>
-              <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke={COLORS.textMuted} />
-              <YAxis domain={['auto', 'auto']} tick={{ fontSize: 10 }} stroke={COLORS.textMuted} width={40} />
+              <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke={COLORS.textTertiary} />
+              <YAxis domain={['auto', 'auto']} tick={{ fontSize: 10 }} stroke={COLORS.textTertiary} width={40} />
               <Tooltip
                 contentStyle={{ background: COLORS.surfaceRaised, border: `1px solid ${COLORS.border}` }}
                 formatter={(value) => [Number(value).toFixed(1), 'e1RM']}

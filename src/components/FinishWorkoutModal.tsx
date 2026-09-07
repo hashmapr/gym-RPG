@@ -106,7 +106,7 @@ export default function FinishWorkoutModal({
       aria-label="Workout complete"
     >
       <div className="w-full max-w-sm rounded-2xl bg-zinc-900 border border-zinc-700 p-6">
-        <h2 className="text-2xl font-black text-emerald-400 mb-4">
+        <h2 className="text-2xl font-black text-white mb-4">
           WORKOUT COMPLETE
         </h2>
         <dl className="space-y-3 mb-6">
@@ -129,7 +129,7 @@ export default function FinishWorkoutModal({
             data-testid="progression-feedback"
             className="mb-6 rounded-xl bg-zinc-800 border border-zinc-700 p-4"
           >
-            <h3 className="text-xs uppercase tracking-widest text-emerald-400 mb-2">
+            <h3 className="text-xs uppercase tracking-widest text-zinc-400 mb-2">
               NEXT WEEK
             </h3>
             <ul className="space-y-1.5">
@@ -141,7 +141,7 @@ export default function FinishWorkoutModal({
               ))}
             </ul>
             {feedback.deloadSuggested.length > 0 && (
-              <p className="mt-2 text-xs text-amber-300">
+              <p className="mt-2 text-xs text-zinc-300">
                 3+ consecutive misses — deload suggested
               </p>
             )}
@@ -151,7 +151,7 @@ export default function FinishWorkoutModal({
           type="button"
           data-testid="finish-done"
           onClick={onClose}
-          className="w-full min-h-12 rounded-lg bg-emerald-600 font-bold text-white active:bg-emerald-500"
+          className="w-full min-h-12 rounded-lg bg-white font-bold text-black active:bg-white/80"
         >
           DONE
         </button>

@@ -204,7 +204,7 @@ export default function WorkoutPage() {
         <p className="text-zinc-400 mb-4">No active workout.</p>
         <Link
           href="/"
-          className="inline-block min-h-12 px-6 py-3 rounded-lg bg-emerald-600 font-bold text-white"
+          className="inline-block min-h-12 px-6 py-3 rounded-lg bg-white font-bold text-black"
         >
           Back to start
         </Link>
@@ -222,7 +222,7 @@ export default function WorkoutPage() {
           type="button"
           data-testid="finish-workout"
           onClick={finish}
-          className="min-h-12 px-6 rounded-lg bg-emerald-600 font-black text-white tracking-wide active:bg-emerald-500"
+          className="min-h-12 px-6 rounded-lg bg-white font-black text-black tracking-wide active:bg-white/80"
         >
           FINISH
         </button>
@@ -230,7 +230,7 @@ export default function WorkoutPage() {
 
       <div className="p-4 space-y-4">
         {programCtx && (
-          <p className="text-xs uppercase tracking-widest text-emerald-400">
+          <p className="text-xs uppercase tracking-widest text-zinc-400">
             WEEK {programCtx.plannedSession.week_number}
             {programCtx.plannedSession.is_deload ? ' · DELOAD' : ''} ·{' '}
             {programCtx.plannedSession.workout_name}
@@ -330,7 +330,7 @@ function CardioForm({ workoutId }: { workoutId: string }) {
             onClick={() => setActivity(a)}
             className={`flex-1 min-h-12 rounded-lg text-sm font-semibold capitalize ${
               activity === a
-                ? 'bg-emerald-600 text-white'
+                ? 'bg-white text-black'
                 : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
             }`}
           >
@@ -383,7 +383,7 @@ function CardioForm({ workoutId }: { workoutId: string }) {
           type="button"
           data-testid="log-cardio"
           onClick={submit}
-          className="flex-1 min-h-12 rounded-lg bg-emerald-600 font-bold text-white active:bg-emerald-500"
+          className="flex-1 min-h-12 rounded-lg bg-white font-bold text-black active:bg-white/80"
         >
           {saved ? 'SAVED ✓' : 'LOG'}
         </button>

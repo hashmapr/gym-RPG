@@ -14,8 +14,8 @@ import type { SkillEvaluation } from '@/lib/rpg/skill-tree';
 const BRANCHES: SkillBranch[] = ['STRENGTH', 'POWER', 'DISCIPLINE', 'CONDITIONING'];
 
 const STATE_STYLE: Record<string, string> = {
-  completed: 'border-ember bg-ember-dim text-ember',
-  available: 'border-ember-border/60 bg-zinc-900 text-zinc-200',
+  completed: 'border-white/80 bg-white/10 text-white',
+  available: 'border-zinc-600 bg-zinc-900 text-zinc-400',
   locked: 'border-zinc-800 bg-zinc-950 text-zinc-600',
 };
 
@@ -88,7 +88,7 @@ export default function SkillTreePage() {
           const done = nodes.filter((e) => e.state === 'completed').length;
           return (
             <section key={branch} className="mb-6" data-testid={`branch-${branch}`}>
-              <h2 className="font-display mb-2 flex items-baseline justify-between text-sm font-bold text-ember">
+              <h2 className="font-display mb-2 flex items-baseline justify-between text-sm font-bold text-white">
                 <span>{RPG_COPY.stats[branch.toLowerCase() as keyof typeof RPG_COPY.stats]}</span>
                 <span className="text-xs text-zinc-500">
                   {done}/{nodes.length}

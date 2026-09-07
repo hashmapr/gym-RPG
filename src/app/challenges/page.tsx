@@ -105,7 +105,7 @@ export default function ChallengesPage() {
           ←
         </Link>
         <h1 className="text-xl font-bold">Challenges</h1>
-        <Link href="/challenges/new" className="min-h-12 px-2 py-3 text-emerald-400 font-semibold">
+        <Link href="/challenges/new" className="min-h-12 px-2 py-3 text-white font-semibold">
           + New
         </Link>
       </header>
@@ -189,7 +189,7 @@ export default function ChallengesPage() {
                     def.challenge_type === 'streak' ? setNoticeDef(def) : doJoin(def)
                   }
                   disabled={joining === def.id}
-                  className="shrink-0 min-h-12 px-4 rounded-lg bg-emerald-600 text-white font-semibold disabled:opacity-50"
+                  className="shrink-0 min-h-12 px-4 rounded-lg bg-white text-black font-semibold disabled:opacity-50"
                 >
                   {joining === def.id ? '…' : 'Join'}
                 </button>
@@ -223,7 +223,7 @@ export default function ChallengesPage() {
                   <span
                     className={`text-xs font-semibold px-2 py-1 rounded-full ${
                       run.status === 'completed'
-                        ? 'bg-emerald-950 text-emerald-400'
+                        ? 'bg-surface-raised text-white'
                         : run.status === 'failed'
                           ? 'bg-red-950 text-red-400'
                           : 'bg-zinc-800 text-zinc-400'
@@ -254,7 +254,7 @@ export default function ChallengesPage() {
               <button
                 onClick={() => doJoin(noticeDef)}
                 disabled={joining === noticeDef.id}
-                className="flex-1 min-h-12 rounded-lg bg-emerald-600 text-white font-semibold disabled:opacity-50"
+                className="flex-1 min-h-12 rounded-lg bg-white text-black font-semibold disabled:opacity-50"
               >
                 {joining === noticeDef.id ? '…' : 'Join anyway'}
               </button>

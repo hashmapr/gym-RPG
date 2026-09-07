@@ -1,6 +1,6 @@
 import { COLORS } from '@/lib/tokens';
 import type { Metadata, Viewport } from 'next';
-import { Cinzel, Inter } from 'next/font/google';
+import { Inter, IBM_Plex_Mono, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import SyncProvider from '@/components/SyncProvider';
 import OfflineIndicator from '@/components/OfflineIndicator';
@@ -8,10 +8,17 @@ import ServiceWorkerRegistrar from '@/components/ServiceWorkerRegistrar';
 import AppShell from '@/components/AppShell';
 import { APP_NAME, APP_TAGLINE } from '@/lib/identity';
 
-const cinzel = Cinzel({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-cinzel',
+  weight: ['500', '600', '700'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-plex-mono',
   display: 'swap',
 });
 
@@ -50,7 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${cinzel.variable} ${inter.variable} min-h-dvh bg-base font-sans text-zinc-100 antialiased`}
+        className={`${spaceGrotesk.variable} ${plexMono.variable} ${inter.variable} min-h-dvh bg-base font-sans text-white antialiased`}
       >
         <OfflineIndicator />
         <SyncProvider>

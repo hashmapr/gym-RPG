@@ -23,7 +23,7 @@ export function AdaptiveBadge({ kind }: { kind: 'authored' | 'adaptive' }) {
   return (
     <span
       data-testid={kind === 'authored' ? 'argus-authored-badge' : 'argus-adaptive-badge'}
-      className="shrink-0 text-xs px-2 py-0.5 rounded-full bg-violet-950 text-violet-300 border border-violet-800"
+      className="shrink-0 text-xs px-2 py-0.5 rounded-full bg-surface-raised text-zinc-300 border border-border"
     >
       ✨ {kind === 'authored' ? `${AI_NAME}-authored` : 'Adaptive'}
     </span>
@@ -55,10 +55,10 @@ export function GovernorBanners({ runId }: { runId: string }) {
             key={a.id}
             className={`rounded-xl border p-3 text-sm ${
               a.clamped
-                ? 'bg-amber-950 border-amber-800 text-amber-200'
+                ? 'bg-warn/10 border-warn/40 text-warn'
                 : (a.post_value ?? 0) >= (a.pre_value ?? 0)
-                  ? 'bg-violet-950 border-violet-800 text-violet-200'
-                  : 'bg-sky-950 border-sky-800 text-sky-200'
+                  ? 'bg-surface-raised border-border text-zinc-200'
+                  : 'bg-surface-raised border-border text-zinc-200'
             }`}
           >
             {(a.post_value ?? 0) >= (a.pre_value ?? 0) ? '🔥 ' : ''}
@@ -70,7 +70,7 @@ export function GovernorBanners({ runId }: { runId: string }) {
       {pending?.map((p) => (
         <div
           key={p.checkpoint_id}
-          className="rounded-xl border border-violet-800 bg-violet-950 p-3 text-sm text-violet-200"
+          className="rounded-xl border border-border bg-surface-raised p-3 text-sm text-zinc-200"
         >
           Checkpoint {p.checkpoint_id} reached — review the proposed adjustment ({AI_NAME} policy).
         </div>
@@ -101,7 +101,7 @@ export function ConfirmAmendmentModal({
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4">
       <div
-        className="w-full max-w-md rounded-xl bg-zinc-900 border border-violet-800 p-4"
+        className="w-full max-w-md rounded-xl bg-zinc-900 border border-border p-4"
         data-testid="amendment-modal"
       >
         <h3 className="font-semibold mb-1">{AI_NAME} proposes a target adjustment</h3>
@@ -114,7 +114,7 @@ export function ConfirmAmendmentModal({
             <span className="text-zinc-400">Current target</span>
             <span>{fmtTarget(pending.pre_target)}</span>
           </div>
-          <div className="flex justify-between font-semibold text-violet-300">
+          <div className="flex justify-between font-semibold text-white">
             <span>Proposed target</span>
             <span data-testid="proposed-target">{fmtTarget(pending.post_target)}</span>
           </div>
@@ -132,7 +132,7 @@ export function ConfirmAmendmentModal({
             onClick={() => decide(true)}
             disabled={busy}
             data-testid="confirm-amendment"
-            className="flex-1 min-h-12 rounded-lg bg-violet-600 text-white font-semibold disabled:opacity-50"
+            className="flex-1 min-h-12 rounded-lg bg-white text-black font-semibold disabled:opacity-50"
           >
             {busy ? '…' : 'Confirm'}
           </button>
@@ -210,19 +210,19 @@ export function SuggestionCard({ onAccepted }: { onAccepted?: (runId: string) =>
   const target = suggestion.draft.def.params.target_lb;
   return (
     <section
-      className="rounded-xl bg-violet-950 border border-violet-800 p-4 mb-6"
+      className="rounded-xl bg-surface-raised border border-border p-4 mb-6"
       data-testid="suggestion-card"
     >
       <div className="flex items-center gap-2 mb-1">
         <AdaptiveBadge kind="authored" />
-        <span className="text-xs text-violet-400">weekly suggestion</span>
+        <span className="text-xs text-zinc-400">weekly suggestion</span>
       </div>
       <p className="font-semibold">{suggestion.draft.def.name}</p>
       {suggestion.rationale && (
-        <p className="text-sm text-violet-200 mt-1">{suggestion.rationale}</p>
+        <p className="text-sm text-zinc-200 mt-1">{suggestion.rationale}</p>
       )}
       {target != null && (
-        <p className="text-xs text-violet-300 tabular-nums mt-1">
+        <p className="text-xs text-zinc-300 tabular-nums mt-1">
           {suggestion.draft.def.duration_days}d · {formatVolume(target)}
         </p>
       )}
@@ -243,7 +243,7 @@ export function SuggestionCard({ onAccepted }: { onAccepted?: (runId: string) =>
           onClick={accept}
           disabled={busy}
           data-testid="accept-suggestion"
-          className="flex-1 min-h-12 rounded-lg bg-violet-600 text-white font-semibold disabled:opacity-50"
+          className="flex-1 min-h-12 rounded-lg bg-white text-black font-semibold disabled:opacity-50"
         >
           {busy ? '…' : 'Accept'}
         </button>

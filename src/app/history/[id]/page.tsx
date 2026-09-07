@@ -45,7 +45,7 @@ export default function SessionDetailPage({
     return (
       <main className="p-6">
         <p className="text-zinc-400">Session not found.</p>
-        <Link href="/history" className="text-emerald-400">
+        <Link href="/history" className="text-white">
           ← History
         </Link>
       </main>
@@ -115,7 +115,7 @@ export default function SessionDetailPage({
                           {pr && (
                             <span
                               data-testid="pr-badge"
-                              className="text-amber-400 font-bold"
+                              className="text-white font-bold"
                             >
                               🏆 PR
                             </span>

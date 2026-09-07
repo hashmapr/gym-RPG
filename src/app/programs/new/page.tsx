@@ -357,7 +357,7 @@ export default function ProgramBuilderPage() {
         <Link href="/programs" className="text-sm text-zinc-400 hover:text-zinc-100">
           ← Programs
         </Link>
-        <h1 className="text-xl font-black tracking-tight text-emerald-400">NEW PROGRAM</h1>
+        <h1 className="text-xl font-black tracking-tight text-white">NEW PROGRAM</h1>
         <button
           type="button"
           data-testid="open-import"
@@ -399,7 +399,7 @@ export default function ProgramBuilderPage() {
               }
               className={`min-h-10 px-3 rounded-lg text-sm font-semibold ${
                 weekdays.includes(i)
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-white text-black'
                   : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
               }`}
             >
@@ -429,7 +429,7 @@ export default function ProgramBuilderPage() {
             onClick={() => setActiveWeek(w.week)}
             className={`min-h-10 px-3 rounded-lg text-sm font-bold whitespace-nowrap ${
               activeWeek === w.week
-                ? 'bg-emerald-600 text-white'
+                ? 'bg-white text-black'
                 : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
             }`}
           >
@@ -451,7 +451,7 @@ export default function ProgramBuilderPage() {
                 type="checkbox"
                 checked={week.deload}
                 onChange={(e) => updateWeek({ deload: e.target.checked })}
-                className="w-5 h-5 accent-emerald-600"
+                className="w-5 h-5 accent-white"
               />
               Deload
             </label>
@@ -565,7 +565,7 @@ export default function ProgramBuilderPage() {
             data-testid="save-program"
             onClick={save}
             disabled={saving}
-            className="w-full min-h-14 rounded-xl bg-emerald-600 font-black text-lg tracking-wide text-white disabled:opacity-50 active:bg-emerald-500"
+            className="w-full min-h-14 rounded-xl bg-white font-black text-lg tracking-wide text-black disabled:opacity-50 active:bg-white/80"
           >
             {saving ? 'SAVING…' : 'CREATE + START RUN'}
           </button>
@@ -622,7 +622,7 @@ export default function ProgramBuilderPage() {
                 data-testid="import-commit"
                 onClick={commitImport}
                 disabled={!importPreview}
-                className="flex-1 min-h-12 rounded-lg bg-emerald-600 font-bold text-white disabled:opacity-40 active:bg-emerald-500"
+                className="flex-1 min-h-12 rounded-lg bg-white font-bold text-black disabled:opacity-40 active:bg-white/80"
               >
                 USE THIS
               </button>

@@ -137,7 +137,7 @@ export default function ArgusPage() {
               <span
                 className={`text-xs px-2 py-0.5 rounded-full ${
                   c.status === 'unlocked'
-                    ? 'bg-emerald-950 text-emerald-400'
+                    ? 'bg-surface-raised text-white'
                     : 'bg-zinc-800 text-zinc-500'
                 }`}
               >
@@ -180,7 +180,7 @@ export default function ArgusPage() {
             disabled={busy || !online}
             title={online ? undefined : `${AI_NAME} needs to be online to draft challenges`}
             data-testid="generate-button"
-            className="w-full min-h-12 rounded-lg bg-violet-600 text-white font-semibold disabled:opacity-50"
+            className="w-full min-h-12 rounded-lg bg-white text-black font-semibold disabled:opacity-50"
           >
             {busy ? 'Drafting…' : `Ask ${AI_NAME}`}
           </button>
@@ -196,29 +196,29 @@ export default function ArgusPage() {
       {/* Preview + calibration receipt */}
       {preview && (
         <section
-          className="rounded-xl bg-violet-950 border border-violet-800 p-4 mb-4"
+          className="rounded-xl bg-surface-raised border border-white/40 p-4 mb-4"
           data-testid="draft-preview"
         >
-          <h2 className="text-sm uppercase tracking-wider text-violet-400 mb-2">Draft preview</h2>
+          <h2 className="text-sm uppercase tracking-wider text-zinc-400 mb-2">Draft preview</h2>
           <p className="font-semibold">{preview.def.name}</p>
           {preview.def.description && (
-            <p className="text-sm text-violet-200 mt-1">{preview.def.description}</p>
+            <p className="text-sm text-zinc-200 mt-1">{preview.def.description}</p>
           )}
-          <p className="text-xs text-violet-300 tabular-nums mt-2">
+          <p className="text-xs text-zinc-300 tabular-nums mt-2">
             {preview.def.duration_days}d ·{' '}
             {preview.def.params.target_lb != null
               ? formatVolume(preview.def.params.target_lb)
               : 'custom target'}
           </p>
           {preview.rationale && (
-            <p className="text-sm text-violet-200 mt-2 border-t border-violet-900 pt-2">
+            <p className="text-sm text-zinc-200 mt-2 border-t border-border pt-2">
               {preview.rationale}
             </p>
           )}
 
           {/* Calibration receipt */}
           <div
-            className="rounded-lg bg-violet-900/50 p-3 mt-3 text-xs text-violet-200 tabular-nums"
+            className="rounded-lg bg-surface p-3 mt-3 text-xs text-zinc-200 tabular-nums"
             data-testid="calibration-receipt"
           >
             <p className="font-semibold mb-1">Calibration receipt</p>
@@ -234,7 +234,7 @@ export default function ArgusPage() {
 
           {preview.policy && (
             <div
-              className="rounded-lg bg-violet-900/50 p-3 mt-2 text-xs text-violet-200"
+              className="rounded-lg bg-surface p-3 mt-2 text-xs text-zinc-200"
               data-testid="preview-policy"
             >
               <p className="font-semibold mb-1">Adaptation policy</p>
@@ -271,7 +271,7 @@ export default function ArgusPage() {
               onClick={confirm}
               disabled={busy}
               data-testid="confirm-draft"
-              className="flex-1 min-h-12 rounded-lg bg-violet-600 text-white font-semibold disabled:opacity-50"
+              className="flex-1 min-h-12 rounded-lg bg-white text-black font-semibold disabled:opacity-50"
             >
               {busy ? '…' : 'Confirm'}
             </button>

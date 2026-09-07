@@ -132,7 +132,7 @@ function NewChallengeInner() {
 
       <div className="space-y-4">
         {argusDef && ARGUS_ENABLED && (
-          <p className="text-xs text-violet-300 bg-violet-950/40 border border-violet-900 rounded-lg px-3 py-2">
+          <p className="text-xs text-zinc-300 bg-surface-raised border border-border rounded-lg px-3 py-2">
             ✨ Drafted by {AI_NAME} — adaptation policy attached. Review and start it.
           </p>
         )}
@@ -213,7 +213,7 @@ function NewChallengeInner() {
         )}
 
         {error && <p className="text-sm text-red-400">{error}</p>}
-        <button onClick={submit} className="w-full min-h-12 rounded-lg bg-emerald-600 text-white font-semibold">
+        <button onClick={submit} className="w-full min-h-12 rounded-lg bg-white text-black font-semibold">
           {argusDef ? 'Start challenge' : 'Create challenge'}
         </button>
       </div>
