@@ -20,6 +20,11 @@ import {
   calibrationGolden,
   suggestionGolden,
 } from '../src/lib/seed/adaptive-fixture';
+import {
+  briefingInputGolden,
+  gateGolden,
+  recoveryCorrelationGolden,
+} from '../src/lib/seed/recovery-fixture';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const MOCK_DB_PATH = resolve(ROOT, 'mock-db.json');
@@ -212,7 +217,35 @@ function main(): number {
     return 1;
   }
 
-  console.log('\nAll analytics + challenge + Argus sections match goldens.');
+  // --- 5. Recovery goldens (Sprint 6): gate matrix, briefing input, correlations
+  const recoverySections: Array<[string, () => unknown]> = [
+    ['gate', gateGolden],
+    ['briefing-input', briefingInputGolden],
+    ['recovery-correlation', recoveryCorrelationGolden],
+  ];
+
+  let recoveryFailed = false;
+  for (const [name, build] of recoverySections) {
+    const golden = JSON.parse(readFileSync(resolve(GOLDEN_DIR, `${name}.golden.json`), 'utf8'));
+    const diffs: Diff[] = [];
+    deepDiff(golden, build(), '$', diffs);
+    if (diffs.length === 0) {
+      console.log(`✓ ${name} matches golden`);
+    } else {
+      recoveryFailed = true;
+      console.error(`✗ ${name}: ${diffs.length} difference(s)`);
+      for (const d of diffs.slice(0, 8)) {
+        console.error(`    ${d.path}: golden=${JSON.stringify(d.golden)} engine=${JSON.stringify(d.engine)}`);
+      }
+      if (diffs.length > 8) console.error(`    … and ${diffs.length - 8} more`);
+    }
+  }
+  if (recoveryFailed) {
+    console.error('\nRecovery engine disagrees with goldens — goldens win.');
+    return 1;
+  }
+
+  console.log('\nAll analytics + challenge + Argus + recovery sections match goldens.');
   return 0;
 }
 

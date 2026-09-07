@@ -60,6 +60,10 @@ export const SYNC_TABLE_ORDER: TableName[] = [
   'challenge_amendments',
   'ai_generation_logs',
   'ai_suggestions',
+  // Sprint 6 (Recovery): gate log + briefing cache are independent audit
+  // tables; daily_metrics already syncs above them.
+  'daily_gate_logs',
+  'ai_briefings',
 ];
 
 export const DEFAULT_BATCH_SIZE = 200;

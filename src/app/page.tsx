@@ -16,6 +16,7 @@ import { getTodayCard, linkPlannedSession, syncRunProgress, sweepMissedSessions 
 import { exerciseName } from '@/lib/wger';
 import { ARGUS_ENABLED } from '@/lib/argus/config';
 import { SuggestionCard } from '@/components/argus/ArgusUI';
+import { RecoveryBadge, RecoveryHomeSurfaces } from '@/components/RecoveryHome';
 import type { TodayCard } from '@/lib/coach/run';
 import type { WorkoutSession } from '@/lib/types';
 
@@ -172,6 +173,9 @@ export default function HomePage() {
             TODAY · WEEK {todayCard.run?.current_week}
             {todayCard.plannedSession.is_deload ? ' · DELOAD' : ''}
           </p>
+          <div className="mb-3">
+            <RecoveryBadge today={today} />
+          </div>
           <h2 className="text-2xl font-black text-zinc-100 mb-3">
             {todayCard.plannedSession.workout_name}
           </h2>
@@ -257,6 +261,9 @@ export default function HomePage() {
       )}
       {/* Active challenges strip */}
       <ChallengeStrip />
+
+      {/* Recovery: 30-day sparkline + Argus daily briefing */}
+      <RecoveryHomeSurfaces />
 
     </main>
   );

@@ -14,6 +14,13 @@ import { db } from '@/lib/db';
 import { AI_NAME, ARGUS_ENABLED, PROMPT_VERSION } from '@/lib/argus/config';
 import { runWeeklySuggestion } from '@/lib/argus/suggest';
 import { useSyncStore } from '@/lib/sync/store';
+import { getTrainingDate } from '@/lib/day-boundary';
+import {
+  connectWhoop,
+  disconnectWhoop,
+  getWhoopConnected,
+  syncWhoopNow,
+} from '@/lib/whoop';
 import type { E1RMFormula } from '@/lib/types';
 
 const FORMULAS: { value: E1RMFormula; label: string }[] = [
@@ -246,6 +253,12 @@ export default function SettingsPage() {
 
       <AbandonProgramSection />
 
+      <WhoopSection />
+
+      <RecoverySection />
+
+      <CheckInSection />
+
       <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
         <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
           Data
@@ -438,6 +451,221 @@ function StreakSection() {
         </button>
       </div>
       {error && <p className="text-xs text-red-400 mt-2">{error}</p>}
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 6: WHOOP integration, recovery gate settings, daily check-in.
+// ---------------------------------------------------------------------------
+
+function WhoopSection() {
+  const settings = useSettings();
+  const [connected, setConnected] = useState<boolean | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [note, setNote] = useState<string | null>(null);
+
+  const refresh = async () => {
+    const c = await getWhoopConnected();
+    setConnected(c);
+  };
+
+  useEffect(() => {
+    void refresh();
+  }, []);
+
+  const connect = async () => {
+    setBusy(true);
+    setNote(null);
+    const ok = await connectWhoop();
+    if (ok) {
+      const r = await syncWhoopNow();
+      setNote(r.ok ? `Connected · ${r.pulled} days pulled` : 'Connected · sync failed');
+    } else {
+      setNote('Connect failed');
+    }
+    await refresh();
+    setBusy(false);
+  };
+
+  const syncNow = async () => {
+    setBusy(true);
+    setNote(null);
+    const r = await syncWhoopNow();
+    setNote(r.ok ? `Synced · ${r.pulled} days` : 'Sync failed');
+    await refresh();
+    setBusy(false);
+  };
+
+  const disconnect = async () => {
+    setBusy(true);
+    setNote(null);
+    await disconnectWhoop();
+    setNote('Disconnected');
+    await refresh();
+    setBusy(false);
+  };
+
+  return (
+    <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4" data-testid="whoop-section">
+      <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">WHOOP</h2>
+      <p className="text-sm text-zinc-300 mb-3" data-testid="whoop-status">
+        {connected == null ? 'Checking…' : connected ? 'Connected' : 'Not connected'}
+        {settings.whoop_last_synced_at
+          ? ` · last sync ${new Date(settings.whoop_last_synced_at).toLocaleString()}`
+          : ''}
+      </p>
+      <div className="flex gap-2">
+        {!connected && (
+          <button
+            type="button"
+            data-testid="whoop-connect"
+            disabled={busy}
+            onClick={connect}
+            className="flex-1 min-h-12 rounded-lg bg-emerald-600 font-bold text-white disabled:opacity-50"
+          >
+            Connect WHOOP
+          </button>
+        )}
+        {connected && (
+          <>
+            <button
+              type="button"
+              data-testid="whoop-sync"
+              disabled={busy}
+              onClick={syncNow}
+              className="flex-1 min-h-12 rounded-lg bg-emerald-600 font-bold text-white disabled:opacity-50"
+            >
+              Sync now
+            </button>
+            <button
+              type="button"
+              data-testid="whoop-disconnect"
+              disabled={busy}
+              onClick={disconnect}
+              className="min-h-12 px-4 rounded-lg bg-zinc-800 border border-zinc-700 font-semibold text-zinc-300 disabled:opacity-50"
+            >
+              Disconnect
+            </button>
+          </>
+        )}
+      </div>
+      {note && (
+        <p className="mt-2 text-xs text-zinc-400" data-testid="whoop-note">
+          {note}
+        </p>
+      )}
+    </section>
+  );
+}
+
+function RecoverySection() {
+  const settings = useSettings();
+  return (
+    <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4" data-testid="recovery-settings">
+      <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">Recovery gate</h2>
+
+      <p className="text-sm text-zinc-300 mb-2">Gate mode</p>
+      <div className="flex gap-2 mb-4">
+        {(['enforce', 'suggest_only'] as const).map((m) => (
+          <button
+            key={m}
+            type="button"
+            data-testid={`gate-mode-${m}`}
+            onClick={() => saveSettings({ gate_mode: m })}
+            className={`flex-1 min-h-12 rounded-lg text-sm font-semibold ${
+              settings.gate_mode === m
+                ? 'bg-emerald-600 text-white'
+                : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+            }`}
+          >
+            {m === 'enforce' ? 'Enforce' : 'Suggest only'}
+          </button>
+        ))}
+      </div>
+
+      <label className="flex items-center justify-between text-sm text-zinc-300">
+        <span>Gate on manual check-ins</span>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={settings.manual_gate_enabled}
+          data-testid="manual-gate-toggle"
+          onClick={() => saveSettings({ manual_gate_enabled: !settings.manual_gate_enabled })}
+          className={`w-12 h-7 rounded-full relative transition-colors ${
+            settings.manual_gate_enabled ? 'bg-emerald-600' : 'bg-zinc-700'
+          }`}
+        >
+          <span
+            className={`absolute top-0.5 h-6 w-6 rounded-full bg-white transition-all ${
+              settings.manual_gate_enabled ? 'left-5' : 'left-0.5'
+            }`}
+          />
+        </button>
+      </label>
+      <p className="mt-2 text-xs text-zinc-500">
+        WHOOP data always gates. Manual check-ins only gate when this is on.
+      </p>
+    </section>
+  );
+}
+
+function CheckInSection() {
+  const settings = useSettings();
+  const today = getTrainingDate(new Date(), settings.day_boundary_hour);
+  const [sleep, setSleep] = useState('');
+  const [recovery, setRecovery] = useState('');
+  const [hrv, setHrv] = useState('');
+  const [weight, setWeight] = useState('');
+  const [saved, setSaved] = useState(false);
+
+  const submit = async () => {
+    const existing = await db.daily_metrics.get(today);
+    // WHOOP row wins for the same date — never overwrite a WHOOP row's source.
+    if (existing?.source === 'whoop') {
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+      return;
+    }
+    await db.daily_metrics.put({
+      date: today,
+      sleep_score: existing?.sleep_score ?? null,
+      recovery_percentage: recovery.trim() === '' ? (existing?.recovery_percentage ?? null) : Number(recovery),
+      hrv: hrv.trim() === '' ? (existing?.hrv ?? null) : Number(hrv),
+      sleep_hours: sleep.trim() === '' ? (existing?.sleep_hours ?? null) : Number(sleep),
+      resting_hr: existing?.resting_hr ?? null,
+      body_weight: weight.trim() === '' ? (existing?.body_weight ?? null) : Number(weight),
+      source: 'manual',
+      created_at: existing?.created_at ?? new Date().toISOString(),
+    });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const field =
+    'min-h-12 w-full rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-zinc-100';
+  return (
+    <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4" data-testid="checkin-section">
+      <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+        Daily check-in · {today}
+      </h2>
+      <div className="grid grid-cols-2 gap-2 mb-3">
+        <input data-testid="checkin-sleep" type="number" step="0.1" inputMode="decimal" placeholder="Sleep (h)" aria-label="Sleep hours" value={sleep} onChange={(e) => setSleep(e.target.value)} className={field} />
+        <input data-testid="checkin-recovery" type="number" inputMode="numeric" placeholder="Recovery %" aria-label="Recovery percent" value={recovery} onChange={(e) => setRecovery(e.target.value)} className={field} />
+        <input data-testid="checkin-hrv" type="number" inputMode="numeric" placeholder="HRV (ms)" aria-label="HRV" value={hrv} onChange={(e) => setHrv(e.target.value)} className={field} />
+        <input data-testid="checkin-weight" type="number" step="0.1" inputMode="decimal" placeholder="Weight (lb)" aria-label="Body weight" value={weight} onChange={(e) => setWeight(e.target.value)} className={field} />
+      </div>
+      <button
+        type="button"
+        data-testid="checkin-save"
+        onClick={submit}
+        className="w-full min-h-12 rounded-lg bg-emerald-600 font-bold text-white"
+      >
+        {saved ? 'Saved ✓' : 'Save check-in'}
+      </button>
+      <p className="mt-2 text-xs text-zinc-500">
+        WHOOP data wins for the same day.
+      </p>
     </section>
   );
 }

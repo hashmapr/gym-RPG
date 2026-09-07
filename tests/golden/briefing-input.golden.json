@@ -1,0 +1,31 @@
+{
+  "input": {
+    "training_date": "2026-09-05",
+    "prompt_version": "briefing-v1",
+    "gate": {
+      "outcome": "yellow",
+      "adjustments": {
+        "weight_scale": 0.9,
+        "rpe_delta": -1,
+        "rest_delta": 30
+      },
+      "hrv_z": 0.5,
+      "reasons": [
+        "recovery 60 in 34–66"
+      ],
+      "stale": false,
+      "user_override": false
+    },
+    "metric": {
+      "recovery_percentage": 60,
+      "hrv": 52.5,
+      "sleep_hours": 6.4
+    },
+    "context": {
+      "days_since_last_session": null,
+      "week_volume_lb": 59297,
+      "planned_today": "Lower A — Squat Focus"
+    }
+  },
+  "prompt": null
+}

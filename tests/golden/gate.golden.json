@@ -1,0 +1,641 @@
+{
+  "version": "gate-v1",
+  "generated_for": "2026-09-05",
+  "cases": [
+    {
+      "name": "red_below_33",
+      "input": {
+        "recovery": 33,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 7,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "red",
+        "level": "red",
+        "adjustments": {
+          "weight_scale": 1,
+          "rpe_delta": 0,
+          "rest_delta": 0
+        },
+        "hrv_z": -1.32047370047676,
+        "reasons": [
+          "recovery 33 < 34"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "yellow_at_34",
+      "input": {
+        "recovery": 34,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 7,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "yellow",
+        "level": "yellow",
+        "adjustments": {
+          "weight_scale": 0.9,
+          "rpe_delta": -1,
+          "rest_delta": 30
+        },
+        "hrv_z": -1.32047370047676,
+        "reasons": [
+          "recovery 34 in 34–66"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "yellow_at_66",
+      "input": {
+        "recovery": 66,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 7,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "yellow",
+        "level": "yellow",
+        "adjustments": {
+          "weight_scale": 0.9,
+          "rpe_delta": -1,
+          "rest_delta": 30
+        },
+        "hrv_z": -1.32047370047676,
+        "reasons": [
+          "recovery 66 in 34–66"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "green_at_67",
+      "input": {
+        "recovery": 67,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 7,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "green",
+        "level": "green",
+        "adjustments": {
+          "weight_scale": 1,
+          "rpe_delta": 0,
+          "rest_delta": 0
+        },
+        "hrv_z": -1.32047370047676,
+        "reasons": [
+          "recovery 67 ≥ 67"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "no_data",
+      "input": {
+        "recovery": null,
+        "hrv": null,
+        "hrv_baseline": [],
+        "sleep_hours": null,
+        "is_deload": false,
+        "metric_age_hours": null,
+        "source_available": false
+      },
+      "decision": {
+        "outcome": "none",
+        "level": null,
+        "adjustments": {
+          "weight_scale": 1,
+          "rpe_delta": 0,
+          "rest_delta": 0
+        },
+        "hrv_z": null,
+        "reasons": [
+          "no recovery data"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "manual_source_gated_on",
+      "input": {
+        "recovery": 50,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 7,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "yellow",
+        "level": "yellow",
+        "adjustments": {
+          "weight_scale": 0.9,
+          "rpe_delta": -1,
+          "rest_delta": 30
+        },
+        "hrv_z": -1.32047370047676,
+        "reasons": [
+          "recovery 50 in 34–66"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "manual_source_gated_off",
+      "input": {
+        "recovery": 50,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 7,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": false
+      },
+      "decision": {
+        "outcome": "none",
+        "level": null,
+        "adjustments": {
+          "weight_scale": 1,
+          "rpe_delta": 0,
+          "rest_delta": 0
+        },
+        "hrv_z": null,
+        "reasons": [
+          "no recovery data"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "stale_37h",
+      "input": {
+        "recovery": 80,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 7,
+        "is_deload": false,
+        "metric_age_hours": 37,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "none",
+        "level": null,
+        "adjustments": {
+          "weight_scale": 1,
+          "rpe_delta": 0,
+          "rest_delta": 0
+        },
+        "hrv_z": null,
+        "reasons": [
+          "stale data — sync nudge"
+        ],
+        "stale": true
+      }
+    },
+    {
+      "name": "fresh_35h_ok",
+      "input": {
+        "recovery": 80,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 7,
+        "is_deload": false,
+        "metric_age_hours": 35,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "green",
+        "level": "green",
+        "adjustments": {
+          "weight_scale": 1,
+          "rpe_delta": 0,
+          "rest_delta": 0
+        },
+        "hrv_z": -1.32047370047676,
+        "reasons": [
+          "recovery 80 ≥ 67"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "deload_skip",
+      "input": {
+        "recovery": 20,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 4,
+        "is_deload": true,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "deload_skip",
+        "level": null,
+        "adjustments": {
+          "weight_scale": 1,
+          "rpe_delta": 0,
+          "rest_delta": 0
+        },
+        "hrv_z": null,
+        "reasons": [
+          "deload week — gates skipped"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "hrv_override_green_to_yellow",
+      "input": {
+        "recovery": 80,
+        "hrv": 30,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 7,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "yellow",
+        "level": "yellow",
+        "adjustments": {
+          "weight_scale": 0.9,
+          "rpe_delta": -1,
+          "rest_delta": 30
+        },
+        "hrv_z": -22.651202708178303,
+        "reasons": [
+          "recovery 80 ≥ 67",
+          "hrv override: z -22.65 ≤ -2"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "hrv_override_needs_baseline",
+      "input": {
+        "recovery": 80,
+        "hrv": 40,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60
+        ],
+        "sleep_hours": 7,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "green",
+        "level": "green",
+        "adjustments": {
+          "weight_scale": 1,
+          "rpe_delta": 0,
+          "rest_delta": 0
+        },
+        "hrv_z": -13.268069440075546,
+        "reasons": [
+          "recovery 80 ≥ 67"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "hrv_flat_baseline_no_z",
+      "input": {
+        "recovery": 80,
+        "hrv": 40,
+        "hrv_baseline": [
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60
+        ],
+        "sleep_hours": 7,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "green",
+        "level": "green",
+        "adjustments": {
+          "weight_scale": 1,
+          "rpe_delta": 0,
+          "rest_delta": 0
+        },
+        "hrv_z": null,
+        "reasons": [
+          "recovery 80 ≥ 67"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "sleep_guard_stacks_yellow",
+      "input": {
+        "recovery": 50,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 5,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "yellow",
+        "level": "yellow",
+        "adjustments": {
+          "weight_scale": 0.9,
+          "rpe_delta": -2,
+          "rest_delta": 30
+        },
+        "hrv_z": -1.32047370047676,
+        "reasons": [
+          "recovery 50 in 34–66",
+          "sleep guard: 5h < 5.5h"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "sleep_guard_off_at_5_5",
+      "input": {
+        "recovery": 50,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 5.5,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "yellow",
+        "level": "yellow",
+        "adjustments": {
+          "weight_scale": 0.9,
+          "rpe_delta": -1,
+          "rest_delta": 30
+        },
+        "hrv_z": -1.32047370047676,
+        "reasons": [
+          "recovery 50 in 34–66"
+        ],
+        "stale": false
+      }
+    },
+    {
+      "name": "red_no_sleep_stack",
+      "input": {
+        "recovery": 20,
+        "hrv": 60,
+        "hrv_baseline": [
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63,
+          64,
+          60,
+          61,
+          62,
+          63
+        ],
+        "sleep_hours": 4,
+        "is_deload": false,
+        "metric_age_hours": 1,
+        "source_available": true
+      },
+      "decision": {
+        "outcome": "red",
+        "level": "red",
+        "adjustments": {
+          "weight_scale": 1,
+          "rpe_delta": 0,
+          "rest_delta": 0
+        },
+        "hrv_z": -1.32047370047676,
+        "reasons": [
+          "recovery 20 < 34"
+        ],
+        "stale": false
+      }
+    }
+  ]
+}

@@ -28,6 +28,10 @@ export async function maybePullE2ESeed(): Promise<void> {
           .bulkPut(rows.map((r) => ({ ...r, syncedAt })) as never[]);
       }
     }
+    // Completion signal for E2E (the armed flag is set before the fetch, so
+    // tests must wait on this instead to know the pull has landed).
+    // localStorage so the signal survives client-side navigations.
+    localStorage.setItem('lab.e2eSeedPulled', '1');
   } catch {
     // Not an E2E run (no localStorage / no mock backend) — no-op.
   }

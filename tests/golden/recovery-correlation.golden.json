@@ -1,0 +1,308 @@
+{
+  "generated_for": "2026-09-05",
+  "min_points": 10,
+  "recovery": {
+    "n": 29,
+    "r": 0.3412107413188475,
+    "visible": true,
+    "points": [
+      {
+        "date": "2026-06-09",
+        "recovery": 54,
+        "volume_lb": 22800
+      },
+      {
+        "date": "2026-06-13",
+        "recovery": 51,
+        "volume_lb": 20200
+      },
+      {
+        "date": "2026-06-16",
+        "recovery": 51,
+        "volume_lb": 20282.5
+      },
+      {
+        "date": "2026-06-20",
+        "recovery": 58,
+        "volume_lb": 23396.5
+      },
+      {
+        "date": "2026-06-23",
+        "recovery": 57,
+        "volume_lb": 20372.5
+      },
+      {
+        "date": "2026-06-27",
+        "recovery": 64,
+        "volume_lb": 20372.5
+      },
+      {
+        "date": "2026-06-30",
+        "recovery": 67,
+        "volume_lb": 20447.5
+      },
+      {
+        "date": "2026-07-04",
+        "recovery": 69,
+        "volume_lb": 23530
+      },
+      {
+        "date": "2026-07-07",
+        "recovery": 54,
+        "volume_lb": 20497.5
+      },
+      {
+        "date": "2026-07-11",
+        "recovery": 59,
+        "volume_lb": 20497.5
+      },
+      {
+        "date": "2026-07-14",
+        "recovery": 44,
+        "volume_lb": 20550
+      },
+      {
+        "date": "2026-07-18",
+        "recovery": 54,
+        "volume_lb": 23597
+      },
+      {
+        "date": "2026-07-21",
+        "recovery": 54,
+        "volume_lb": 41344
+      },
+      {
+        "date": "2026-07-25",
+        "recovery": 67,
+        "volume_lb": 39155
+      },
+      {
+        "date": "2026-07-28",
+        "recovery": 67,
+        "volume_lb": 20652.5
+      },
+      {
+        "date": "2026-08-01",
+        "recovery": 67,
+        "volume_lb": 23668
+      },
+      {
+        "date": "2026-08-02",
+        "recovery": 53,
+        "volume_lb": 2100
+      },
+      {
+        "date": "2026-08-03",
+        "recovery": 56,
+        "volume_lb": 2100
+      },
+      {
+        "date": "2026-08-04",
+        "recovery": 62,
+        "volume_lb": 20712.5
+      },
+      {
+        "date": "2026-08-08",
+        "recovery": 61,
+        "volume_lb": 20712.5
+      },
+      {
+        "date": "2026-08-10",
+        "recovery": 38,
+        "volume_lb": 2100
+      },
+      {
+        "date": "2026-08-11",
+        "recovery": 50,
+        "volume_lb": 20755
+      },
+      {
+        "date": "2026-08-15",
+        "recovery": 49,
+        "volume_lb": 23282.5
+      },
+      {
+        "date": "2026-08-18",
+        "recovery": 49,
+        "volume_lb": 21475
+      },
+      {
+        "date": "2026-08-22",
+        "recovery": 60,
+        "volume_lb": 18705
+      },
+      {
+        "date": "2026-08-25",
+        "recovery": 59,
+        "volume_lb": 18747.5
+      },
+      {
+        "date": "2026-08-29",
+        "recovery": 69,
+        "volume_lb": 21701.5
+      },
+      {
+        "date": "2026-09-01",
+        "recovery": 56,
+        "volume_lb": 18787.5
+      },
+      {
+        "date": "2026-09-05",
+        "recovery": 60,
+        "volume_lb": 18807.5
+      }
+    ]
+  },
+  "sleep": {
+    "n": 29,
+    "r": 0.17944462103742492,
+    "visible": true,
+    "points": [
+      {
+        "date": "2026-06-09",
+        "sleep_hours": 5.7,
+        "volume_lb": 22800
+      },
+      {
+        "date": "2026-06-13",
+        "sleep_hours": 6.8,
+        "volume_lb": 20200
+      },
+      {
+        "date": "2026-06-16",
+        "sleep_hours": 6.9,
+        "volume_lb": 20282.5
+      },
+      {
+        "date": "2026-06-20",
+        "sleep_hours": 6.4,
+        "volume_lb": 23396.5
+      },
+      {
+        "date": "2026-06-23",
+        "sleep_hours": 6.6,
+        "volume_lb": 20372.5
+      },
+      {
+        "date": "2026-06-27",
+        "sleep_hours": 7.2,
+        "volume_lb": 20372.5
+      },
+      {
+        "date": "2026-06-30",
+        "sleep_hours": 6.7,
+        "volume_lb": 20447.5
+      },
+      {
+        "date": "2026-07-04",
+        "sleep_hours": 7.1,
+        "volume_lb": 23530
+      },
+      {
+        "date": "2026-07-07",
+        "sleep_hours": 6.8,
+        "volume_lb": 20497.5
+      },
+      {
+        "date": "2026-07-11",
+        "sleep_hours": 6.9,
+        "volume_lb": 20497.5
+      },
+      {
+        "date": "2026-07-14",
+        "sleep_hours": 6.2,
+        "volume_lb": 20550
+      },
+      {
+        "date": "2026-07-18",
+        "sleep_hours": 5.8,
+        "volume_lb": 23597
+      },
+      {
+        "date": "2026-07-21",
+        "sleep_hours": 6.9,
+        "volume_lb": 41344
+      },
+      {
+        "date": "2026-07-25",
+        "sleep_hours": 6,
+        "volume_lb": 39155
+      },
+      {
+        "date": "2026-07-28",
+        "sleep_hours": 6.3,
+        "volume_lb": 20652.5
+      },
+      {
+        "date": "2026-08-01",
+        "sleep_hours": 6.5,
+        "volume_lb": 23668
+      },
+      {
+        "date": "2026-08-02",
+        "sleep_hours": 5.8,
+        "volume_lb": 2100
+      },
+      {
+        "date": "2026-08-03",
+        "sleep_hours": 6.8,
+        "volume_lb": 2100
+      },
+      {
+        "date": "2026-08-04",
+        "sleep_hours": 7,
+        "volume_lb": 20712.5
+      },
+      {
+        "date": "2026-08-08",
+        "sleep_hours": 6,
+        "volume_lb": 20712.5
+      },
+      {
+        "date": "2026-08-10",
+        "sleep_hours": 5.6,
+        "volume_lb": 2100
+      },
+      {
+        "date": "2026-08-11",
+        "sleep_hours": 6.8,
+        "volume_lb": 20755
+      },
+      {
+        "date": "2026-08-15",
+        "sleep_hours": 6.1,
+        "volume_lb": 23282.5
+      },
+      {
+        "date": "2026-08-18",
+        "sleep_hours": 5.7,
+        "volume_lb": 21475
+      },
+      {
+        "date": "2026-08-22",
+        "sleep_hours": 6.2,
+        "volume_lb": 18705
+      },
+      {
+        "date": "2026-08-25",
+        "sleep_hours": 6.2,
+        "volume_lb": 18747.5
+      },
+      {
+        "date": "2026-08-29",
+        "sleep_hours": 7.3,
+        "volume_lb": 21701.5
+      },
+      {
+        "date": "2026-09-01",
+        "sleep_hours": 6.7,
+        "volume_lb": 18787.5
+      },
+      {
+        "date": "2026-09-05",
+        "sleep_hours": 6.4,
+        "volume_lb": 18807.5
+      }
+    ]
+  }
+}

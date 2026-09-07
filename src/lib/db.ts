@@ -38,6 +38,8 @@ import type {
   ChallengePolicyState,
   AIGenerationLog,
   AISuggestion,
+  DailyGateLog,
+  AIBriefing,
 } from './types';
 
 export class LabDB extends Dexie {
@@ -74,6 +76,9 @@ export class LabDB extends Dexie {
   challenge_amendments!: Table<ChallengeAmendment, string>;
   ai_generation_logs!: Table<AIGenerationLog, string>;
   ai_suggestions!: Table<AISuggestion, string>;
+  // Sprint 6: recovery gates + daily briefing.
+  daily_gate_logs!: Table<DailyGateLog, string>;
+  ai_briefings!: Table<AIBriefing, string>;
 
   constructor() {
     super('the-lab');
@@ -128,6 +133,13 @@ export class LabDB extends Dexie {
       challenge_amendments: 'id, challenge_run_id, created_at',
       ai_generation_logs: 'id, request_kind, outcome, challenge_def_id, created_at',
       ai_suggestions: 'id, status, created_at',
+    });
+    // Sprint 6: WHOOP + recovery gates. daily_metrics gains sleep_hours (no
+    // new index needed); gate log is one row per training date (upsert);
+    // briefings are cached by training_date (1 LLM call/day).
+    this.version(6).stores({
+      daily_gate_logs: 'id, training_date',
+      ai_briefings: 'training_date',
     });
     // P0 sync rule: any mutation to a synced row re-queues it (data layer).
     installRequeueHooks(this, SYNC_TABLE_ORDER);

@@ -208,6 +208,125 @@ export default function LabPage() {
           </ul>
         )}
       </section>
+
+      <RecoveryLabSections />
     </main>
+  );
+}
+type RecoveryPayload = {
+  recovery: {
+    points: { date: string; recovery: number; volume_lb: number }[];
+    r: number | null;
+    n: number;
+    visible: boolean;
+  };
+  sleep: {
+    points: { date: string; sleep_hours: number; volume_lb: number }[];
+    r: number | null;
+    n: number;
+    visible: boolean;
+  };
+};
+
+const SCATTER_W = 280;
+const SCATTER_H = 160;
+
+function Scatter({
+  points,
+  xLabel,
+  yLabel,
+  testId,
+}: {
+  points: { x: number; y: number }[];
+  xLabel: string;
+  yLabel: string;
+  testId: string;
+}) {
+  const xs = (v: number) => (v / 100) * SCATTER_W;
+  const maxVol = Math.max(...points.map((p) => p.y), 1);
+  const ys = (v: number) => SCATTER_H - (v / maxVol) * SCATTER_H;
+  return (
+    <svg
+      data-testid={testId}
+      viewBox={`0 0 ${SCATTER_W} ${SCATTER_H}`}
+      className="w-full"
+      role="img"
+      aria-label={`${yLabel} vs ${xLabel} scatter`}
+    >
+      {points.map((p, i) => (
+        <circle key={i} cx={xs(p.x)} cy={ys(p.y)} r={3} fill="#34d399" opacity={0.75} />
+      ))}
+    </svg>
+  );
+}
+
+function RecoveryLabSections() {
+  const [data, setData] = useState<RecoveryPayload | null>(null);
+  useEffect(() => {
+    fetch('/api/lab/recovery')
+      .then((r) => r.json())
+      .then(setData)
+      .catch(() => {});
+  }, []);
+
+  if (!data) return null;
+  const { recovery, sleep } = data;
+
+  return (
+    <>
+      <section className="mt-6" data-testid="lab-recovery-correlation">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
+          Recovery ↔ Performance
+        </h2>
+        {recovery.visible ? (
+          <>
+            <p className="mt-1 text-sm text-zinc-400">
+              Pearson r:{' '}
+              <span data-testid="lab-recovery-r" className="tabular-nums font-bold text-zinc-200">
+                {recovery.r?.toFixed(4) ?? 'n/a'}
+              </span>{' '}
+              · n = {recovery.n}
+            </p>
+            <Scatter
+              points={recovery.points.map((p) => ({ x: p.recovery, y: p.volume_lb }))}
+              xLabel="recovery"
+              yLabel="volume"
+              testId="lab-recovery-scatter"
+            />
+          </>
+        ) : (
+          <p className="mt-2 text-sm text-zinc-500" data-testid="lab-recovery-insufficient">
+            Appears at {10}+ matched days (now {recovery.n}).
+          </p>
+        )}
+      </section>
+
+      <section className="mt-6" data-testid="lab-sleep-overlay">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
+          Sleep ↔ Volume
+        </h2>
+        {sleep.visible ? (
+          <>
+            <p className="mt-1 text-sm text-zinc-400">
+              Pearson r:{' '}
+              <span data-testid="lab-sleep-r" className="tabular-nums font-bold text-zinc-200">
+                {sleep.r?.toFixed(4) ?? 'n/a'}
+              </span>{' '}
+              · n = {sleep.n}
+            </p>
+            <Scatter
+              points={sleep.points.map((p) => ({ x: p.sleep_hours, y: p.volume_lb }))}
+              xLabel="sleep"
+              yLabel="volume"
+              testId="lab-sleep-scatter"
+            />
+          </>
+        ) : (
+          <p className="mt-2 text-sm text-zinc-500" data-testid="lab-sleep-insufficient">
+            Appears at {10}+ matched days (now {sleep.n}).
+          </p>
+        )}
+      </section>
+    </>
   );
 }

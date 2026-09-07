@@ -20,6 +20,7 @@ import FinishWorkoutModal, {
   type FinishRecap,
 } from '@/components/FinishWorkoutModal';
 import SwapExerciseModal from '@/components/SwapExerciseModal';
+import RecoveryGate from '@/components/RecoveryGate';
 import { getProgramSessionContext, type ProgramSessionContext } from '@/lib/coach/ui';
 import { onSessionFinished, type SessionFeedback } from '@/lib/coach/run';
 import { linkPrescriptiveSession } from '@/lib/challenges/service';
@@ -234,6 +235,12 @@ export default function WorkoutPage() {
             {programCtx.plannedSession.is_deload ? ' · DELOAD' : ''} ·{' '}
             {programCtx.plannedSession.workout_name}
           </p>
+        )}
+        {programCtx && (
+          <RecoveryGate
+            plannedSessionId={programCtx.plannedSession.id}
+            isDeload={programCtx.plannedSession.is_deload}
+          />
         )}
         {(sessionExercises ?? []).map(({ link, exercise }) => {
           const slotSets = programCtx?.plannedSets.filter(

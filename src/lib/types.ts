@@ -82,6 +82,8 @@ export interface CardioEntry {
 export interface DailyMetric {
   date: string; // YYYY-MM-DD
   sleep_score: number | null;
+  /** Hours of sleep (WHOOP / manual check-in) — sleep guard input. */
+  sleep_hours: number | null;
   hrv: number | null;
   resting_hr: number | null;
   recovery_percentage: number | null;
@@ -270,7 +272,10 @@ export type TableName =
   | 'challenge_policy_state'
   | 'challenge_amendments'
   | 'ai_generation_logs'
-  | 'ai_suggestions';
+  | 'ai_suggestions'
+  // Sprint 6 (WHOOP + recovery gates).
+  | 'daily_gate_logs'
+  | 'ai_briefings';
 
 export interface Settings {
   day_boundary_hour: number;
@@ -282,6 +287,13 @@ export interface Settings {
   // Sprint 4: streak v3.
   freeze_bank_cap: number;
   max_rest_days: number;
+  // Sprint 6: recovery gates.
+  /** 'enforce' applies YELLOW treatment automatically; 'suggest_only' waits for Apply. */
+  gate_mode: 'enforce' | 'suggest_only';
+  /** Gate on manually-entered metrics when WHOOP is absent/disconnected. */
+  manual_gate_enabled: boolean;
+  /** Client-side record of the last WHOOP sync (server holds tokens only). */
+  whoop_last_synced_at: string | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -546,5 +558,49 @@ export interface AISuggestion {
   rationale: string | null;
   created_at: string;
   resolved_at: string | null;
+  syncedAt?: string;
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 6 — WHOOP + Recovery Gates
+// ---------------------------------------------------------------------------
+
+export type GateLevel = 'green' | 'yellow' | 'red';
+export type GateOutcome = GateLevel | 'deload_skip' | 'none';
+
+export interface GateAdjustments {
+  /** Working-set weight multiplier (0.9 on YELLOW; 1 otherwise). */
+  weight_scale: number;
+  /** RPE delta (−1 YELLOW, −2 with sleep guard; floor 6 at apply time). */
+  rpe_delta: number;
+  /** Rest add (seconds; +30 on YELLOW). */
+  rest_delta: number;
+}
+
+export interface DailyGateLog {
+  id: string;
+  training_date: string; // YYYY-MM-DD, one row per day (upsert)
+  recovery_percentage: number | null;
+  hrv: number | null;
+  hrv_z: number | null;
+  sleep_hours: number | null;
+  outcome: GateOutcome;
+  adjustments: GateAdjustments;
+  /** Set when the treatment was applied to planned_sets (once per day). */
+  applied_at: string | null;
+  user_override: boolean;
+  source: string; // 'whoop' | 'manual'
+  reason: string | null;
+  created_at: string;
+  syncedAt?: string;
+}
+
+/** Narrate-only daily briefing — cached by training_date (1 LLM call/day). */
+export interface AIBriefing {
+  training_date: string; // PK
+  content: string;
+  gate_outcome: GateOutcome;
+  prompt_version: string;
+  created_at: string;
   syncedAt?: string;
 }

@@ -11,6 +11,10 @@ export const DEFAULT_SETTINGS: Settings = {
   hevy_unit: 'lb',
   freeze_bank_cap: 4,
   max_rest_days: 2,
+  // Sprint 6: recovery gates.
+  gate_mode: 'enforce',
+  manual_gate_enabled: true,
+  whoop_last_synced_at: null,
 };
 
 export async function getSettings(): Promise<Settings> {
