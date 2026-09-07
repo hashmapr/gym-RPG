@@ -25,6 +25,7 @@ import {
   gateGolden,
   recoveryCorrelationGolden,
 } from '../src/lib/seed/recovery-fixture';
+import { computeSeedRpg } from '../src/lib/seed/rpg-fixture';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const MOCK_DB_PATH = resolve(ROOT, 'mock-db.json');
@@ -245,7 +246,69 @@ function main(): number {
     return 1;
   }
 
-  console.log('\nAll analytics + challenge + Argus + recovery sections match goldens.');
+  // --- 6. RPG goldens (Sprint 7): ledger idempotence + character vs goldens
+  const rpgComp = computeSeedRpg();
+  const rpgCompAgain = computeSeedRpg();
+  const countByRpg = (key: (r: (typeof rpgComp.ledger)[number]) => string) =>
+    rpgComp.ledger.reduce<Record<string, number>>((acc, r) => {
+      const k = key(r);
+      acc[k] = (acc[k] ?? 0) + 1;
+      return acc;
+    }, {});
+
+  let rpgFailed = false;
+  const rpgGoldenChecks: Array<[string, unknown, unknown]> = [
+    ['rpg-character', JSON.parse(readFileSync(resolve(GOLDEN_DIR, 'rpg-character.golden.json'), 'utf8')), {
+      character: rpgComp.character,
+      levelUps: rpgComp.levelUps,
+      stats: {
+        strength_xp: rpgComp.stats.strength_xp,
+        power_xp: rpgComp.stats.power_xp,
+        conditioning_xp: rpgComp.stats.conditioning_xp,
+        discipline_xp: rpgComp.stats.discipline_xp,
+        best_streak: rpgComp.bestStreak,
+        best_streak_at: rpgComp.bestStreakAt,
+        sessions_last_30d: rpgComp.stats.sessionsLast30d,
+        checkins_last_30d: rpgComp.stats.checkinsLast30d,
+      },
+      ledger: {
+        rows: rpgComp.ledger.length,
+        byKind: countByRpg((r) => r.source_kind),
+        byState: countByRpg((r) => r.body_state),
+        total_xp: rpgComp.character.total_xp,
+        first_row: rpgComp.ledger[0] ?? null,
+        last_row: rpgComp.ledger[rpgComp.ledger.length - 1] ?? null,
+      },
+      idempotence: {
+        recompute_equals_ledger: JSON.stringify(rpgComp.ledger) === JSON.stringify(rpgCompAgain.ledger),
+        character_stable: JSON.stringify(rpgComp.character) === JSON.stringify(rpgCompAgain.character),
+      },
+    }],
+  ];
+  for (const [name, golden, engine] of rpgGoldenChecks) {
+    const diffs: Diff[] = [];
+    deepDiff(golden, engine, '$', diffs);
+    if (diffs.length === 0) {
+      console.log(`✓ ${name} matches golden`);
+    } else {
+      rpgFailed = true;
+      console.error(`✗ ${name}: ${diffs.length} difference(s)`);
+      for (const d of diffs.slice(0, 8)) {
+        console.error(`    ${d.path}: golden=${JSON.stringify(d.golden)} engine=${JSON.stringify(d.engine)}`);
+      }
+    }
+  }
+  // Ledger idempotence is a hard gate even when the golden matches.
+  if (JSON.stringify(rpgComp.ledger) !== JSON.stringify(rpgCompAgain.ledger)) {
+    rpgFailed = true;
+    console.error('✗ rpg ledger is not idempotent (recompute ≠ ledger)');
+  }
+  if (rpgFailed) {
+    console.error('\nRPG engine disagrees with goldens — goldens win.');
+    return 1;
+  }
+
+  console.log('\nAll analytics + challenge + Argus + recovery + RPG sections match goldens.');
   return 0;
 }
 

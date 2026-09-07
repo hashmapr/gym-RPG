@@ -40,6 +40,9 @@ import type {
   AISuggestion,
   DailyGateLog,
   AIBriefing,
+  SkillNode,
+  UserSkill,
+  XpLedgerRow,
 } from './types';
 
 export class LabDB extends Dexie {
@@ -79,6 +82,10 @@ export class LabDB extends Dexie {
   // Sprint 6: recovery gates + daily briefing.
   daily_gate_logs!: Table<DailyGateLog, string>;
   ai_briefings!: Table<AIBriefing, string>;
+  // Sprint 7: The RPG.
+  skill_nodes!: Table<SkillNode, string>;
+  user_skills!: Table<UserSkill, string>;
+  xp_ledger!: Table<XpLedgerRow, string>;
 
   constructor() {
     super('the-lab');
@@ -140,6 +147,15 @@ export class LabDB extends Dexie {
     this.version(6).stores({
       daily_gate_logs: 'id, training_date',
       ai_briefings: 'training_date',
+    });
+    // Sprint 7: The RPG. Ledger rows use deterministic ids
+    // (`${source_kind}:${source_id}`) so reprocessing never double-awards;
+    // the compound index backs that dedup explicitly. user_skills keeps the
+    // node id as PK (one completion row per node).
+    this.version(7).stores({
+      skill_nodes: 'id, branch, sub_branch, parent_id',
+      user_skills: 'skill_node_id',
+      xp_ledger: 'id, source_kind, earned_at, [source_kind+source_id]',
     });
     // P0 sync rule: any mutation to a synced row re-queues it (data layer).
     installRequeueHooks(this, SYNC_TABLE_ORDER);

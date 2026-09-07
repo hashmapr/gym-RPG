@@ -15,6 +15,9 @@ export const DEFAULT_SETTINGS: Settings = {
   gate_mode: 'enforce',
   manual_gate_enabled: true,
   whoop_last_synced_at: null,
+  // Sprint 7: The RPG — Body-State Protocol + XP mode.
+  target_bodyweight_lb: null,
+  xp_mode: 'auto',
 };
 
 export async function getSettings(): Promise<Settings> {

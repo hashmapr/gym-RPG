@@ -17,8 +17,11 @@ import { exerciseName } from '@/lib/wger';
 import { ARGUS_ENABLED } from '@/lib/argus/config';
 import { SuggestionCard } from '@/components/argus/ArgusUI';
 import { RecoveryBadge, RecoveryHomeSurfaces } from '@/components/RecoveryHome';
+import { maybeRetroCompute } from '@/lib/rpg/retro';
+import { xpToNextLevel } from '@/lib/rpg/levels';
+import { RPG_COPY } from '@/lib/rpg/copy';
 import type { TodayCard } from '@/lib/coach/run';
-import type { WorkoutSession } from '@/lib/types';
+import type { WorkoutSession, RPGCharacter } from '@/lib/types';
 
 export default function HomePage() {
   const router = useRouter();
@@ -37,14 +40,19 @@ export default function HomePage() {
     if (!lastSession) return [];
     return db.workout_sets.where('workout_id').equals(lastSession.id).toArray();
   }, [lastSession?.id]);
+  const character = useLiveQuery(() => db.rpg_character.get('self'), []) as
+    | RPGCharacter
+    | undefined;
 
   const today = getTrainingDate(new Date(), settings.day_boundary_hour);
   const [todayCard, setTodayCard] = useState<TodayCard | null>(null);
   const [cardExercises, setCardExercises] = useState<{ name: string; target: string }[]>([]);
+  const charProg = character ? xpToNextLevel(character.total_xp) : null;
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      await maybeRetroCompute();
       await syncRunProgress();
       await sweepMissedSessions(today);
       const card = await getTodayCard(today);
@@ -146,6 +154,38 @@ export default function HomePage() {
           </Link>
         </nav>
       </header>
+
+      {/* Character chip (Sprint 7) — hidden until the character materializes. */}
+      {character && (
+        <Link
+          href="/character"
+          data-testid="character-chip"
+          className="mb-4 flex items-center gap-3 rounded-xl border border-ember-border/50 bg-ember-dim px-4 py-3"
+        >
+          <span className="font-display text-lg font-bold text-ember">
+            {RPG_COPY.levelShort} {character.level}
+          </span>
+          <span className="flex-1">
+            <span className="block h-1.5 rounded-full bg-zinc-800">
+              <span
+                className="block h-1.5 rounded-full bg-ember"
+                style={{
+                  width: charProg
+                    ? `${Math.round(
+                        ((character.total_xp - charProg.floor) /
+                          Math.max(1, charProg.floor + charProg.remaining)) *
+                          100,
+                      )}%`
+                    : '0%',
+                }}
+              />
+            </span>
+          </span>
+          <span className="text-xs text-zinc-400">
+            {character.total_xp.toLocaleString()} {RPG_COPY.xp}
+          </span>
+        </Link>
+      )}
 
       {/* Weekly suggestion nudge (AI) */}
       {ARGUS_ENABLED && (

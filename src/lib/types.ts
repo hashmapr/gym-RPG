@@ -3,7 +3,7 @@
 // they sort lexicographically and convert to Date losslessly.
 
 export type SessionType = 'strength' | 'cardio' | 'mixed';
-export type SetType = 'warmup' | 'working' | 'drop' | 'failure';
+export type SetType = 'warmup' | 'working' | 'drop' | 'top_set' | 'failure';
 export type SetSource = 'app' | 'hevy';
 export type E1RMFormula = 'epley' | 'brzycki' | 'wathan' | 'consensus';
 
@@ -135,6 +135,79 @@ export interface RPGCharacter {
   level: number;
   total_xp: number;
   current_streak: number;
+  // Sprint 7 (The RPG): branch XP high-water marks + Body-State Protocol.
+  strength_xp: number;
+  power_xp: number;
+  conditioning_xp: number;
+  discipline_xp: number;
+  best_streak: number;
+  body_state: BodyState;
+  syncedAt?: string;
+}
+
+// ------------------------------------------------------------- Sprint 7: RPG
+
+/** Body-State Protocol state. There is no punishment mode — never below 1.0. */
+export type BodyState = 'CUT' | 'BALANCED' | 'GAIN';
+
+export type XpSourceKind =
+  | 'set'
+  | 'pr'
+  | 'session'
+  | 'cardio'
+  | 'challenge'
+  | 'program_week'
+  | 'program'
+  | 'goal'
+  | 'skill';
+
+/** One XP event. `id` is deterministic (`${source_kind}:${source_id}`) so
+ *  reprocessing the same source can never double-award. */
+export interface XpLedgerRow {
+  id: string;
+  source_kind: XpSourceKind;
+  source_id: string;
+  xp: number;
+  /** Body state at earn time (or the forced override). */
+  body_state: BodyState;
+  /** Mode multiplier applied to this row (1.00 for flat bonuses). */
+  multiplier: number;
+  earned_at: string;
+  syncedAt?: string;
+}
+
+export type SkillBranch = 'STRENGTH' | 'POWER' | 'CONDITIONING' | 'DISCIPLINE';
+
+/** JSONB node requirement — evaluated against real data, never hand-marked. */
+export type SkillRequirement =
+  | { type: 'metric_threshold'; exercise_id: string; e1rm_lb: number }
+  | { type: 'lifetime_volume'; scope: 'exercise' | 'category'; id: string; lb: number }
+  | { type: 'cardio_distance'; activity: string; miles: number }
+  | { type: 'streak_best'; days: number }
+  | { type: 'adherence_weeks'; weeks: number }
+  | { type: 'challenge_complete'; challenge_type: ChallengeType }
+  | { type: 'goal_achieved' }
+  | { type: 'pr_count'; count: number }
+  | { type: 'program_complete' }
+  | { type: 'checkin_count'; count: number };
+
+export interface SkillNode {
+  id: string;
+  branch: SkillBranch;
+  sub_branch: string;
+  title: string;
+  tier: number;
+  requirement: SkillRequirement;
+  xp_reward: number;
+  parent_id: string | null;
+  is_starter: boolean;
+  created_at: string;
+  syncedAt?: string;
+}
+
+export interface UserSkill {
+  skill_node_id: string;
+  completed_at: string | null;
   syncedAt?: string;
 }
 
@@ -273,9 +346,14 @@ export type TableName =
   | 'challenge_amendments'
   | 'ai_generation_logs'
   | 'ai_suggestions'
-  // Sprint 6 (WHOOP + recovery gates).
+  // Sprint 6 (Recovery).
   | 'daily_gate_logs'
-  | 'ai_briefings';
+  | 'ai_briefings'
+  // Sprint 7 (The RPG): node defs sync down; completions + ledger sync up.
+  | 'skill_nodes'
+  | 'user_skills'
+  | 'xp_ledger'
+  | 'rpg_character';
 
 export interface Settings {
   day_boundary_hour: number;
@@ -294,6 +372,11 @@ export interface Settings {
   manual_gate_enabled: boolean;
   /** Client-side record of the last WHOOP sync (server holds tokens only). */
   whoop_last_synced_at: string | null;
+  // Sprint 7: The RPG — Body-State Protocol + XP mode.
+  /** Check-in target for the Body-State Protocol (null → BALANCED + prompt). */
+  target_bodyweight_lb: number | null;
+  /** 'auto' derives from check-ins; any BodyState value forces that mode. */
+  xp_mode: 'auto' | BodyState;
 }
 
 // ---------------------------------------------------------------------------

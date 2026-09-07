@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { db } from '@/lib/db';
 import { syncAll } from '@/lib/sync/engine';
 import { resolveSyncClient } from '@/lib/sync/client';
+import { maybeRetroCompute } from '@/lib/rpg/retro';
 import { maybePullE2ESeed } from '@/lib/e2e-seed';
 import { useSyncStore } from '@/lib/sync/store';
 import { ensureStarters, resolveChallenges, getStreakDisplay } from '@/lib/challenges/service';
@@ -44,6 +45,8 @@ export function runSyncNow(): void {
         fetch('/api/lab/refresh', { method: 'POST' }).catch(() => {});
         // Resolution is lazy: re-run after sync batches (spec A3).
         runChallengeSweep();
+        // Sprint 7: materialize the character once workout data has landed.
+        void maybeRetroCompute();
       }
     } catch (err) {
       useSyncStore

@@ -1,0 +1,295 @@
+{
+  "board": [
+    {
+      "id": "trial:seed-vol-early",
+      "kind": "trial",
+      "kindLabel": "Trials",
+      "title": "Season Opener: 341,904 lb",
+      "subtitle": "",
+      "state": "active",
+      "progress": {
+        "current": 401140.5,
+        "required": 341904,
+        "unit": "lb"
+      },
+      "reward": {
+        "xp": 500,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "trial:seed-tri-a",
+      "kind": "trial",
+      "kindLabel": "Trials",
+      "title": "Final Push: 55,000 lb",
+      "subtitle": "",
+      "state": "active",
+      "progress": {
+        "current": 78044,
+        "required": 55000,
+        "unit": "lb"
+      },
+      "reward": {
+        "xp": 500,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "trial:seed-tri-b",
+      "kind": "trial",
+      "kindLabel": "Trials",
+      "title": "Bench Closer: 12,587.5 lb",
+      "subtitle": "",
+      "state": "active",
+      "progress": {
+        "current": 16750,
+        "required": 12587.5,
+        "unit": "lb"
+      },
+      "reward": {
+        "xp": 500,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "trial:seed-tri-c",
+      "kind": "trial",
+      "kindLabel": "Trials",
+      "title": "Perfect Finish: 4 Sessions",
+      "subtitle": "",
+      "state": "active",
+      "progress": {
+        "current": 4,
+        "required": 4,
+        "unit": "count"
+      },
+      "reward": {
+        "xp": 400,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "trial:seed-prs",
+      "kind": "trial",
+      "kindLabel": "Trials",
+      "title": "Bench PR Hunter",
+      "subtitle": "",
+      "state": "active",
+      "progress": {
+        "current": 6,
+        "required": 3,
+        "unit": "count"
+      },
+      "reward": {
+        "xp": 500,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "trial:seed-squat-flat",
+      "kind": "trial",
+      "kindLabel": "Trials",
+      "title": "Squat +2%",
+      "subtitle": "",
+      "state": "active",
+      "progress": {
+        "current": -2.04,
+        "required": 2,
+        "unit": "count"
+      },
+      "reward": {
+        "xp": 800,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "trial:seed-ladder",
+      "kind": "trial",
+      "kindLabel": "Trials",
+      "title": "Bench Ladder 185",
+      "subtitle": "",
+      "state": "active",
+      "progress": {
+        "current": 12,
+        "required": 12,
+        "unit": "count"
+      },
+      "reward": {
+        "xp": 700,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "trial:seed-vol-impossible",
+      "kind": "trial",
+      "kindLabel": "Trials",
+      "title": "Herculean: 500,000 lb",
+      "subtitle": "",
+      "state": "active",
+      "progress": {
+        "current": 21701.5,
+        "required": 500000,
+        "unit": "lb"
+      },
+      "reward": {
+        "xp": 500,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "trial:seed-distance-25",
+      "kind": "trial",
+      "kindLabel": "Trials",
+      "title": "September 25",
+      "subtitle": "",
+      "state": "active",
+      "progress": {
+        "current": 25,
+        "required": 25,
+        "unit": "mi"
+      },
+      "reward": {
+        "xp": 400,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "trial:seed-streak-weekly",
+      "kind": "trial",
+      "kindLabel": "Trials",
+      "title": "Iron Cadence (2×/wk)",
+      "subtitle": "",
+      "state": "active",
+      "progress": {
+        "current": 4,
+        "required": 4,
+        "unit": "count"
+      },
+      "reward": {
+        "xp": 600,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "deed:20000000-0000-4000-8000-000000000001",
+      "kind": "deed",
+      "kindLabel": "Deeds",
+      "title": "Strength deed",
+      "subtitle": "Set the mark, then take it.",
+      "state": "active",
+      "progress": null,
+      "reward": {
+        "xp": 750,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "deed:20000000-0000-4000-8000-000000000002",
+      "kind": "deed",
+      "kindLabel": "Deeds",
+      "title": "Strength deed",
+      "subtitle": "Achieved.",
+      "state": "completed",
+      "progress": null,
+      "reward": {
+        "xp": 750,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "feat:a1000000-0000-4000-8000-000000000001",
+      "kind": "feat",
+      "kindLabel": "Feats",
+      "title": "Feat of strength",
+      "subtitle": "e1RM ≥ 275 lb — you're at 260",
+      "state": "active",
+      "progress": {
+        "current": 260,
+        "required": 275,
+        "unit": "lb e1RM"
+      },
+      "reward": {
+        "xp": 500,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "feat:a1000000-0000-4000-8000-000000000002",
+      "kind": "feat",
+      "kindLabel": "Feats",
+      "title": "Feat of strength",
+      "subtitle": "e1RM ≥ 365 lb — you're at 315",
+      "state": "active",
+      "progress": {
+        "current": 315,
+        "required": 365,
+        "unit": "lb e1RM"
+      },
+      "reward": {
+        "xp": 500,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "feat:a1000000-0000-4000-8000-000000000003",
+      "kind": "feat",
+      "kindLabel": "Feats",
+      "title": "Feat of strength",
+      "subtitle": "e1RM ≥ 365 lb — you're at 318",
+      "state": "active",
+      "progress": {
+        "current": 318,
+        "required": 365,
+        "unit": "lb e1RM"
+      },
+      "reward": {
+        "xp": 250,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "feat:a1000000-0000-4000-8000-000000000004",
+      "kind": "feat",
+      "kindLabel": "Feats",
+      "title": "Feat of strength",
+      "subtitle": "e1RM ≥ 135 lb — you're at 118",
+      "state": "active",
+      "progress": {
+        "current": 118,
+        "required": 135,
+        "unit": "lb e1RM"
+      },
+      "reward": {
+        "xp": 250,
+        "adaptive": false
+      }
+    },
+    {
+      "id": "feat:a1000000-0000-4000-8000-000000000005",
+      "kind": "feat",
+      "kindLabel": "Feats",
+      "title": "Feat of strength",
+      "subtitle": "Every milestone taken.",
+      "state": "completed",
+      "progress": null,
+      "reward": null
+    },
+    {
+      "id": "feat:a1000000-0000-4000-8000-000000000006",
+      "kind": "feat",
+      "kindLabel": "Feats",
+      "title": "Feat of strength",
+      "subtitle": "e1RM ≥ 110 lb — you're at 94",
+      "state": "active",
+      "progress": {
+        "current": 94,
+        "required": 110,
+        "unit": "lb e1RM"
+      },
+      "reward": {
+        "xp": 500,
+        "adaptive": false
+      }
+    }
+  ]
+}

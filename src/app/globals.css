@@ -5,6 +5,15 @@
   color-scheme: dark;
 }
 
+/* Sprint 7 (The RPG): ember theme tokens. Copy lives in src/lib/rpg/copy.ts. */
+@theme {
+  --color-ember: #d4a24e;
+  --color-ember-deep: #8a5f22;
+  --color-ember-dim: #3a2c14;
+  --color-ember-border: #6b5426;
+  --font-display: var(--font-cinzel), 'Cinzel', 'Times New Roman', serif;
+}
+
 html,
 body {
   background: #09090b;

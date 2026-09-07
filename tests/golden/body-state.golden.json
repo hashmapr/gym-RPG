@@ -1,0 +1,453 @@
+{
+  "rule": "A1: ≥7 entries in trailing 14d → 14d mean; else latest weight governs. ±5 lb band. 3-day hysteresis.",
+  "target": 220,
+  "cases": [
+    {
+      "name": "sparse-4-entries-252-target-220-CUT",
+      "entries": [
+        {
+          "date": "2026-01-01",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-04",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-07",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-10",
+          "body_weight": 252
+        }
+      ],
+      "target": 220,
+      "end": "2026-01-13",
+      "shifts": [
+        {
+          "date": "2026-01-03",
+          "from": "BALANCED",
+          "to": "CUT"
+        }
+      ],
+      "finalState": "CUT"
+    },
+    {
+      "name": "entries-stop-20d-last-known-governs",
+      "entries": [
+        {
+          "date": "2026-01-01",
+          "body_weight": 250
+        },
+        {
+          "date": "2026-01-03",
+          "body_weight": 250
+        },
+        {
+          "date": "2026-01-05",
+          "body_weight": 250
+        }
+      ],
+      "target": 220,
+      "end": "2026-01-25",
+      "shifts": [
+        {
+          "date": "2026-01-03",
+          "from": "BALANCED",
+          "to": "CUT"
+        }
+      ],
+      "finalState": "CUT"
+    },
+    {
+      "name": "sparse-weight-225-in-band-BALANCED",
+      "entries": [
+        {
+          "date": "2026-01-01",
+          "body_weight": 225
+        },
+        {
+          "date": "2026-01-04",
+          "body_weight": 225
+        },
+        {
+          "date": "2026-01-07",
+          "body_weight": 225
+        },
+        {
+          "date": "2026-01-10",
+          "body_weight": 225
+        }
+      ],
+      "target": 220,
+      "end": "2026-01-13",
+      "shifts": [],
+      "finalState": "BALANCED"
+    },
+    {
+      "name": "dense-14d-mean-252-CUT",
+      "entries": [
+        {
+          "date": "2026-01-01",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-02",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-03",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-04",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-05",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-06",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-07",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-08",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-09",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-10",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-11",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-12",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-13",
+          "body_weight": 252
+        },
+        {
+          "date": "2026-01-14",
+          "body_weight": 252
+        }
+      ],
+      "target": 220,
+      "end": "2026-01-15",
+      "shifts": [
+        {
+          "date": "2026-01-03",
+          "from": "BALANCED",
+          "to": "CUT"
+        }
+      ],
+      "finalState": "CUT"
+    },
+    {
+      "name": "hysteresis-single-day-spike-no-shift",
+      "entries": [
+        {
+          "date": "2026-01-01",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-02",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-03",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-04",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-05",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-06",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-07",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-08",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-09",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-10",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-11",
+          "body_weight": 240
+        },
+        {
+          "date": "2026-01-12",
+          "body_weight": 220
+        }
+      ],
+      "target": 220,
+      "end": "2026-01-13",
+      "shifts": [],
+      "finalState": "BALANCED"
+    },
+    {
+      "name": "hysteresis-3-day-persistence-shifts",
+      "entries": [
+        {
+          "date": "2026-01-01",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-02",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-03",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-04",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-05",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-06",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-07",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-08",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-09",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-10",
+          "body_weight": 220
+        },
+        {
+          "date": "2026-01-11",
+          "body_weight": 240
+        },
+        {
+          "date": "2026-01-12",
+          "body_weight": 240
+        },
+        {
+          "date": "2026-01-13",
+          "body_weight": 240
+        },
+        {
+          "date": "2026-01-14",
+          "body_weight": 240
+        },
+        {
+          "date": "2026-01-15",
+          "body_weight": 240
+        },
+        {
+          "date": "2026-01-16",
+          "body_weight": 240
+        },
+        {
+          "date": "2026-01-17",
+          "body_weight": 240
+        }
+      ],
+      "target": 220,
+      "end": "2026-01-18",
+      "shifts": [
+        {
+          "date": "2026-01-16",
+          "from": "BALANCED",
+          "to": "CUT"
+        }
+      ],
+      "finalState": "CUT"
+    },
+    {
+      "name": "no-target-BALANCED",
+      "entries": [
+        {
+          "date": "2026-01-01",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-02",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-03",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-04",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-05",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-06",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-07",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-08",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-09",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-10",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-11",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-12",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-13",
+          "body_weight": 300
+        },
+        {
+          "date": "2026-01-14",
+          "body_weight": 300
+        }
+      ],
+      "target": null,
+      "end": "2026-01-15",
+      "shifts": [],
+      "finalState": "BALANCED"
+    },
+    {
+      "name": "dense-below-band-GAIN",
+      "entries": [
+        {
+          "date": "2026-01-01",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-02",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-03",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-04",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-05",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-06",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-07",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-08",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-09",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-10",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-11",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-12",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-13",
+          "body_weight": 210
+        },
+        {
+          "date": "2026-01-14",
+          "body_weight": 210
+        }
+      ],
+      "target": 220,
+      "end": "2026-01-15",
+      "shifts": [
+        {
+          "date": "2026-01-03",
+          "from": "BALANCED",
+          "to": "GAIN"
+        }
+      ],
+      "finalState": "GAIN"
+    }
+  ],
+  "seedSeries": {
+    "shifts": [
+      {
+        "date": "2026-06-09",
+        "from": "BALANCED",
+        "to": "CUT"
+      },
+      {
+        "date": "2026-08-19",
+        "from": "CUT",
+        "to": "BALANCED"
+      }
+    ],
+    "stateOnSeedToday": "BALANCED",
+    "cutFrom": "2026-06-09",
+    "balancedFrom": "2026-08-19"
+  }
+}

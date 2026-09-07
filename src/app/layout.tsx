@@ -1,8 +1,16 @@
 import type { Metadata, Viewport } from 'next';
+import { Cinzel } from 'next/font/google';
 import './globals.css';
 import SyncProvider from '@/components/SyncProvider';
 import OfflineIndicator from '@/components/OfflineIndicator';
 import ServiceWorkerRegistrar from '@/components/ServiceWorkerRegistrar';
+
+const cinzel = Cinzel({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-cinzel',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'The Lab',
@@ -32,7 +40,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-dvh bg-zinc-950 text-zinc-100 antialiased">
+      <body className={`${cinzel.variable} min-h-dvh bg-zinc-950 text-zinc-100 antialiased`}>
         <OfflineIndicator />
         <SyncProvider>{children}</SyncProvider>
         <ServiceWorkerRegistrar />

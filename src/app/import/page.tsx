@@ -11,6 +11,9 @@ import { parseHevyCsv, matchExerciseName, normalizeExerciseName } from '@/lib/he
 import { exerciseName, createCustomExercise } from '@/lib/wger';
 import { useSettings, saveSettings } from '@/lib/settings';
 import { getTrainingDate } from '@/lib/day-boundary';
+import { recomputeRpg, loadRpgData } from '@/lib/rpg/retro';
+import { RPG_SETTINGS_KEYS } from '@/lib/rpg/config';
+import { RPG_COPY } from '@/lib/rpg/copy';
 import type { WorkoutSession, WorkoutSet } from '@/lib/types';
 
 const LB_PER_KG = 2.20462;
@@ -26,6 +29,7 @@ export default function ImportPage() {
     skipped: number;
     unmatched: number;
   } | null>(null);
+  const [materialized, setMaterialized] = useState<{ level: number; nodes: number } | null>(null);
 
   const runImport = async (file: File) => {
     setError(null);
@@ -154,6 +158,17 @@ export default function ImportPage() {
         unmatched,
       });
       setStatus(null);
+
+      // Sprint 7: first materialization shows the one-time "Character
+      // Materialized" screen (spec: import → character appears).
+      const { materializedAt } = await loadRpgData();
+      if (!materializedAt) {
+        const { computation } = await recomputeRpg();
+        setMaterialized({
+          level: computation.character.level,
+          nodes: computation.skills.length,
+        });
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Import failed.');
     } finally {
@@ -233,6 +248,26 @@ export default function ImportPage() {
         )}
         {status && <p className="mt-3 text-sm text-zinc-400">{status}</p>}
       </section>
+
+      {materialized && (
+        <section
+          data-testid="character-materialized"
+          className="rounded-xl border border-ember-border bg-ember-dim p-6 text-center"
+        >
+          <h2 className="font-display text-xl font-bold text-ember">
+            {RPG_COPY.materializedTitle}
+          </h2>
+          <p className="mt-2 text-sm text-zinc-300">
+            {RPG_COPY.materializedBody(materialized.level, materialized.nodes)}
+          </p>
+          <Link
+            href="/character"
+            className="mt-4 inline-block min-h-12 rounded-xl border border-ember-border bg-zinc-900 px-6 py-3 font-display text-sm font-bold text-ember"
+          >
+            View character
+          </Link>
+        </section>
+      )}
     </main>
   );
 }

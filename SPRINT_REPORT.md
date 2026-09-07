@@ -1,46 +1,55 @@
-# Sprint 6 Report — WHOOP + Recovery Gates
+# Sprint 7 Report — The RPG
 
 ## Test counts
 
 | Suite | Result |
 |---|---|
-| Unit (`tests/unit/recovery.test.ts`) | 23 new — all pass |
-| Component (`tests/component/recovery.test.tsx`) | 14 new — all pass |
-| E2E (`tests/e2e/recovery.spec.ts`) | **7/7 pass** (15.8s) |
-| Full suite | **272/275** — 3 pre-existing failures only (see below) |
+| Unit (`tests/unit/rpg.test.ts`) | 18 new — all pass (5 golden diffs, idempotence, level boundaries, high-water, A1 body-state cases, purity) |
+| Component (`tests/component/rpg.test.tsx`) | 8 new — all pass (character sheet, quests board, celebration, ember tokens, zero-fantasy-nouns copy walk) |
+| E2E (`tests/e2e/rpg.spec.ts`) | **4/4 pass** (18.8s): lifecycle, body-state, retro-import, readonly-regression |
+| Full vitest | **296/301** — 5 pre-existing parallel-load flakes only (see below) |
+| Full Playwright | **37/39** — 2 pre-existing failures only (see below) |
 | `tsc --noEmit` | clean |
-| `npm run build` | pass |
-| `npm run seed:verify` | **zero golden diffs** (analytics, challenge, Argus, + new recovery sections) |
+| `npm run build` | pass (3 new routes: /character, /skilltree, /quests) |
+| `npm run seed:verify` | **zero golden diffs** — all 6 sections incl. new `rpg-character` |
 
-### Pre-existing failures (NOT Sprint 6 regressions)
-- `program-builder.test.tsx` ×2 (test pollution — existed before Sprint 5, baseline was 235/238)
-- `workout-logger.test.tsx:294` rest-timer timing flake
+### Pre-existing failures (NOT Sprint 7 regressions)
+- `program-builder.test.tsx` ×2 + `workout-logger.test.tsx` ×2 + `argus.test.ts` ×1: parallel jsdom load flakes — all pass in isolation and on the clean tree (verified via `git stash`).
+- `program-lifecycle.spec.ts` + `substitution-e2e.spec.ts`: fail on the clean tree too (verified via `git stash`), unrelated to RPG.
 
-## Acceptance gate
+## Acceptance gates
 
-1. ✅ **Gate engine deterministic + golden-matched** — 16-case matrix in `gate.golden.json`: thresholds 33/34/66/67 boundaries, `no_data`, manual source on/off, stale 37h vs 35h, deload-first, HRV override (+ baseline-7 + flat-baseline guards), sleep-stack RPE −2, RED no-stack.
-2. ✅ **One-time-apply idempotence** — `daily_gate_logs.applied_at` tracks treatment; YELLOW enforce auto-applies exactly once (E2E: weights 200→180/100→90, reload never re-mutates); `markGateApplied` idempotent; suggest_only never auto-applies (Apply button gates it).
-3. ✅ **Source rule** — `whoop` always gates; `manual` gates iff `manual_gate_enabled`; no row → no gate; WHOOP wins same date (component test: check-in 90 does not overwrite WHOOP 55).
-4. ✅ **Sleep guard** — <5.5h stacks with YELLOW only (rpe_delta −2); RED does not stack.
-5. ✅ **HRV override** — GREEN + z ≤ −2 → YELLOW; requires ≥7 baseline days (prior 30d non-null, Bessel-corrected); flat baseline → no z → no override.
-6. ✅ **WHOOP mock + client** — deterministic mock (7 API routes), PKCE connect round-trip (E2E), 91-day backfill, 429 → retry, cache 1/day (`prompt_version` receipt), tokens server-side only (source-scan test: no token JSON in client-reachable responses).
-7. ✅ **Argus Daily Briefing** — cache-first (`ai_briefings`), narrate-only prompt contract, `briefing-v1` receipt rendered on home (E2E).
-8. ✅ **Lab recovery analytics** — Pearson correlations with n≥10 visibility gate; insufficient-data note; scatters render (component + golden `recovery-correlation.golden.json`).
-9. ✅ **Readonly regression** — E2E asserts zero deltas on exercises/workout_sessions/workout_sets/goals/programs/program_runs; only `planned_sets` (today), `daily_gate_logs`, `daily_metrics` written.
-10. ✅ **`ARGUS_ENABLED=false`** — briefing card removed cleanly (component test via `vi.resetModules` + `stubEnv`); gate engine unaffected.
-11. ✅ **Settings** — WHOOP connect/disconnect, gate mode (enforce/suggest_only), manual-gate toggle, manual check-in all persist (component + E2E).
-12. ✅ This report.
+1. **Deterministic seed** — `buildRpgData()` from the committed base fixture; same hash in, same character out. `computeSeedRpg` twice → identical.
+2. **Goldens win** — `rpg-character` golden committed; `seed:verify` section 6 diffs zero.
+3. **Level curve** — T(L)=round(120·(L−1)^1.75); boundaries tested at L2/3/6/10/20/50 crossings.
+4. **XP engine** — setXp/cardioXp/prBonus formulas locked by goldens; warmup 0×, RPE clamp 0.3–1.0.
+5. **Skill tree** — 74 nodes across 4 branches; 44 completed / 12 available / 18 locked in seed; crossings persist via silent recompute.
+6. **Quests** — trial/arc/deed/feat board live-evaluates challenges via `buildEvalContext` + `evaluateChallenge`; ✨ adaptive mark.
+7. **Body state (Amendment A1)** — CUT/BALANCED/GAIN with sparse fallback (last-known governs), hysteresis (3-day persistence), band logic; 8 named A1 cases unit-tested.
+8. **Retro-compute** — first import materializes the character (import screen shows the materialized panel); app-open retro-compute bails when ledger exists or no sets.
+9. **Readonly regression** — e2e asserts RPG browsing writes only `xp_ledger`/`user_skills`/`rpg_character`/`skill_nodes`/`settings` (pre-existing challenge/recovery sweep tables allowed).
+10. **Copy discipline** — zero fantasy nouns (dungeon/dragon/sword/mana/… enforced by test); second-person voice; ember tokens via Tailwind v4 `@theme`; Cinzel display font.
 
-## Deviations / implementation notes
+## Deviations from spec
 
-- **E2E seeds its own gate session**: the deterministic program fixture has no planned session on SEED_TODAY (2026-09-05 is a rest day), so the recovery E2E posts a planned session + 4 planned sets + today's metric through the mock-sync API before first page open.
-- **E2E pull-completion signal**: the one-time E2E hydration (`maybePullE2ESeed`) set its localStorage flag *before* the fetch, so tests couldn't tell when rows actually landed (and the flag is consumed after the first pull, so rows posted after `seedProgram` need the same pull). Added `lab.e2eSeedPulled` (set after bulkPut completes) — inert outside E2E.
-- **Sync nudge in tests**: the push engine's periodic retry is 15s; tests dispatch a synthetic `online` event (an existing SyncProvider hook → `runSyncNow`) instead of sleeping, keeping the suite fast and deterministic.
-- **Injectable clock**: `getGateForToday` accepts `now` so unit tests can pin noon on SEED_TODAY (the real test clock is a day later, which would make every fixture metric stale).
-- **Briefing-input golden**: `days_since_last_session` is `null` by design — the last fixture session starts 18:00 on SEED_TODAY while the golden clock is noon, so "days since" is negative → null.
-- **5-lb rounding**: YELLOW weight scale rounds DOWN to the 5-lb grid (`Math.floor(x/5)*5`) — 225→200, 220→195 (unit-tested).
+1. Level curve base is (L−1), so L2 starts at 120 XP.
+2. Ledger ids are deterministic strings, not UUIDs.
+3. `source_kind: 'skill'` added for skill-node XP rows.
+4. Branch XP formula constants locked by goldens (spec left them open).
+5. Manual `xp_mode` override applies to the ENTIRE recompute, not just new rows.
+6. `best_streak` uses app grace semantics (max_rest_days=2); freeze mechanics ignored.
+7. 74 skill nodes vs spec's "~60".
+8. `checkin_count` condition type added for deeds.
+9. Machine/DB node titles bind to fixture exercise ids via seed data.
+10. Feats display-only XP (no ledger rows).
+11. Session bonus requires ≥1 working set.
+12. Program week `earned_at` = weekEndDate T23:59:59Z.
+13. A1 sparse fallback (user amendment): <7 entries in 14d → last-known weight governs.
+14. Seed has no program tables → program/adherence XP is 0 in the seed character.
+15. Seed has no cardio → conditioning branch XP is 0.
 
 ## Files
 
-- **New (18)**: `src/lib/recovery/` (gate engine + service), `src/lib/whoop.ts`, `src/lib/server/whoop-mock.ts`, `src/app/api/whoop/*` (7 routes), `src/app/api/lab/recovery/`, `src/components/RecoveryGate.tsx`, `src/components/RecoveryHome.tsx`, `src/lib/argus/briefing.ts`, `src/lib/analytics/recovery.ts`, `src/lib/seed/recovery-fixture.ts`, `scripts/goldens-recovery.ts`, `supabase/migrations/0006_recovery.sql`, 3 goldens, 3 test suites.
-- **Modified (11)**: types/db (v6 + `daily_metrics`, `daily_gate_logs`, `ai_briefings`), sync engine (table order), settings defaults, home/workout/lab/settings pages, `package.json` (`seed:goldens-recovery`), `scripts/verify-seed.ts` (section 5), `src/lib/e2e-seed.ts` (pull signal).
+**New:** `src/lib/rpg/{types,xp,level,skill-tree,quests,body-state,retro,copy}.ts`, `src/lib/seed/rpg-fixture.ts`, `src/components/rpg/Celebration.tsx`, `src/app/{character,skilltree,quests}/page.tsx`, `tests/unit/rpg.test.ts`, `tests/component/rpg.test.tsx`, `tests/e2e/rpg.spec.ts`, goldens `tests/goldens/rpg-character.json`.
+
+**Modified:** `src/lib/db.ts` (rpg_* schema v9), `src/lib/sync/engine.ts` (table order), `src/components/SyncProvider.tsx` (retro-compute on sync), `src/app/page.tsx` (character chip), `src/app/import/page.tsx` (materialized screen), `src/app/globals.css` (ember @theme), `src/app/layout.tsx` (Cinzel), `scripts/verify-seed.ts` (section 6), `src/lib/seed/rpg-fixture.ts` exports.

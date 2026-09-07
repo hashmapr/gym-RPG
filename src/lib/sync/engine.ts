@@ -64,6 +64,11 @@ export const SYNC_TABLE_ORDER: TableName[] = [
   // tables; daily_metrics already syncs above them.
   'daily_gate_logs',
   'ai_briefings',
+  // Sprint 7 (The RPG): node defs must land before completion rows;
+  // the ledger is an independent append-only audit table.
+  'skill_nodes',
+  'user_skills',
+  'xp_ledger',
 ];
 
 export const DEFAULT_BATCH_SIZE = 200;
