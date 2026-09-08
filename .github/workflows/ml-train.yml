@@ -1,0 +1,34 @@
+name: ml-train
+
+# Sprint 8a: manual dispatch ONLY. No schedule, no push trigger — training
+# is a deliberate human act until the ml_v1 gate passes (8b).
+on:
+  workflow_dispatch:
+    inputs:
+      features_artifact:
+        description: 'ml_features CSV artifact name (from Storage bucket ml-features)'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run training pipeline (stub)
+        run: |
+          python ml/train.py --features "${{ inputs.features_artifact }}" --out ml/artifacts/
+
+      - name: Upload candidate artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ml-candidate
+          path: ml/artifacts/
+          retention-days: 14

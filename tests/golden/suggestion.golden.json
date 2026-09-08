@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-09-05T12:00:00.000Z",
+  "rationale": "Built from your last 8 weeks: 917 lb/day baseline, 12-day streak. Target is a 1.2× pace block with one raise and one ease checkpoint.",
+  "def": {
+    "name": "wger #73 Volume Block",
+    "description": "A 3-week volume block calibrated to your recent 917 lb/day baseline.",
+    "challenge_type": "volume",
+    "params": {
+      "scope": "all",
+      "target_lb": 23000
+    },
+    "duration_days": 21,
+    "is_starter": false,
+    "authored_by": "ai",
+    "adaptation_policy": {
+      "version": 1,
+      "execution": "automatic",
+      "checkpoints": [
+        {
+          "id": "c1",
+          "at_pct": 33,
+          "metric": "pace_vs_required",
+          "op": ">=",
+          "threshold_pct": 30,
+          "action": {
+            "kind": "adjust_remaining",
+            "pct": 12
+          },
+          "max_fires": 1
+        },
+        {
+          "id": "c2",
+          "at_pct": 66,
+          "metric": "pace_vs_required",
+          "op": "<=",
+          "threshold_pct": -25,
+          "action": {
+            "kind": "adjust_remaining",
+            "pct": -15
+          },
+          "max_fires": 1
+        }
+      ],
+      "bounds": {
+        "final_min_pct": 80,
+        "final_max_pct": 120
+      },
+      "rounding": {
+        "volume": 500
+      }
+    }
+  },
+  "accepted": true,
+  "errors": []
+}

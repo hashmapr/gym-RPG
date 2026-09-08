@@ -1,0 +1,103 @@
+{
+  "snapshots": [
+    {
+      "run_id": "run-seed-vol-early",
+      "snapshot_today": "2026-07-09",
+      "progress": 20497.5,
+      "status": "ON_PACE",
+      "required_daily_rate": 5951.97,
+      "days_remaining": 54,
+      "days_ahead": null,
+      "days_behind": null,
+      "projection": 389452.5
+    },
+    {
+      "run_id": "run-seed-vol-early",
+      "snapshot_today": "2026-07-21",
+      "progress": 126486,
+      "status": "AHEAD",
+      "required_daily_rate": 5129,
+      "days_remaining": 42,
+      "days_ahead": 6,
+      "days_behind": null,
+      "projection": 480646.8
+    },
+    {
+      "run_id": "run-seed-vol-early",
+      "snapshot_today": "2026-08-25",
+      "progress": 360651.5,
+      "status": "AHEAD",
+      "required_daily_rate": -2678.21,
+      "days_remaining": 7,
+      "days_ahead": 10,
+      "days_behind": null,
+      "projection": 411142.71
+    },
+    {
+      "run_id": "run-seed-vol-impossible",
+      "snapshot_today": "2026-08-30",
+      "progress": 21701.5,
+      "status": "IMPOSSIBLE",
+      "required_daily_rate": 79716.42,
+      "days_remaining": 6,
+      "days_ahead": null,
+      "days_behind": 2,
+      "projection": 86806
+    },
+    {
+      "run_id": "run-seed-tri-a",
+      "snapshot_today": "2026-08-31",
+      "progress": 40449,
+      "status": "AHEAD",
+      "required_daily_rate": 2910.2,
+      "days_remaining": 5,
+      "days_ahead": 1,
+      "days_behind": null,
+      "projection": 69341.14
+    },
+    {
+      "run_id": "run-seed-tri-a",
+      "snapshot_today": "2026-09-04",
+      "progress": 59236.5,
+      "status": "AHEAD",
+      "required_daily_rate": -4236.5,
+      "days_remaining": 1,
+      "days_ahead": 1,
+      "days_behind": null,
+      "projection": 64621.64
+    },
+    {
+      "run_id": "run-seed-tri-a",
+      "snapshot_today": "2026-09-05",
+      "progress": 78044,
+      "status": "FINAL_DAY",
+      "required_daily_rate": null,
+      "days_remaining": 0,
+      "days_ahead": null,
+      "days_behind": null,
+      "projection": null
+    },
+    {
+      "run_id": "run-seed-squat-flat",
+      "snapshot_today": "2026-08-18",
+      "progress": -2.04,
+      "status": "BEHIND",
+      "required_daily_rate": 0.29,
+      "days_remaining": 14,
+      "days_ahead": null,
+      "days_behind": 45,
+      "projection": -3.94
+    },
+    {
+      "run_id": "run-seed-distance-25",
+      "snapshot_today": "2026-09-04",
+      "progress": 18,
+      "status": "BEHIND",
+      "required_daily_rate": 7,
+      "days_remaining": 1,
+      "days_ahead": null,
+      "days_behind": 5,
+      "projection": 19.06
+    }
+  ]
+}

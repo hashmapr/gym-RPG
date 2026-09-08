@@ -1,0 +1,222 @@
+{
+  "deload_monday": "2026-09-07",
+  "program_start": "2026-08-17",
+  "sessions": [
+    {
+      "day": 1,
+      "is_deload": false,
+      "planned_date": "2026-08-17",
+      "set_count": 7,
+      "status": "completed",
+      "week": 1,
+      "workout_name": "Upper A"
+    },
+    {
+      "day": 2,
+      "is_deload": false,
+      "planned_date": "2026-08-18",
+      "set_count": 7,
+      "status": "completed",
+      "week": 1,
+      "workout_name": "Lower A"
+    },
+    {
+      "day": 3,
+      "is_deload": false,
+      "planned_date": "2026-08-20",
+      "set_count": 6,
+      "status": "completed",
+      "week": 1,
+      "workout_name": "Upper B"
+    },
+    {
+      "day": 4,
+      "is_deload": false,
+      "planned_date": "2026-08-21",
+      "set_count": 6,
+      "status": "completed",
+      "week": 1,
+      "workout_name": "Lower B"
+    },
+    {
+      "day": 1,
+      "is_deload": false,
+      "planned_date": "2026-08-24",
+      "set_count": 7,
+      "status": "completed",
+      "week": 2,
+      "workout_name": "Upper A"
+    },
+    {
+      "day": 2,
+      "is_deload": false,
+      "planned_date": "2026-08-25",
+      "set_count": 7,
+      "status": "completed",
+      "week": 2,
+      "workout_name": "Lower A"
+    },
+    {
+      "day": 3,
+      "is_deload": false,
+      "planned_date": "2026-08-27",
+      "set_count": 6,
+      "status": "missed",
+      "week": 2,
+      "workout_name": "Upper B"
+    },
+    {
+      "day": 4,
+      "is_deload": false,
+      "planned_date": "2026-08-28",
+      "set_count": 6,
+      "status": "completed",
+      "week": 2,
+      "workout_name": "Lower B"
+    },
+    {
+      "day": 1,
+      "is_deload": false,
+      "planned_date": "2026-08-31",
+      "set_count": 7,
+      "status": "completed",
+      "week": 3,
+      "workout_name": "Upper A"
+    },
+    {
+      "day": 2,
+      "is_deload": false,
+      "planned_date": "2026-09-01",
+      "set_count": 7,
+      "status": "completed",
+      "week": 3,
+      "workout_name": "Lower A"
+    },
+    {
+      "day": 3,
+      "is_deload": false,
+      "planned_date": "2026-09-03",
+      "set_count": 6,
+      "status": "completed",
+      "week": 3,
+      "workout_name": "Upper B"
+    },
+    {
+      "day": 4,
+      "is_deload": false,
+      "planned_date": "2026-09-04",
+      "set_count": 6,
+      "status": "completed",
+      "week": 3,
+      "workout_name": "Lower B"
+    },
+    {
+      "day": 1,
+      "is_deload": true,
+      "planned_date": "2026-09-07",
+      "set_count": 3,
+      "status": "planned",
+      "week": 4,
+      "workout_name": "Upper A"
+    },
+    {
+      "day": 2,
+      "is_deload": true,
+      "planned_date": "2026-09-08",
+      "set_count": 3,
+      "status": "planned",
+      "week": 4,
+      "workout_name": "Lower A"
+    },
+    {
+      "day": 3,
+      "is_deload": true,
+      "planned_date": "2026-09-10",
+      "set_count": 2,
+      "status": "planned",
+      "week": 4,
+      "workout_name": "Upper B"
+    },
+    {
+      "day": 4,
+      "is_deload": true,
+      "planned_date": "2026-09-11",
+      "set_count": 2,
+      "status": "planned",
+      "week": 4,
+      "workout_name": "Lower B"
+    },
+    {
+      "day": 1,
+      "is_deload": false,
+      "planned_date": "2026-09-14",
+      "set_count": 0,
+      "status": "planned",
+      "week": 5,
+      "workout_name": "Upper A"
+    },
+    {
+      "day": 2,
+      "is_deload": false,
+      "planned_date": "2026-09-15",
+      "set_count": 0,
+      "status": "planned",
+      "week": 5,
+      "workout_name": "Lower A"
+    },
+    {
+      "day": 3,
+      "is_deload": false,
+      "planned_date": "2026-09-17",
+      "set_count": 0,
+      "status": "planned",
+      "week": 5,
+      "workout_name": "Upper B"
+    },
+    {
+      "day": 4,
+      "is_deload": false,
+      "planned_date": "2026-09-18",
+      "set_count": 0,
+      "status": "planned",
+      "week": 5,
+      "workout_name": "Lower B"
+    },
+    {
+      "day": 1,
+      "is_deload": false,
+      "planned_date": "2026-09-21",
+      "set_count": 0,
+      "status": "planned",
+      "week": 6,
+      "workout_name": "Upper A"
+    },
+    {
+      "day": 2,
+      "is_deload": false,
+      "planned_date": "2026-09-22",
+      "set_count": 0,
+      "status": "planned",
+      "week": 6,
+      "workout_name": "Lower A"
+    },
+    {
+      "day": 3,
+      "is_deload": false,
+      "planned_date": "2026-09-24",
+      "set_count": 0,
+      "status": "planned",
+      "week": 6,
+      "workout_name": "Upper B"
+    },
+    {
+      "day": 4,
+      "is_deload": false,
+      "planned_date": "2026-09-25",
+      "set_count": 0,
+      "status": "planned",
+      "week": 6,
+      "workout_name": "Lower B"
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+@import 'tailwindcss';
+
+/* Dark-mode-only app: no light theme exists. */
+:root {
+  color-scheme: dark;
+}
+
+/*
+ * Sprint 7.8 ("The Face, The Space & The Hook") tokens — the ONLY color
+ * source for Tailwind classes. The TS mirror lives in src/lib/tokens.ts
+ * (keep in sync). ONE electric green accent carries the personality; gold
+ * is PR moments only; chroma otherwise appears only as recovery band colors.
+ * Copy lives in src/lib/rpg/copy.ts.
+ */
+@theme {
+  --color-base: #0E0F12;
+  --color-surface: #181A20;
+  --color-surface-raised: #20232A;
+  --color-border: #2A2D35;
+  --color-accent: #22C55E;
+  --color-gold: #F5B83D;
+  --color-good: #22C55E;
+  --color-warn: #EAB308;
+  --color-bad: #EF4444;
+  --color-ink: #FFFFFF;
+  --color-ink-dim: #9CA3AF;
+  --color-ink-faint: #565B66;
+  --font-display: var(--font-nunito), 'Nunito', system-ui, sans-serif;
+  --font-sans: var(--font-nunito), 'Nunito', system-ui, sans-serif;
+}
+
+html,
+body {
+  background: #0E0F12;
+}
+
+body {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Chunky pressable button (the design language's signature): accent bg,
+   near-black text, 16px radius, 4px bottom shadow, depresses 2px on tap. */
+.btn-chunky {
+  border-radius: 16px;
+  background: var(--color-accent);
+  color: #0B0D0F;
+  font-weight: 800;
+  box-shadow: 0 4px 0 0 #16A34A;
+  transition: transform 80ms ease, box-shadow 80ms ease, filter 80ms ease;
+}
+.btn-chunky:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 0 #16A34A;
+}
+.btn-chunky:disabled {
+  filter: saturate(0.3) brightness(0.7);
+  box-shadow: 0 4px 0 0 #16A34A;
+}
+
+/* Neutral chunky button (secondary actions) — same press physics. */
+.btn-chunky-neutral {
+  border-radius: 16px;
+  background: var(--color-surface-raised);
+  color: var(--color-ink);
+  font-weight: 700;
+  box-shadow: 0 4px 0 0 #14161B;
+  transition: transform 80ms ease, box-shadow 80ms ease;
+}
+.btn-chunky-neutral:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 0 #14161B;
+}
+
+/* Kill number-input spinners — they wreck touch targets */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Sprint 7.5 (native shell): respect the notch/home-indicator. viewport-fit
+   is already 'cover'; these paddings keep chrome clear of the insets. The
+   Capacitor config also sets contentInset 'always' as a belt-and-braces. */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Sprint 7.8 motion: moments that FIRE, never loops. Every animation is
+   ≤400ms and runs once per action; reduced-motion kills them globally. */
+@keyframes xp-float {
+  0% { opacity: 0; transform: translateY(4px); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-18px); }
+}
+.xp-float {
+  animation: xp-float 400ms ease-out forwards;
+}
+
+@keyframes check-draw {
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
+}
+.check-draw {
+  stroke-dasharray: 24;
+  animation: check-draw 200ms ease-out forwards;
+}
+
+@keyframes pop-in {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.pop-in {
+  animation: pop-in 250ms ease-out both;
+}
+
+@keyframes bar-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.bar-fill {
+  transform-origin: left;
+  animation: bar-fill 250ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* One-shot confetti burst (7.8): 400ms fall, fires once, never loops. */
+@keyframes confetti-fall {
+  0% { opacity: 1; transform: translate(0, -8px) rotate(0deg); }
+  100% { opacity: 0; transform: translate(var(--confetti-x, 0), 72px) rotate(240deg); }
+}
+.confetti-piece {
+  position: absolute;
+  top: 0;
+  width: 6px;
+  height: 10px;
+  border-radius: 1px;
+  animation: confetti-fall 400ms ease-in forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

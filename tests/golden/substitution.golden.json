@@ -1,0 +1,89 @@
+{
+  "logged_substitute_sets": [
+    {
+      "exercise": "lateralRaise",
+      "reps": 8,
+      "rpe": 6.5,
+      "weight": 30
+    },
+    {
+      "exercise": "lateralRaise",
+      "reps": 8,
+      "rpe": 6.5,
+      "weight": 30
+    },
+    {
+      "exercise": "lateralRaise",
+      "reps": 8,
+      "rpe": 6.5,
+      "weight": 30
+    }
+  ],
+  "week1_day3": {
+    "sets": [
+      {
+        "exercise": "lateralRaise",
+        "set_order": 1,
+        "substituted_from": "ohp",
+        "target_reps": "8",
+        "target_weight": 95
+      },
+      {
+        "exercise": "lateralRaise",
+        "set_order": 2,
+        "substituted_from": "ohp",
+        "target_reps": "8",
+        "target_weight": 95
+      },
+      {
+        "exercise": "lateralRaise",
+        "set_order": 3,
+        "substituted_from": "ohp",
+        "target_reps": "8",
+        "target_weight": 95
+      },
+      {
+        "exercise": "latPulldown",
+        "set_order": 1,
+        "substituted_from": null,
+        "target_reps": "10",
+        "target_weight": 120
+      },
+      {
+        "exercise": "latPulldown",
+        "set_order": 2,
+        "substituted_from": null,
+        "target_reps": "10",
+        "target_weight": 120
+      },
+      {
+        "exercise": "latPulldown",
+        "set_order": 3,
+        "substituted_from": null,
+        "target_reps": "10",
+        "target_weight": 120
+      }
+    ],
+    "swapped_sets": [
+      {
+        "exercise": "lateralRaise",
+        "substituted_from": "ohp"
+      },
+      {
+        "exercise": "lateralRaise",
+        "substituted_from": "ohp"
+      },
+      {
+        "exercise": "lateralRaise",
+        "substituted_from": "ohp"
+      }
+    ]
+  },
+  "week2_ohp_slot": {
+    "audit_reason": "exceeded: RPE 6.5 < 8 − 1.0",
+    "exercise": "ohp",
+    "previous_weight": 95,
+    "target_reps": "8",
+    "target_weight": 100
+  }
+}

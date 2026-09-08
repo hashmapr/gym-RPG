@@ -1,0 +1,239 @@
+// Local-first database (IndexedDB via Dexie). PRIMARY write target for
+// workout logging — the UI never waits on the network. Schema mirrors the
+// Supabase tables 1:1 plus client-only bookkeeping (syncedAt) and UI state
+// (session_exercises, settings, hevy_mappings).
+
+import Dexie, { type Table } from 'dexie';
+import { SYNC_TABLE_ORDER } from './sync/engine';
+import { installRequeueHooks } from './sync/requeue';
+import type {
+  CardioEntry,
+  ChallengeDef,
+  ChallengeProgress,
+  ChallengeRun,
+  ChallengeSession,
+  ChallengeTarget,
+  DailyMetric,
+  Exercise,
+  ExerciseEquivalent,
+  Goal,
+  GymProfile,
+  HevyMapping,
+  PlannedSession,
+  PlannedSet,
+  Program,
+  ProgramRun,
+  ProgramTemplate,
+  ProgressionRule,
+  RPGCharacter,
+  SessionExercise,
+  Settings,
+  StreakFreeze,
+  TargetChange,
+  TemplateExercise,
+  VacationPeriod,
+  WorkoutSession,
+  WorkoutSet,
+  ChallengeAmendment,
+  ChallengePolicyState,
+  AIGenerationLog,
+  AISuggestion,
+  DailyGateLog,
+  AIBriefing,
+  SkillNode,
+  UserSkill,
+  XpLedgerRow,
+  MLFeature,
+  MLModelRegistryRow,
+  DailyQuest,
+} from './types';
+
+export class LabDB extends Dexie {
+  exercises!: Table<Exercise, string>;
+  gym_profiles!: Table<GymProfile, string>;
+  workout_sessions!: Table<WorkoutSession, string>;
+  workout_sets!: Table<WorkoutSet, string>;
+  cardio_entries!: Table<CardioEntry, string>;
+  daily_metrics!: Table<DailyMetric, string>;
+  programs!: Table<Program, string>;
+  program_templates!: Table<ProgramTemplate, string>;
+  template_exercises!: Table<TemplateExercise, string>;
+  rpg_character!: Table<RPGCharacter, string>;
+  goals!: Table<Goal, string>;
+  progression_rules!: Table<ProgressionRule, string>;
+  program_runs!: Table<ProgramRun, string>;
+  planned_sessions!: Table<PlannedSession, string>;
+  planned_sets!: Table<PlannedSet, string>;
+  target_changes!: Table<TargetChange, string>;
+  exercise_equivalents!: Table<ExerciseEquivalent, string>;
+  session_exercises!: Table<SessionExercise, [string, string]>;
+  settings!: Table<{ key: string; value: unknown }, string>;
+  hevy_mappings!: Table<HevyMapping, string>;
+  ml_features!: Table<MLFeature, string>;
+  ml_model_registry!: Table<MLModelRegistryRow, string>;
+  // Sprint 7.8: daily quests.
+  daily_quests!: Table<DailyQuest, string>;
+  // Sprint 4: Challenges + Streak v3.
+  challenge_defs!: Table<ChallengeDef, string>;
+  challenge_runs!: Table<ChallengeRun, string>;
+  challenge_sessions!: Table<ChallengeSession, string>;
+  challenge_targets!: Table<ChallengeTarget, string>;
+  challenge_progress!: Table<ChallengeProgress, [string, string]>;
+  streak_freezes!: Table<StreakFreeze, string>;
+  vacation_periods!: Table<VacationPeriod, string>;
+  // Sprint 5: adaptive policies + audit.
+  challenge_policy_state!: Table<ChallengePolicyState, [string, string]>;
+  challenge_amendments!: Table<ChallengeAmendment, string>;
+  ai_generation_logs!: Table<AIGenerationLog, string>;
+  ai_suggestions!: Table<AISuggestion, string>;
+  // Sprint 6: recovery gates + daily briefing.
+  daily_gate_logs!: Table<DailyGateLog, string>;
+  ai_briefings!: Table<AIBriefing, string>;
+  // Sprint 7: The RPG.
+  skill_nodes!: Table<SkillNode, string>;
+  user_skills!: Table<UserSkill, string>;
+  xp_ledger!: Table<XpLedgerRow, string>;
+
+  constructor() {
+    super('the-lab');
+    this.version(1).stores({
+      exercises: 'id, wger_id, is_custom, created_at',
+      gym_profiles: 'id, created_at',
+      workout_sessions: 'id, start_time, end_time, syncedAt',
+      workout_sets:
+        'id, local_id, workout_id, exercise_id, timestamp, syncedAt, [workout_id+set_order], [exercise_id+timestamp]',
+      cardio_entries: 'id, workout_id, timestamp, syncedAt',
+      daily_metrics: 'date',
+      programs: 'id, is_active',
+      program_templates: 'id, program_id',
+      template_exercises: 'id, template_id',
+      rpg_character: 'id',
+      session_exercises: '[sessionId+exerciseId], sessionId, exerciseId',
+      settings: 'key',
+      hevy_mappings: 'hevy_name',
+    });
+    // Sprint 2: goals table (Overload analytics).
+    this.version(2).stores({
+      goals: 'id, exercise_id, achieved_at',
+    });
+    // Sprint 3: Coach Layer — progression rules, runs, materialized
+    // schedule/targets, audit log, equivalents.
+    this.version(3).stores({
+      progression_rules: 'id, template_exercise_id',
+      program_runs: 'id, program_id, status',
+      planned_sessions:
+        'id, program_run_id, planned_date, status, workout_session_id, [program_run_id+week_number]',
+      planned_sets: 'id, planned_session_id, exercise_id',
+      target_changes: 'id, planned_set_id, created_at',
+      exercise_equivalents: 'id, exercise_a, exercise_b',
+    });
+    // Sprint 4: Challenges + Streak v3.
+    this.version(4).stores({
+      challenge_defs: 'id, challenge_type, is_starter',
+      challenge_runs: 'id, challenge_def_id, status, ends_on',
+      challenge_sessions: 'id, challenge_run_id, status, workout_session_id',
+      challenge_targets: 'id, challenge_session_id, exercise_id',
+      challenge_progress: '[challenge_run_id+training_date], challenge_run_id',
+      streak_freezes: 'id, granted_date, consumed_date, local_id',
+      vacation_periods: 'id, start_date, end_date',
+    });
+    // Sprint 5: Adaptive challenges + generation audit. policy_state keeps the
+    // composite PK (run + checkpoint) — the sync engine derives keys from the
+    // primKey schema, so compound PKs push correctly (covered by unit test).
+    this.version(5).stores({
+      challenge_defs: 'id, challenge_type, is_starter, authored_by',
+      challenge_runs: 'id, challenge_def_id, status, ends_on, is_adaptive',
+      challenge_policy_state: '[challenge_run_id+checkpoint_id], challenge_run_id',
+      challenge_amendments: 'id, challenge_run_id, created_at',
+      ai_generation_logs: 'id, request_kind, outcome, challenge_def_id, created_at',
+      ai_suggestions: 'id, status, created_at',
+    });
+    // Sprint 6: WHOOP + recovery gates. daily_metrics gains sleep_hours (no
+    // new index needed); gate log is one row per training date (upsert);
+    // briefings are cached by training_date (1 LLM call/day).
+    this.version(6).stores({
+      daily_gate_logs: 'id, training_date',
+      ai_briefings: 'training_date',
+    });
+    // Sprint 7: The RPG. Ledger rows use deterministic ids
+    // (`${source_kind}:${source_id}`) so reprocessing never double-awards;
+    // the compound index backs that dedup explicitly. user_skills keeps the
+    // node id as PK (one completion row per node).
+    this.version(7).stores({
+      skill_nodes: 'id, branch, sub_branch, parent_id',
+      user_skills: 'skill_node_id',
+      xp_ledger: 'id, source_kind, earned_at, [source_kind+source_id]',
+    });
+    // M1: calibration columns (daily_metrics.body_fat_pct, exercises.machine_type)
+    // live in the mock backend (migration 0008); Dexie needs no new indexes.
+    this.version(8).stores({});
+    // Sprint 8a: ML harness. workout_sets.rpe_estimated/rpe_confidence are plain
+    // columns (no new indexes); the feature store keys by set_id (one row per
+    // set) and the registry by id with a model_version index for pinning.
+    this.version(9).stores({
+      ml_features: 'set_id',
+      ml_model_registry: 'id, model_version, is_active',
+    });
+    // Sprint 7.8: daily quests — one draw per (training_date, quest_type);
+    // the unique pair is enforced by the compound PK-style index. Boost +
+    // commitment state live in settings keys (migration 0010), no new table.
+    this.version(10).stores({
+      daily_quests: 'id, training_date, quest_type, [training_date+quest_type]',
+    });
+    // P0 sync rule: any mutation to a synced row re-queues it (data layer).
+    installRequeueHooks(this, SYNC_TABLE_ORDER);
+  }
+}
+
+export const db = new LabDB();
+
+export function newId(): string {
+  if (idFactory) return idFactory();
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+export function nowIso(): string {
+  if (timeFactory) return timeFactory();
+  return new Date().toISOString();
+}
+
+let idFactory: (() => string) | null = null;
+let timeFactory: (() => string) | null = null;
+
+/**
+ * Deterministic id/clock overrides for seeds and golden generation ONLY.
+ * Never set in app code — the UI must use real ids and the real clock.
+ */
+export function setDeterministicFactories(id: () => string, time: () => string): void {
+  idFactory = id;
+  timeFactory = time;
+}
+
+export function clearDeterministicFactories(): void {
+  idFactory = null;
+  timeFactory = null;
+}
+
+/** The active (unfinished) session, if any. */
+export async function getActiveSession(): Promise<WorkoutSession | undefined> {
+  // end_time is null for active sessions; nulls are not indexed, so filter.
+  return db.workout_sessions.filter((s) => s.end_time == null).last();
+}
+
+export async function getUnsyncedCount(): Promise<number> {
+  // Every synced table, in engine order — stays correct as tables are added.
+  const tables = SYNC_TABLE_ORDER.map((name) => db.table(name)) as unknown as Dexie.Table[];
+  const counts = await Promise.all(
+    tables.map((t) => t.filter((r) => !(r as { syncedAt?: string }).syncedAt).count()),
+  );
+  return counts.reduce((a, b) => a + b, 0);
+}
+
+export type { Settings };

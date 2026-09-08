@@ -1,0 +1,448 @@
+{
+  "generated_at": "2026-09-05T12:00:00.000Z",
+  "card": {
+    "generated_at": "2026-09-05T12:00:00.000Z",
+    "training_date": "2026-09-05",
+    "history_days": 112,
+    "total_sets": 940,
+    "total_sessions": 62,
+    "top_exercises": [
+      {
+        "exercise_id": "a1000000-0000-4000-8000-000000000001",
+        "name": "wger #73",
+        "weekly_sets": 6.5,
+        "best_e1rm_28d": 232.4,
+        "top_weight_mean": 185,
+        "velocity_status": "stable",
+        "plateau_status": "progressing"
+      },
+      {
+        "exercise_id": "a1000000-0000-4000-8000-000000000002",
+        "name": "wger #141",
+        "weekly_sets": 5.2,
+        "best_e1rm_28d": 301.7,
+        "top_weight_mean": 245,
+        "velocity_status": "rising",
+        "plateau_status": "progressing"
+      }
+    ],
+    "weekly_volume": {
+      "mean": 6420,
+      "min": 5100,
+      "max": 7800,
+      "last": 6900
+    },
+    "baseline_daily_tonnage_lb": 917,
+    "session_frequency": {
+      "per_week_8w": 3.9,
+      "avg_duration_min": 58
+    },
+    "session_rate_28d_per_day": 0.14,
+    "pr_rate_90d_per_day": 0.08,
+    "recent_prs": [
+      {
+        "exercise": "wger #73",
+        "date": "2026-08-28",
+        "weight": 205,
+        "reps": 5
+      }
+    ],
+    "plateaus": [
+      "wger #317:stalled"
+    ],
+    "neglected_muscles": [
+      {
+        "muscle": "legs",
+        "weeks_zero": 3
+      }
+    ],
+    "anomalies": {
+      "sessions": 1,
+      "volume": 2
+    },
+    "streak": {
+      "current": 12,
+      "best": 34,
+      "bank": 2
+    },
+    "active_challenges": []
+  },
+  "fixtures": [
+    {
+      "name": "valid_volume",
+      "expect": "accept",
+      "ok": true,
+      "errors": [],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "valid_volume_with_policy",
+      "expect": "accept",
+      "ok": true,
+      "errors": [],
+      "policy_final_min_pct": 102.7
+    },
+    {
+      "name": "valid_confirm_policy",
+      "expect": "accept",
+      "ok": true,
+      "errors": [],
+      "policy_final_min_pct": 102.7
+    },
+    {
+      "name": "pace_too_high",
+      "expect": [
+        "pace"
+      ],
+      "ok": false,
+      "errors": [
+        "volume pace 2142.86 lb/day is 2.34× baseline (917 lb/day) — must be 0.6×–2×"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "pace_too_low",
+      "expect": [
+        "pace"
+      ],
+      "ok": false,
+      "errors": [
+        "volume pace 142.86 lb/day is 0.16× baseline (917 lb/day) — must be 0.6×–2×"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "target_too_small",
+      "expect": [
+        "target_lb"
+      ],
+      "ok": false,
+      "errors": [
+        "volume target_lb must be 1,000–2,000,000 lb"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "target_too_big",
+      "expect": [
+        "target_lb"
+      ],
+      "ok": false,
+      "errors": [
+        "volume target_lb must be 1,000–2,000,000 lb"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "duration_too_short",
+      "expect": [
+        "duration_days"
+      ],
+      "ok": false,
+      "errors": [
+        "duration_days must be an integer 3–120"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "duration_too_long",
+      "expect": [
+        "duration_days"
+      ],
+      "ok": false,
+      "errors": [
+        "duration_days must be an integer 3–120"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "unknown_param_key",
+      "expect": [
+        "Unknown params"
+      ],
+      "ok": false,
+      "errors": [
+        "Unknown params for volume: intensity"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "sessions_too_many",
+      "expect": [
+        "2× recent rate"
+      ],
+      "ok": false,
+      "errors": [
+        "session_count 40 exceeds 2× recent rate (max 7 over 28d)"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "sessions_within_rate",
+      "expect": [],
+      "ok": true,
+      "errors": [],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "prs_above_rate",
+      "expect": [
+        "2× recent PR rate"
+      ],
+      "ok": false,
+      "errors": [
+        "pr_count 10 exceeds 2× recent PR rate (max 4 over 28d)"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "e1rm_gain_too_big",
+      "expect": [
+        "calibration cap"
+      ],
+      "ok": false,
+      "errors": [
+        "e1rm_gain target_pct must be 0.5–25%",
+        "e1rm_gain 30% exceeds the 25% calibration cap for this lift"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "e1rm_gain_missing_exercise",
+      "expect": [
+        "exercise_id"
+      ],
+      "ok": false,
+      "errors": [
+        "e1rm_gain requires exercise_id"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "distance_too_far",
+      "expect": [
+        "target_miles"
+      ],
+      "ok": false,
+      "errors": [
+        "distance target_miles must be 1–500"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "distance_bad_activity",
+      "expect": [
+        "activity"
+      ],
+      "ok": false,
+      "errors": [
+        "distance activity must be \"run\", \"ride\" or \"all\""
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "streak_too_long",
+      "expect": [
+        "≤ 90"
+      ],
+      "ok": false,
+      "errors": [
+        "streak duration_days must be ≤ 90"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "streak_bad_mode",
+      "expect": [
+        "mode"
+      ],
+      "ok": false,
+      "errors": [
+        "streak mode must be \"daily\" or \"weekly\""
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "prescriptive_no_sessions",
+      "expect": [
+        "at least one session"
+      ],
+      "ok": false,
+      "errors": [
+        "prescriptive requires at least one session"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "prescriptive_weight_too_heavy",
+      "expect": [
+        "top-set mean"
+      ],
+      "ok": false,
+      "errors": [
+        "sessions[0].target_weight 400 lb is 2.16× the athlete's top-set mean (185 lb) — must be 0.7×–1.15×"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "prescriptive_ladder_step_too_big",
+      "expect": [
+        "ladder_step_lb"
+      ],
+      "ok": false,
+      "errors": [
+        "ladder_step_lb 50 exceeds 10% of top-set mean (185 lb)"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "medical_text",
+      "expect": [
+        "medical"
+      ],
+      "ok": false,
+      "errors": [
+        "Text rejected: medical claim or advice"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "body_image_text",
+      "expect": [
+        "body-image"
+      ],
+      "ok": false,
+      "errors": [
+        "Text rejected: body-image framing"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "guilt_text",
+      "expect": [
+        "guilt"
+      ],
+      "ok": false,
+      "errors": [
+        "Text rejected: guilt/shame framing"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "policy_bad_version",
+      "expect": [
+        "version"
+      ],
+      "ok": false,
+      "errors": [
+        "Policy version must be 1"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "policy_four_checkpoints",
+      "expect": [
+        "1–3 checkpoints"
+      ],
+      "ok": false,
+      "errors": [
+        "Policy must have 1–3 checkpoints"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "policy_at_pct_descending",
+      "expect": [
+        "ascending"
+      ],
+      "ok": false,
+      "errors": [
+        "Checkpoints need unique ids and ascending at_pct within 10–90"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "policy_threshold_zero",
+      "expect": [
+        "threshold_pct"
+      ],
+      "ok": false,
+      "errors": [
+        "Checkpoint threshold_pct must be non-zero within ±5–50"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "policy_pct_too_big",
+      "expect": [
+        "action pct"
+      ],
+      "ok": false,
+      "errors": [
+        "Checkpoint action pct must be non-zero within ±5–25"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "policy_bounds_inverted",
+      "expect": [
+        "bounds"
+      ],
+      "ok": false,
+      "errors": [
+        "Policy bounds must satisfy 50 ≤ final_min_pct < final_max_pct ≤ 200"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "policy_all_raise_multi",
+      "expect": [
+        "mix raise and ease"
+      ],
+      "ok": false,
+      "errors": [
+        "Multi-checkpoint policies must mix raise and ease checkpoints"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "policy_capacity_floor",
+      "expect": [
+        "capacity floor"
+      ],
+      "ok": false,
+      "errors": [
+        "Policy bounds are below the athlete's capacity floor — ease targets are unreachable"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "policy_on_streak",
+      "expect": [
+        "not supported"
+      ],
+      "ok": false,
+      "errors": [
+        "Adaptive policies are not supported for streak challenges in v1"
+      ],
+      "policy_final_min_pct": null
+    },
+    {
+      "name": "policy_on_prescriptive",
+      "expect": [
+        "not supported"
+      ],
+      "ok": false,
+      "errors": [
+        "Adaptive policies are not supported for prescriptive challenges in v1"
+      ],
+      "policy_final_min_pct": null
+    }
+  ],
+  "policy_edges": {
+    "bounds_out_of_range": "Policy bounds must satisfy 50 ≤ final_min_pct < final_max_pct ≤ 200",
+    "max_fires_two": "Checkpoint max_fires must be 1 in v1",
+    "bad_metric": "Checkpoint metric must be \"pace_vs_required\"",
+    "bad_execution": "Policy execution must be \"automatic\" or \"confirm\""
+  }
+}

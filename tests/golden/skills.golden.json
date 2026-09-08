@@ -1,0 +1,403 @@
+{
+  "counts": {
+    "total": 80,
+    "completed": 42,
+    "available": 16,
+    "locked": 22
+  },
+  "byBranch": {
+    "DISCIPLINE": {
+      "completed": 2,
+      "total": 8
+    },
+    "CONDITIONING": {
+      "completed": 0,
+      "total": 8
+    },
+    "STRENGTH": {
+      "completed": 29,
+      "total": 40
+    },
+    "POWER": {
+      "completed": 11,
+      "total": 24
+    }
+  },
+  "completed": [
+    {
+      "id": "sk-checkin-1",
+      "title": "Check-in I",
+      "tier": 1,
+      "evidenceAt": "2026-07-06T23:59:59.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-hinge-1",
+      "title": "Seated Leg Curl I",
+      "tier": 1,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-lateral-1",
+      "title": "Lateral Raise I",
+      "tier": 1,
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-power-back-1",
+      "title": "Mover I",
+      "tier": 1,
+      "evidenceAt": "2026-05-23T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-power-chest-1",
+      "title": "Mover I",
+      "tier": 1,
+      "evidenceAt": "2026-05-26T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-power-hamstrings-1",
+      "title": "Mover I",
+      "tier": 1,
+      "evidenceAt": "2026-06-02T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-power-legs-1",
+      "title": "Mover I",
+      "tier": 1,
+      "evidenceAt": "2026-05-26T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-pull-h-1",
+      "title": "Seated Row I",
+      "tier": 1,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-pull-v-1",
+      "title": "Lat Pulldown I",
+      "tier": 1,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-push-h-1",
+      "title": "Chest Press I",
+      "tier": 1,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-push-v-1",
+      "title": "Seated Shoulder Press I",
+      "tier": 1,
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-squat-1",
+      "title": "Leg Press I",
+      "tier": 1,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-squat-h-1",
+      "title": "Leg Press Horizontal I",
+      "tier": 1,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 100
+    },
+    {
+      "id": "sk-checkin-2",
+      "title": "Check-in II",
+      "tier": 2,
+      "evidenceAt": "2026-09-04T23:59:59.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-hinge-2",
+      "title": "Seated Leg Curl II",
+      "tier": 2,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-lateral-2",
+      "title": "Lateral Raise II",
+      "tier": 2,
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-power-back-2",
+      "title": "Mover II",
+      "tier": 2,
+      "evidenceAt": "2026-06-02T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-power-chest-2",
+      "title": "Mover II",
+      "tier": 2,
+      "evidenceAt": "2026-07-04T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-power-hamstrings-2",
+      "title": "Mover II",
+      "tier": 2,
+      "evidenceAt": "2026-08-03T04:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-power-legs-2",
+      "title": "Mover II",
+      "tier": 2,
+      "evidenceAt": "2026-06-23T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-pull-h-2",
+      "title": "Seated Row II",
+      "tier": 2,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-pull-v-2",
+      "title": "Lat Pulldown II",
+      "tier": 2,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-push-h-2",
+      "title": "Chest Press II",
+      "tier": 2,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-push-v-2",
+      "title": "Seated Shoulder Press II",
+      "tier": 2,
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-squat-2",
+      "title": "Leg Press II",
+      "tier": 2,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-squat-h-2",
+      "title": "Leg Press Horizontal II",
+      "tier": 2,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 150
+    },
+    {
+      "id": "sk-lateral-3",
+      "title": "Lateral Raise III",
+      "tier": 3,
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
+      "xp": 200
+    },
+    {
+      "id": "sk-power-back-3",
+      "title": "Mover III",
+      "tier": 3,
+      "evidenceAt": "2026-06-20T18:00:00.000Z",
+      "xp": 200
+    },
+    {
+      "id": "sk-power-chest-3",
+      "title": "Mover III",
+      "tier": 3,
+      "evidenceAt": "2026-08-11T18:00:00.000Z",
+      "xp": 200
+    },
+    {
+      "id": "sk-power-legs-3",
+      "title": "Mover III",
+      "tier": 3,
+      "evidenceAt": "2026-07-25T18:00:00.000Z",
+      "xp": 200
+    },
+    {
+      "id": "sk-pull-h-3",
+      "title": "Seated Row III",
+      "tier": 3,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 200
+    },
+    {
+      "id": "sk-pull-v-3",
+      "title": "Lat Pulldown III",
+      "tier": 3,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 200
+    },
+    {
+      "id": "sk-push-h-3",
+      "title": "Chest Press III",
+      "tier": 3,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 200
+    },
+    {
+      "id": "sk-push-v-3",
+      "title": "Seated Shoulder Press III",
+      "tier": 3,
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
+      "xp": 200
+    },
+    {
+      "id": "sk-squat-3",
+      "title": "Leg Press III",
+      "tier": 3,
+      "evidenceAt": "2026-06-02T18:00:00.000Z",
+      "xp": 200
+    },
+    {
+      "id": "sk-lateral-4",
+      "title": "Lateral Raise IV",
+      "tier": 4,
+      "evidenceAt": "2026-06-09T18:00:00.000Z",
+      "xp": 250
+    },
+    {
+      "id": "sk-pull-h-4",
+      "title": "Seated Row IV",
+      "tier": 4,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 250
+    },
+    {
+      "id": "sk-pull-v-4",
+      "title": "Lat Pulldown IV",
+      "tier": 4,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 250
+    },
+    {
+      "id": "sk-push-h-4",
+      "title": "Chest Press IV",
+      "tier": 4,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 250
+    },
+    {
+      "id": "sk-pull-h-5",
+      "title": "Seated Row V",
+      "tier": 5,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 300
+    },
+    {
+      "id": "sk-pull-v-5",
+      "title": "Lat Pulldown V",
+      "tier": 5,
+      "evidenceAt": "2026-05-19T18:00:00.000Z",
+      "xp": 300
+    },
+    {
+      "id": "sk-push-h-5",
+      "title": "Chest Press V",
+      "tier": 5,
+      "evidenceAt": "2026-05-26T18:00:00.000Z",
+      "xp": 300
+    }
+  ],
+  "sampleProgress": [
+    {
+      "id": "sk-adherence-1",
+      "title": "Adherence I",
+      "progress": {
+        "current": 0,
+        "required": 4,
+        "unit": "weeks"
+      }
+    },
+    {
+      "id": "sk-cardio-ride-1",
+      "title": "Ride I",
+      "progress": {
+        "current": 0,
+        "required": 25,
+        "unit": "mi"
+      }
+    },
+    {
+      "id": "sk-cardio-row-1",
+      "title": "Row I",
+      "progress": {
+        "current": 0,
+        "required": 25,
+        "unit": "mi"
+      }
+    },
+    {
+      "id": "sk-cardio-run-1",
+      "title": "Run I",
+      "progress": {
+        "current": 0,
+        "required": 25,
+        "unit": "mi"
+      }
+    },
+    {
+      "id": "sk-cardio-swim-1",
+      "title": "Swim I",
+      "progress": {
+        "current": 0,
+        "required": 25,
+        "unit": "mi"
+      }
+    },
+    {
+      "id": "sk-power-arms-1",
+      "title": "Mover I",
+      "progress": {
+        "current": 0,
+        "required": 10000,
+        "unit": "lb moved"
+      }
+    }
+  ],
+  "machineDbFirst": {
+    "note": "Machine-flavored nodes bind to the fixture barbell ids (editable seed data); DB variants chain behind them.",
+    "horizontalPush": [
+      {
+        "title": "Chest Press I",
+        "state": "completed"
+      },
+      {
+        "title": "Chest Press II",
+        "state": "completed"
+      },
+      {
+        "title": "Chest Press III",
+        "state": "completed"
+      },
+      {
+        "title": "Chest Press IV",
+        "state": "completed"
+      },
+      {
+        "title": "Chest Press V",
+        "state": "completed"
+      }
+    ]
+  }
+}

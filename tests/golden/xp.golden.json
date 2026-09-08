@@ -1,0 +1,241 @@
+{
+  "formula": {
+    "setXp": [
+      {
+        "name": "working 225x5 rpe8 BALANCED",
+        "weight": 225,
+        "reps": 5,
+        "rpe": 8,
+        "set_type": "working",
+        "body_state": "BALANCED",
+        "xp": 9
+      },
+      {
+        "name": "working 225x5 rpe8 CUT",
+        "weight": 225,
+        "reps": 5,
+        "rpe": 8,
+        "set_type": "working",
+        "body_state": "CUT",
+        "xp": 9
+      },
+      {
+        "name": "working 225x5 rpe8 GAIN",
+        "weight": 225,
+        "reps": 5,
+        "rpe": 8,
+        "set_type": "working",
+        "body_state": "GAIN",
+        "xp": 14
+      },
+      {
+        "name": "warmup 135x5",
+        "weight": 135,
+        "reps": 5,
+        "rpe": 6,
+        "set_type": "warmup",
+        "body_state": "BALANCED",
+        "xp": 0
+      },
+      {
+        "name": "drop 185x6 rpe8",
+        "weight": 185,
+        "reps": 6,
+        "rpe": 8,
+        "set_type": "drop",
+        "body_state": "BALANCED",
+        "xp": 4
+      },
+      {
+        "name": "top_set 245x3 rpe9",
+        "weight": 245,
+        "reps": 3,
+        "rpe": 9,
+        "set_type": "top_set",
+        "body_state": "BALANCED",
+        "xp": 8
+      },
+      {
+        "name": "failure 205x8 rpe10",
+        "weight": 205,
+        "reps": 8,
+        "rpe": 10,
+        "set_type": "failure",
+        "body_state": "BALANCED",
+        "xp": 21
+      },
+      {
+        "name": "missing rpe 225x5",
+        "weight": 225,
+        "reps": 5,
+        "rpe": null,
+        "set_type": "working",
+        "body_state": "BALANCED",
+        "xp": 8
+      },
+      {
+        "name": "rpe clamped low 225x5 rpe2",
+        "weight": 225,
+        "reps": 5,
+        "rpe": 2,
+        "set_type": "working",
+        "body_state": "BALANCED",
+        "xp": 3
+      }
+    ],
+    "cardioXp": [
+      {
+        "name": "30min BALANCED",
+        "seconds": 1800,
+        "body_state": "BALANCED",
+        "xp": 30
+      },
+      {
+        "name": "30min CUT ×2",
+        "seconds": 1800,
+        "body_state": "CUT",
+        "xp": 60
+      },
+      {
+        "name": "30min GAIN",
+        "seconds": 1800,
+        "body_state": "GAIN",
+        "xp": 30
+      }
+    ],
+    "prBonus": [
+      {
+        "name": "PR on 101xp set",
+        "set_xp": 101,
+        "bonus": 1010
+      },
+      {
+        "name": "PR on GAIN 152xp set",
+        "set_xp": 152,
+        "bonus": 1520
+      },
+      {
+        "name": "PR on 0xp set",
+        "set_xp": 0,
+        "bonus": 0
+      }
+    ],
+    "bonuses": {
+      "session": 15,
+      "challenge": {
+        "volume": 500,
+        "session_count": 400,
+        "streak": 600,
+        "distance": 400,
+        "pr_count": 500,
+        "e1rm_gain": 800,
+        "prescriptive": 700,
+        "cardio_time": 400
+      },
+      "program_week": 200,
+      "program": 1000,
+      "goal": 750
+    }
+  },
+  "levels": {
+    "curve": [
+      {
+        "level": 1,
+        "xp_to_reach": 0
+      },
+      {
+        "level": 2,
+        "xp_to_reach": 120
+      },
+      {
+        "level": 3,
+        "xp_to_reach": 404
+      },
+      {
+        "level": 4,
+        "xp_to_reach": 821
+      },
+      {
+        "level": 5,
+        "xp_to_reach": 1358
+      },
+      {
+        "level": 6,
+        "xp_to_reach": 2006
+      },
+      {
+        "level": 10,
+        "xp_to_reach": 5612
+      },
+      {
+        "level": 20,
+        "xp_to_reach": 20749
+      },
+      {
+        "level": 50,
+        "xp_to_reach": 108899
+      }
+    ],
+    "levelForXp": [
+      {
+        "xp": 0,
+        "level": 1
+      },
+      {
+        "xp": 119,
+        "level": 1
+      },
+      {
+        "xp": 120,
+        "level": 2
+      },
+      {
+        "xp": 403,
+        "level": 2
+      },
+      {
+        "xp": 404,
+        "level": 3
+      },
+      {
+        "xp": 2005,
+        "level": 5
+      },
+      {
+        "xp": 2006,
+        "level": 6
+      },
+      {
+        "xp": 5612,
+        "level": 10
+      },
+      {
+        "xp": 20748,
+        "level": 19
+      },
+      {
+        "xp": 100000,
+        "level": 47
+      }
+    ]
+  },
+  "seedLedgerSummary": {
+    "rows": 720,
+    "total_xp": 18421,
+    "level": 18,
+    "byKind": {
+      "pr": 30,
+      "session": 35,
+      "set": 608,
+      "skill": 42,
+      "feat": 4,
+      "goal": 1
+    },
+    "byState": {
+      "BALANCED": 234,
+      "CUT": 486
+    },
+    "cutCardioRows": 0,
+    "gainLiftingRows": 0
+  }
+}

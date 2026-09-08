@@ -1,0 +1,99 @@
+{
+  "run_id": "run-seed-ladder",
+  "started_on": "2026-06-02",
+  "ends_on": "2026-07-18",
+  "progression": "ladder",
+  "ladder_step_lb": 2.5,
+  "sessions": [
+    {
+      "session_order": 1,
+      "planned_date": "2026-06-02",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000005",
+      "target_weight": 185
+    },
+    {
+      "session_order": 2,
+      "planned_date": "2026-06-06",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000006",
+      "target_weight": 187.5
+    },
+    {
+      "session_order": 3,
+      "planned_date": "2026-06-09",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000007",
+      "target_weight": 190
+    },
+    {
+      "session_order": 4,
+      "planned_date": "2026-06-13",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000008",
+      "target_weight": 192.5
+    },
+    {
+      "session_order": 5,
+      "planned_date": "2026-06-16",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000009",
+      "target_weight": 195
+    },
+    {
+      "session_order": 6,
+      "planned_date": "2026-06-20",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000010",
+      "target_weight": 197.5
+    },
+    {
+      "session_order": 7,
+      "planned_date": "2026-06-23",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000011",
+      "target_weight": 200
+    },
+    {
+      "session_order": 8,
+      "planned_date": "2026-06-27",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000012",
+      "target_weight": 202.5
+    },
+    {
+      "session_order": 9,
+      "planned_date": "2026-06-30",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000013",
+      "target_weight": 205
+    },
+    {
+      "session_order": 10,
+      "planned_date": "2026-07-04",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000014",
+      "target_weight": 207.5
+    },
+    {
+      "session_order": 11,
+      "planned_date": "2026-07-07",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000015",
+      "target_weight": 210
+    },
+    {
+      "session_order": 12,
+      "planned_date": "2026-07-11",
+      "status": "completed",
+      "workout_session_id": "00000000-0000-4000-8000-000000000016",
+      "target_weight": 212.5
+    }
+  ],
+  "progress": 12,
+  "target_met": true,
+  "resolution": {
+    "kind": "complete",
+    "completed_at": "2026-09-05T12:00:00Z"
+  }
+}

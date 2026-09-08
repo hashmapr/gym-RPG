@@ -1,0 +1,361 @@
+{
+  "generated_at": "2026-09-05T12:00:00.000Z",
+  "prompt_version": "governor-v1",
+  "runs": {
+    "A": {
+      "label": "raise fires, target climbs",
+      "policy": {
+        "version": 1,
+        "execution": "automatic",
+        "checkpoints": [
+          {
+            "id": "c1",
+            "at_pct": 33.33,
+            "metric": "pace_vs_required",
+            "op": ">=",
+            "threshold_pct": 30,
+            "action": {
+              "kind": "adjust_remaining",
+              "pct": 12
+            },
+            "max_fires": 1
+          },
+          {
+            "id": "c2",
+            "at_pct": 66,
+            "metric": "pace_vs_required",
+            "op": "<=",
+            "threshold_pct": -25,
+            "action": {
+              "kind": "adjust_remaining",
+              "pct": -15
+            },
+            "max_fires": 1
+          }
+        ],
+        "bounds": {
+          "final_min_pct": 80,
+          "final_max_pct": 120
+        },
+        "rounding": {
+          "volume": 500
+        }
+      },
+      "events": [
+        {
+          "day": 7,
+          "date": "2026-08-07",
+          "checkpoint_id": "c1",
+          "kind": "apply",
+          "pre_target": 30000,
+          "post_target": 32000,
+          "clamped": false,
+          "delta_pct": 36,
+          "banner": {
+            "id": "governor.raise",
+            "text": "🔥 36% ahead — target rose 30,000 → 32,000 (Argus, policy c1)."
+          }
+        }
+      ],
+      "states": [
+        {
+          "challenge_run_id": "run-adaptive-a",
+          "checkpoint_id": "c1",
+          "fired_at": "2026-08-07T12:00:00.000Z",
+          "applied_adjustment": 32000,
+          "denied": false
+        }
+      ],
+      "amendments": [
+        {
+          "checkpoint_id": "c1",
+          "field": "target_lb",
+          "pre_value": 30000,
+          "post_value": 32000,
+          "clamped": false
+        }
+      ],
+      "final_target": 32000,
+      "zero_governor_rows": false
+    },
+    "B": {
+      "label": "ease fires, target eases once",
+      "policy": {
+        "version": 1,
+        "execution": "automatic",
+        "checkpoints": [
+          {
+            "id": "c1",
+            "at_pct": 33.33,
+            "metric": "pace_vs_required",
+            "op": ">=",
+            "threshold_pct": 30,
+            "action": {
+              "kind": "adjust_remaining",
+              "pct": 12
+            },
+            "max_fires": 1
+          },
+          {
+            "id": "c2",
+            "at_pct": 66,
+            "metric": "pace_vs_required",
+            "op": "<=",
+            "threshold_pct": -25,
+            "action": {
+              "kind": "adjust_remaining",
+              "pct": -15
+            },
+            "max_fires": 1
+          }
+        ],
+        "bounds": {
+          "final_min_pct": 80,
+          "final_max_pct": 120
+        },
+        "rounding": {
+          "volume": 500
+        }
+      },
+      "events": [
+        {
+          "day": 14,
+          "date": "2026-08-14",
+          "checkpoint_id": "c2",
+          "kind": "apply",
+          "pre_target": 30000,
+          "post_target": 27500,
+          "clamped": false,
+          "delta_pct": -26,
+          "banner": {
+            "id": "governor.ease",
+            "text": "Pace eased once: 30,000 → 27,500 (Argus, policy c2). One adjustment used."
+          }
+        }
+      ],
+      "states": [
+        {
+          "challenge_run_id": "run-adaptive-b",
+          "checkpoint_id": "c2",
+          "fired_at": "2026-08-14T12:00:00.000Z",
+          "applied_adjustment": 27500,
+          "denied": false
+        }
+      ],
+      "amendments": [
+        {
+          "checkpoint_id": "c2",
+          "field": "target_lb",
+          "pre_value": 30000,
+          "post_value": 27500,
+          "clamped": false
+        }
+      ],
+      "final_target": 27500,
+      "zero_governor_rows": false
+    },
+    "C": {
+      "label": "steady pace, governor silent",
+      "policy": {
+        "version": 1,
+        "execution": "automatic",
+        "checkpoints": [
+          {
+            "id": "c1",
+            "at_pct": 33.33,
+            "metric": "pace_vs_required",
+            "op": ">=",
+            "threshold_pct": 30,
+            "action": {
+              "kind": "adjust_remaining",
+              "pct": 12
+            },
+            "max_fires": 1
+          },
+          {
+            "id": "c2",
+            "at_pct": 66,
+            "metric": "pace_vs_required",
+            "op": "<=",
+            "threshold_pct": -25,
+            "action": {
+              "kind": "adjust_remaining",
+              "pct": -15
+            },
+            "max_fires": 1
+          }
+        ],
+        "bounds": {
+          "final_min_pct": 80,
+          "final_max_pct": 120
+        },
+        "rounding": {
+          "volume": 500
+        }
+      },
+      "events": [],
+      "states": [],
+      "amendments": [],
+      "final_target": 30000,
+      "zero_governor_rows": true
+    },
+    "D": {
+      "label": "raise clamped to bounds",
+      "policy": {
+        "version": 1,
+        "execution": "automatic",
+        "checkpoints": [
+          {
+            "id": "c1",
+            "at_pct": 33.33,
+            "metric": "pace_vs_required",
+            "op": ">=",
+            "threshold_pct": 30,
+            "action": {
+              "kind": "adjust_remaining",
+              "pct": 12
+            },
+            "max_fires": 1
+          },
+          {
+            "id": "c2",
+            "at_pct": 66,
+            "metric": "pace_vs_required",
+            "op": "<=",
+            "threshold_pct": -25,
+            "action": {
+              "kind": "adjust_remaining",
+              "pct": -15
+            },
+            "max_fires": 1
+          }
+        ],
+        "bounds": {
+          "final_min_pct": 80,
+          "final_max_pct": 105
+        },
+        "rounding": {
+          "volume": 500
+        }
+      },
+      "events": [
+        {
+          "day": 7,
+          "date": "2026-08-07",
+          "checkpoint_id": "c1",
+          "kind": "apply",
+          "pre_target": 30000,
+          "post_target": 31500,
+          "clamped": true,
+          "delta_pct": 30,
+          "banner": {
+            "id": "governor.clamped",
+            "text": "🔥 30% ahead — target rose 30,000 → 31,500 (Argus, policy c1), clamped to policy bounds."
+          }
+        }
+      ],
+      "states": [
+        {
+          "challenge_run_id": "run-adaptive-d",
+          "checkpoint_id": "c1",
+          "fired_at": "2026-08-07T12:00:00.000Z",
+          "applied_adjustment": 31500,
+          "denied": false
+        }
+      ],
+      "amendments": [
+        {
+          "checkpoint_id": "c1",
+          "field": "target_lb",
+          "pre_value": 30000,
+          "post_value": 31500,
+          "clamped": true
+        }
+      ],
+      "final_target": 31500,
+      "zero_governor_rows": false
+    },
+    "E": {
+      "label": "confirm mode, user denies",
+      "policy": {
+        "version": 1,
+        "execution": "confirm",
+        "checkpoints": [
+          {
+            "id": "c1",
+            "at_pct": 33.33,
+            "metric": "pace_vs_required",
+            "op": ">=",
+            "threshold_pct": 30,
+            "action": {
+              "kind": "adjust_remaining",
+              "pct": 12
+            },
+            "max_fires": 1
+          },
+          {
+            "id": "c2",
+            "at_pct": 66,
+            "metric": "pace_vs_required",
+            "op": "<=",
+            "threshold_pct": -25,
+            "action": {
+              "kind": "adjust_remaining",
+              "pct": -15
+            },
+            "max_fires": 1
+          }
+        ],
+        "bounds": {
+          "final_min_pct": 80,
+          "final_max_pct": 120
+        },
+        "rounding": {
+          "volume": 500
+        }
+      },
+      "events": [
+        {
+          "day": 7,
+          "date": "2026-08-07",
+          "checkpoint_id": "c1",
+          "kind": "pending_confirm",
+          "pre_target": 30000,
+          "post_target": 32000,
+          "clamped": false,
+          "delta_pct": 36,
+          "banner": {
+            "id": "governor.pending",
+            "text": "Checkpoint c1 reached — review the proposed adjustment (Argus policy)."
+          }
+        },
+        {
+          "day": 8,
+          "date": "2026-08-08",
+          "checkpoint_id": "c1",
+          "kind": "pending_confirm",
+          "pre_target": null,
+          "post_target": null,
+          "clamped": false,
+          "delta_pct": null,
+          "banner": {
+            "id": "governor.denied",
+            "text": "Adjustment denied — checkpoint c1 consumed, target unchanged (Argus policy)."
+          }
+        }
+      ],
+      "states": [
+        {
+          "challenge_run_id": "run-adaptive-e",
+          "checkpoint_id": "c1",
+          "fired_at": "2026-08-07T12:00:00.000Z",
+          "applied_adjustment": 32000,
+          "denied": true
+        }
+      ],
+      "amendments": [],
+      "final_target": 30000,
+      "zero_governor_rows": false
+    }
+  }
+}

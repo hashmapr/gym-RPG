@@ -1,0 +1,132 @@
+{
+  "character": {
+    "id": "self",
+    "level": 18,
+    "total_xp": 18421,
+    "current_streak": 1,
+    "strength_xp": 13183,
+    "power_xp": 7178,
+    "conditioning_xp": 0,
+    "discipline_xp": 360,
+    "best_streak": 3,
+    "body_state": "BALANCED"
+  },
+  "levelUps": [
+    {
+      "level": 2,
+      "at": "2026-05-19T18:00:00.000Z"
+    },
+    {
+      "level": 3,
+      "at": "2026-05-19T18:00:00.000Z"
+    },
+    {
+      "level": 4,
+      "at": "2026-05-19T18:00:00.000Z"
+    },
+    {
+      "level": 5,
+      "at": "2026-05-19T18:00:00.000Z"
+    },
+    {
+      "level": 6,
+      "at": "2026-05-19T18:00:00.000Z"
+    },
+    {
+      "level": 7,
+      "at": "2026-05-19T18:00:00.000Z"
+    },
+    {
+      "level": 8,
+      "at": "2026-05-19T18:00:00.000Z"
+    },
+    {
+      "level": 9,
+      "at": "2026-05-26T18:00:00.000Z"
+    },
+    {
+      "level": 10,
+      "at": "2026-06-02T18:00:00.000Z"
+    },
+    {
+      "level": 11,
+      "at": "2026-06-09T18:00:00.000Z"
+    },
+    {
+      "level": 12,
+      "at": "2026-06-16T18:00:00.000Z"
+    },
+    {
+      "level": 13,
+      "at": "2026-06-25T12:00:00.000Z"
+    },
+    {
+      "level": 14,
+      "at": "2026-07-07T18:00:00.000Z"
+    },
+    {
+      "level": 15,
+      "at": "2026-07-18T18:00:00.000Z"
+    },
+    {
+      "level": 16,
+      "at": "2026-07-25T18:00:00.000Z"
+    },
+    {
+      "level": 17,
+      "at": "2026-08-04T18:00:00.000Z"
+    },
+    {
+      "level": 18,
+      "at": "2026-08-18T18:00:00.000Z"
+    }
+  ],
+  "stats": {
+    "strength_xp": 13183,
+    "power_xp": 7178,
+    "conditioning_xp": 0,
+    "discipline_xp": 360,
+    "best_streak": 3,
+    "best_streak_at": "2026-08-04T23:59:59.000Z",
+    "sessions_last_30d": 10,
+    "checkins_last_30d": 30
+  },
+  "ledger": {
+    "rows": 720,
+    "byKind": {
+      "pr": 30,
+      "session": 35,
+      "set": 608,
+      "skill": 42,
+      "feat": 4,
+      "goal": 1
+    },
+    "byState": {
+      "BALANCED": 234,
+      "CUT": 486
+    },
+    "total_xp": 18421,
+    "first_row": {
+      "id": "pr:10000000-0000-4000-8000-000000000001",
+      "source_kind": "pr",
+      "source_id": "10000000-0000-4000-8000-000000000001",
+      "xp": 70,
+      "body_state": "BALANCED",
+      "multiplier": 1,
+      "earned_at": "2026-05-19T18:00:00.000Z"
+    },
+    "last_row": {
+      "id": "set:10000000-0000-4000-8000-000000000608",
+      "source_kind": "set",
+      "source_id": "10000000-0000-4000-8000-000000000608",
+      "xp": 11,
+      "body_state": "BALANCED",
+      "multiplier": 1,
+      "earned_at": "2026-09-05T18:00:00.000Z"
+    }
+  },
+  "idempotence": {
+    "recompute_equals_ledger": true,
+    "character_stable": true
+  }
+}

@@ -1,0 +1,410 @@
+{
+  "weeks": [
+    {
+      "week_start": "2026-05-18",
+      "muscles": {
+        "back": {
+          "sets": 16,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 6,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-05-25",
+      "muscles": {
+        "back": {
+          "sets": 12,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 6,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-06-01",
+      "muscles": {
+        "back": {
+          "sets": 16,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 6,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-06-08",
+      "muscles": {
+        "back": {
+          "sets": 12,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 6,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 4,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-06-15",
+      "muscles": {
+        "back": {
+          "sets": 16,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 6,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-06-22",
+      "muscles": {
+        "back": {
+          "sets": 12,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 6,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-06-29",
+      "muscles": {
+        "back": {
+          "sets": 16,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 6,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-07-06",
+      "muscles": {
+        "back": {
+          "sets": 12,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 6,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-07-13",
+      "muscles": {
+        "back": {
+          "sets": 16,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 6,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-07-20",
+      "muscles": {
+        "back": {
+          "sets": 24,
+          "zone": "high"
+        },
+        "chest": {
+          "sets": 16,
+          "zone": "optimal"
+        },
+        "hamstrings": {
+          "sets": 6,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 17,
+          "zone": "optimal"
+        },
+        "shoulders": {
+          "sets": 4,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-07-27",
+      "muscles": {
+        "back": {
+          "sets": 16,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 9,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-08-03",
+      "muscles": {
+        "back": {
+          "sets": 12,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 12,
+          "zone": "optimal"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-08-10",
+      "muscles": {
+        "back": {
+          "sets": 16,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 6,
+          "zone": "low"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-08-17",
+      "muscles": {
+        "back": {
+          "sets": 12,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 0,
+          "zone": "undertrained"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 4,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-08-24",
+      "muscles": {
+        "back": {
+          "sets": 16,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 0,
+          "zone": "undertrained"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    },
+    {
+      "week_start": "2026-08-31",
+      "muscles": {
+        "back": {
+          "sets": 12,
+          "zone": "optimal"
+        },
+        "chest": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "hamstrings": {
+          "sets": 0,
+          "zone": "undertrained"
+        },
+        "legs": {
+          "sets": 8,
+          "zone": "low"
+        },
+        "shoulders": {
+          "sets": 0,
+          "zone": "undertrained"
+        }
+      }
+    }
+  ],
+  "neglected": [
+    {
+      "muscle": "hamstrings",
+      "weeks_zero": 2
+    }
+  ]
+}
