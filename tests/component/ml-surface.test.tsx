@@ -57,7 +57,8 @@ async function logSet(user: ReturnType<typeof userEvent.setup>, weight: string, 
   await user.type(screen.getByLabelText('Weight'), weight);
   await user.type(screen.getByLabelText('Reps'), reps);
   if (rpe != null) {
-    // Inline RPE quick-buttons (plain buttons labelled by number).
+    // Inline RPE quick-buttons, collapsed behind the RPE toggle (7.8).
+    await user.click(screen.getByRole('button', { name: /^RPE/ }));
     await user.click(screen.getByRole('button', { name: String(rpe) }));
   }
   await user.click(screen.getByTestId('log-set'));

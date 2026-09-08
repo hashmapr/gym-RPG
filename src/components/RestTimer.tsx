@@ -66,11 +66,11 @@ export default function RestTimer() {
     <div
       data-testid="rest-timer"
       className={`fixed bottom-0 inset-x-0 z-40 flex items-center justify-between gap-3 px-4 py-3 border-t pb-safe ${
-        done ? 'bg-white text-black' : 'bg-zinc-900 text-zinc-100'
-      } border-zinc-800`}
+        done ? 'bg-white text-black' : 'bg-surface text-ink'
+      } border-border`}
     >
       <div className="flex items-baseline gap-2">
-        <span className="text-xs uppercase tracking-wider text-zinc-400">
+        <span className="text-xs uppercase tracking-wider text-ink-dim">
           Rest
         </span>
         <span
@@ -84,14 +84,14 @@ export default function RestTimer() {
         <button
           type="button"
           onClick={() => start(remaining + 30)}
-          className="min-h-12 px-4 rounded-lg bg-zinc-800 font-semibold active:bg-zinc-700"
+          className="min-h-12 px-4 rounded-lg bg-surface-raised font-semibold active:bg-surface-raised"
         >
           +30s
         </button>
         <button
           type="button"
           onClick={() => start(remaining + 60)}
-          className="min-h-12 px-4 rounded-lg bg-zinc-800 font-semibold active:bg-zinc-700"
+          className="min-h-12 px-4 rounded-lg bg-surface-raised font-semibold active:bg-surface-raised"
         >
           +1:00
         </button>
@@ -99,7 +99,7 @@ export default function RestTimer() {
           type="button"
           data-testid="rest-skip"
           onClick={cancel}
-          className="min-h-12 px-4 rounded-lg bg-zinc-700 font-semibold active:bg-zinc-600"
+          className="min-h-12 px-4 rounded-lg bg-surface-raised font-semibold active:bg-surface-raised"
         >
           Skip
         </button>

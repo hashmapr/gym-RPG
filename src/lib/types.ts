@@ -170,7 +170,13 @@ export type XpSourceKind =
   | 'program'
   | 'goal'
   | 'skill'
-  | 'feat';
+  | 'feat'
+  // Sprint 7.8: daily quests (+50 each, +150 sweep, +300 weekly) and the
+  // commitment contract bonus. Deterministic ids keep recomputes idempotent.
+  | 'quest'
+  | 'quest_sweep'
+  | 'quest_week'
+  | 'commitment';
 
 /** One XP event. `id` is deterministic (`${source_kind}:${source_id}`) so
  *  reprocessing the same source can never double-award. */
@@ -367,7 +373,9 @@ export type TableName =
   // Sprint 8a (ML harness): feature store + model registry sync up.
   | 'ml_features'
   | 'ml_model_registry'
-  | 'rpg_character';
+  | 'rpg_character'
+  // Sprint 7.8 (The Hook): daily quest draw rows sync up.
+  | 'daily_quests';
 
 export interface Settings {
   day_boundary_hour: number;
@@ -405,6 +413,17 @@ export interface Settings {
   healthkit_checkin_enabled: boolean;
   /** Show the auto-generated warm-up ramp expander in the logger. */
   warmups_enabled: boolean;
+  // Sprint 7.8: The Hook — sound pack, overload mode, commitment contract.
+  /** Per-event sound toggles: { set_complete, quest, pr, level_up, streak, gate_red, overload }. */
+  sound_events: Record<string, boolean> | null;
+  /** OVERLOAD MODE: boost active while now < this timestamp (null = inactive). */
+  overload_mode_active_until: string | null;
+  /** Last OVERLOAD roll (DATE) — enforces the 1-roll-per-7-days cap. */
+  last_overload_roll_date: string | null;
+  /** Commitment contract: training days per week promised at Arc start (2–6). */
+  commitment_days_per_week: number | null;
+  /** ISO week start (Monday, YYYY-MM-DD) the commitment applies to. */
+  commitment_week_start: string | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -771,6 +790,33 @@ export interface AIBriefing {
   content: string;
   gate_outcome: GateOutcome;
   prompt_version: string;
+  created_at: string;
+  syncedAt?: string;
+}
+// ---------------------------------------------------------------------------
+// Sprint 7.8 — The Hook: daily quests
+// ---------------------------------------------------------------------------
+
+/** Quest pool types (deterministic, scaled to rolling baselines). */
+export type DailyQuestType =
+  | 'log_session'
+  | 'volume'
+  | 'cardio_minutes'
+  | 'beat_previous'
+  | 'rpe_8_plus'
+  | 'log_rpe_3';
+
+/** One daily quest row — the DRAW is stored, progress is derived from data. */
+export interface DailyQuest {
+  id: string;
+  training_date: string; // YYYY-MM-DD
+  quest_type: DailyQuestType;
+  /** Numeric target (lb volume, minutes, count of sets…). */
+  target: number;
+  /** Derived progress at last sweep (informational — re-derived on read). */
+  progress: number;
+  completed: boolean;
+  xp_awarded: number;
   created_at: string;
   syncedAt?: string;
 }

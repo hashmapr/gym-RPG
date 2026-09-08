@@ -68,14 +68,14 @@ function Gauge({
     <div className="rounded-xl border border-border bg-surface p-4" data-testid={`gauge-${branch}`}>
       <div className="flex items-baseline justify-between">
         <span className="font-display text-sm font-bold text-white">{branch}</span>
-        <span className="text-xs text-zinc-400">
+        <span className="text-xs text-ink-dim">
           {xp.toLocaleString()} {RPG_COPY.xp}
         </span>
       </div>
       <div className="mt-2 h-[2px] rounded-full bg-border">
         <div className="h-[2px] rounded-full bg-white" style={{ width: `${pct}%` }} />
       </div>
-      <p className="mt-2 text-xs text-zinc-500">{hint}</p>
+      <p className="mt-2 text-xs text-ink-faint">{hint}</p>
     </div>
   );
 }
@@ -126,13 +126,13 @@ export default function CharacterPage() {
     return (
       <main className="max-w-md mx-auto p-4 pb-16">
         <header className="flex items-center justify-between py-4">
-          <Link href="/" className="min-h-12 px-2 py-3 text-zinc-400">
+          <Link href="/" className="min-h-12 px-2 py-3 text-ink-dim">
             ← Back
           </Link>
           <h1 className="text-lg font-bold font-display">Character</h1>
           <span className="w-16" />
         </header>
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-ink-dim">
           No character yet — it materializes from your history on first open.
         </p>
       </main>
@@ -152,7 +152,7 @@ export default function CharacterPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/" className="min-h-12 px-2 py-3 text-ink-dim">
           ← Back
         </Link>
         <h1 className="text-lg font-bold font-display">Character</h1>
@@ -163,12 +163,12 @@ export default function CharacterPage() {
         <div className="flex items-center gap-5">
           <Ring level={character.level} progress={Math.max(0, Math.min(1, progress))} />
           <div>
-            <h2 className="eyebrow text-zinc-400">{RPG_COPY.powerLevel}</h2>
+            <h2 className="text-xs font-bold tracking-widest text-ink-faint">{RPG_COPY.powerLevel}</h2>
             <p className="mt-1 font-display text-2xl font-bold text-white tabular-nums">
               {character.total_xp.toLocaleString()}{' '}
-              <span className="text-sm font-medium text-zinc-400">{RPG_COPY.xp}</span>
+              <span className="text-sm font-medium text-ink-dim">{RPG_COPY.xp}</span>
             </p>
-            <p className="text-xs text-zinc-500">{RPG_COPY.toNext(prog.remaining)}</p>
+            <p className="text-xs text-ink-faint">{RPG_COPY.toNext(prog.remaining)}</p>
             <div className="mt-3 flex gap-2 text-xs">
               <span
                 data-testid="body-state-chip"
@@ -177,7 +177,7 @@ export default function CharacterPage() {
                 {RPG_COPY.bodyState[body.state]}
               </span>
               {body.lastShift && (
-                <span className="rounded-full border border-border px-3 py-1 text-zinc-400">
+                <span className="rounded-full border border-border px-3 py-1 text-ink-dim">
                   {body.lastShift.from === 'CUT'
                     ? '↑'
                     : body.lastShift.from === 'GAIN'
@@ -187,7 +187,7 @@ export default function CharacterPage() {
                 </span>
               )}
             </div>
-            <p className="mt-2 text-xs text-zinc-500">{RPG_COPY.bodyStateHint[body.state]}</p>
+            <p className="mt-2 text-xs text-ink-faint">{RPG_COPY.bodyStateHint[body.state]}</p>
           </div>
         </div>
         {settings.target_bodyweight_lb == null && (
@@ -218,13 +218,13 @@ export default function CharacterPage() {
           <p className="font-display text-3xl font-bold text-white tabular-nums" data-testid="best-streak">
             {character.best_streak}
           </p>
-          <p className="text-xs text-zinc-500">Best streak</p>
+          <p className="text-xs text-ink-faint">Best streak</p>
         </div>
         <div className="rounded-xl border border-border bg-surface p-4">
           <p className="font-display text-3xl font-bold text-white tabular-nums" data-testid="current-streak">
             {character.current_streak}
           </p>
-          <p className="text-xs text-zinc-500">Current streak</p>
+          <p className="text-xs text-ink-faint">Current streak</p>
         </div>
       </section>
 
@@ -237,13 +237,13 @@ export default function CharacterPage() {
         </Link>
         <Link
           href="/quests"
-          className="min-h-12 flex-1 rounded-xl border border-border bg-surface px-4 py-3 text-center font-display text-sm font-bold text-zinc-200"
+          className="min-h-12 flex-1 rounded-xl border border-border bg-surface px-4 py-3 text-center font-display text-sm font-bold text-ink"
         >
           Quests
         </Link>
       </section>
       {skillCount != null && skillCount > 0 && (
-        <p className="mt-3 text-center text-xs text-zinc-500">
+        <p className="mt-3 text-center text-xs text-ink-faint">
           {skillCount} milestones unlocked
         </p>
       )}

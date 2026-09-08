@@ -106,7 +106,9 @@ describe('Theme + copy rules', () => {
     expect(css).toContain('--color-warn:');
     expect(css).toContain('--color-bad:');
     expect(css).toContain('--font-display:');
-    expect(css).toContain('--font-mono:');
+    // 7.8: mono eyebrows are dead — the mono font token is exterminated.
+    expect(css).not.toContain('--font-mono:');
+    expect(css).toContain('--font-nunito');
     // Ember tokens are dead in v2.
     expect(css).not.toContain('--color-ember');
   });

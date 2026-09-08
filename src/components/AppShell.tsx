@@ -55,7 +55,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               className={`flex h-12 w-12 items-center justify-center rounded-xl text-xl transition-colors ${
                 isActive(pathname, item.href)
                   ? 'bg-surface-raised text-white'
-                  : 'text-zinc-500 hover:bg-surface hover:text-zinc-200'
+                  : 'text-ink-faint hover:bg-surface hover:text-ink'
               }`}
             >
               {item.icon}
@@ -79,7 +79,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             key={item.href}
             href={item.href}
             className={`flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] uppercase tracking-wider ${
-              isActive(pathname, item.href) ? 'text-white' : 'text-zinc-500'
+              isActive(pathname, item.href) ? 'text-white' : 'text-ink-faint'
             }`}
           >
             <span className="text-lg leading-none">{item.icon}</span>
@@ -92,7 +92,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           data-testid="nav-more"
           aria-expanded={moreOpen}
           className={`flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] uppercase tracking-wider ${
-            moreActive ? 'text-white' : 'text-zinc-500'
+            moreActive ? 'text-white' : 'text-ink-faint'
           }`}
         >
           <span className="text-lg leading-none">⋯</span>
@@ -118,7 +118,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   className={`flex min-h-20 flex-col items-center justify-center gap-1 rounded-xl border text-xs ${
                     isActive(pathname, item.href)
                       ? 'border-white/60 bg-surface-raised text-white'
-                      : 'border-border bg-surface-raised text-zinc-300'
+                      : 'border-border bg-surface-raised text-ink-dim'
                   }`}
                 >
                   <span className="text-xl">{item.icon}</span>

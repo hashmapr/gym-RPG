@@ -43,8 +43,8 @@ test('2:30 AM workout lands on the previous training day (2024-01-15)', async ({
   await addExercise(page, 'Deadlift');
   await logSet(page, 'Deadlift', '405', '3');
   await page.getByTestId('finish-workout').click();
-  await expect(page.getByTestId('finish-modal')).toBeVisible();
-  await page.getByTestId('finish-done').click();
+  await expect(page.getByTestId('celebration-screen')).toBeVisible();
+  await page.getByTestId('celebration-done').click();
   await page.waitForURL('/');
 
   // History groups it under 2024-01-15, not 2024-01-16.

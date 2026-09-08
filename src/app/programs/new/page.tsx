@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { db, newId, nowIso } from '@/lib/db';
 import ExerciseSearch from '@/components/ExerciseSearch';
 import { startRun } from '@/lib/coach/run';
+import { setCommitment, mondayOf, COMMITMENT_MIN_DAYS, COMMITMENT_MAX_DAYS } from '@/lib/rpg/commitment';
 import { exerciseName } from '@/lib/wger';
 import type {
   Exercise,
@@ -95,6 +96,9 @@ export default function ProgramBuilderPage() {
   const [importPreview, setImportPreview] = useState<BuilderWeek[] | null>(null);
   const [importMeta, setImportMeta] = useState<{ name: string; goal: string; weekdays: number[] } | null>(null);
   const [saving, setSaving] = useState(false);
+  // Sprint 7.8: commitment contract — offered at Arc (program) start.
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
+  const [commitDays, setCommitDays] = useState(3);
   const [error, setError] = useState<string | null>(null);
 
   // Ensure weeks array matches weeksCount; new weeks copy week 1. Weeks the
@@ -266,7 +270,10 @@ export default function ProgramBuilderPage() {
         }
       }
       const run = await startRun(program.id);
-      router.push(programRunHref(program.id, run.id));
+      // Sprint 7.8: commitment picker before entering the Arc. Skipping is
+      // allowed — the contract is opt-in per week.
+      setCommitDays(Math.min(COMMITMENT_MAX_DAYS, Math.max(COMMITMENT_MIN_DAYS, weekdays.length)));
+      setPendingHref(programRunHref(program.id, run.id));
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to save program.');
       setSaving(false);
@@ -355,7 +362,7 @@ export default function ProgramBuilderPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-32">
       <header className="flex items-center justify-between py-4">
-        <Link href="/programs" className="text-sm text-zinc-400 hover:text-zinc-100">
+        <Link href="/programs" className="text-sm text-ink-dim hover:text-ink">
           ← Programs
         </Link>
         <h1 className="text-xl font-black tracking-tight text-white">NEW PROGRAM</h1>
@@ -363,13 +370,13 @@ export default function ProgramBuilderPage() {
           type="button"
           data-testid="open-import"
           onClick={() => setImportOpen(true)}
-          className="min-h-10 px-3 rounded-lg bg-zinc-800 border border-zinc-700 text-sm font-semibold text-zinc-100"
+          className="min-h-10 px-3 rounded-lg bg-surface-raised border border-border text-sm font-semibold text-ink"
         >
           IMPORT JSON
         </button>
       </header>
 
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 space-y-3">
+      <section className="rounded-xl bg-surface border border-border p-4 space-y-3">
         <input
           data-testid="program-name"
           type="text"
@@ -377,7 +384,7 @@ export default function ProgramBuilderPage() {
           aria-label="Program name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-zinc-100"
+          className="w-full min-h-12 rounded-lg bg-surface-raised border border-border px-3 text-ink"
         />
         <input
           data-testid="program-goal"
@@ -386,7 +393,7 @@ export default function ProgramBuilderPage() {
           aria-label="Goal"
           value={goal}
           onChange={(e) => setGoal(e.target.value)}
-          className="w-full min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-zinc-100"
+          className="w-full min-h-12 rounded-lg bg-surface-raised border border-border px-3 text-ink"
         />
         <div className="flex gap-1 flex-wrap" data-testid="weekday-picker">
           {WEEKDAY_LABELS.map((label, i) => (
@@ -401,14 +408,14 @@ export default function ProgramBuilderPage() {
               className={`min-h-10 px-3 rounded-lg text-sm font-semibold ${
                 weekdays.includes(i)
                   ? 'bg-white text-black'
-                  : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
+                  : 'bg-surface-raised text-ink-dim border border-border'
               }`}
             >
               {label}
             </button>
           ))}
         </div>
-        <label className="flex items-center gap-3 text-sm text-zinc-300">
+        <label className="flex items-center gap-3 text-sm text-ink-dim">
           Weeks
           <input
             data-testid="weeks-count"
@@ -417,7 +424,7 @@ export default function ProgramBuilderPage() {
             max={52}
             value={weeksCount}
             onChange={(e) => setWeeksCount(Math.max(1, Math.min(52, Number(e.target.value) || 1)))}
-            className="w-20 min-h-10 rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-center text-zinc-100"
+            className="w-20 min-h-10 rounded-lg bg-surface-raised border border-border px-3 text-center text-ink"
           />
         </label>
       </section>
@@ -431,7 +438,7 @@ export default function ProgramBuilderPage() {
             className={`min-h-10 px-3 rounded-lg text-sm font-bold whitespace-nowrap ${
               activeWeek === w.week
                 ? 'bg-white text-black'
-                : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
+                : 'bg-surface-raised text-ink-dim border border-border'
             }`}
           >
             W{w.week}
@@ -441,12 +448,12 @@ export default function ProgramBuilderPage() {
       </div>
 
       {week && (
-        <section className="mt-3 rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+        <section className="mt-3 rounded-xl bg-surface border border-border p-4">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm uppercase tracking-widest text-zinc-400">
+            <h2 className="text-sm uppercase tracking-widest text-ink-dim">
               WEEK {week.week}
             </h2>
-            <label className="flex items-center gap-2 text-sm text-zinc-300">
+            <label className="flex items-center gap-2 text-sm text-ink-dim">
               <input
                 data-testid={`deload-${week.week}`}
                 type="checkbox"
@@ -459,20 +466,20 @@ export default function ProgramBuilderPage() {
           </div>
 
           {week.days.map((day) => (
-            <div key={day.dayNumber} className="mb-4 rounded-lg bg-zinc-800/50 border border-zinc-700 p-3">
+            <div key={day.dayNumber} className="mb-4 rounded-lg bg-surface-raised/50 border border-border p-3">
               <div className="flex gap-2 mb-2">
                 <input
                   type="text"
                   aria-label={`Day ${day.dayNumber} name`}
                   value={day.name}
                   onChange={(e) => updateDay(day.dayNumber, { name: e.target.value })}
-                  className="flex-1 min-h-10 rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-zinc-100 text-sm"
+                  className="flex-1 min-h-10 rounded-lg bg-surface-raised border border-border px-3 text-ink text-sm"
                 />
               </div>
               {day.exercises.map((ex, i) => (
-                <div key={`${ex.exerciseId}-${i}`} className="mb-2 rounded-lg bg-zinc-900 border border-zinc-700 p-2">
+                <div key={`${ex.exerciseId}-${i}`} className="mb-2 rounded-lg bg-surface border border-border p-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-semibold text-zinc-100">{ex.name}</span>
+                    <span className="text-sm font-semibold text-ink">{ex.name}</span>
                     <button
                       type="button"
                       onClick={() => removeExercise(day.dayNumber, i)}
@@ -488,14 +495,14 @@ export default function ProgramBuilderPage() {
                       aria-label="Sets"
                       value={ex.sets}
                       onChange={(e) => updateExercise(day.dayNumber, i, { sets: Number(e.target.value) || 1 })}
-                      className="w-14 min-h-9 rounded bg-zinc-800 border border-zinc-700 px-2 text-center text-zinc-100"
+                      className="w-14 min-h-9 rounded bg-surface-raised border border-border px-2 text-center text-ink"
                     />
                     <input
                       type="text"
                       aria-label="Reps (e.g. 8-12)"
                       value={ex.reps}
                       onChange={(e) => updateExercise(day.dayNumber, i, { reps: e.target.value })}
-                      className="w-20 min-h-9 rounded bg-zinc-800 border border-zinc-700 px-2 text-center text-zinc-100"
+                      className="w-20 min-h-9 rounded bg-surface-raised border border-border px-2 text-center text-ink"
                     />
                     <input
                       type="number"
@@ -509,7 +516,7 @@ export default function ProgramBuilderPage() {
                           rpe: e.target.value === '' ? null : Number(e.target.value),
                         })
                       }
-                      className="w-16 min-h-9 rounded bg-zinc-800 border border-zinc-700 px-2 text-center text-zinc-100"
+                      className="w-16 min-h-9 rounded bg-surface-raised border border-border px-2 text-center text-ink"
                     />
                     <input
                       type="number"
@@ -517,7 +524,7 @@ export default function ProgramBuilderPage() {
                       aria-label="Rest seconds"
                       value={ex.rest}
                       onChange={(e) => updateExercise(day.dayNumber, i, { rest: Number(e.target.value) || 0 })}
-                      className="w-16 min-h-9 rounded bg-zinc-800 border border-zinc-700 px-2 text-center text-zinc-100"
+                      className="w-16 min-h-9 rounded bg-surface-raised border border-border px-2 text-center text-ink"
                     />
                     <select
                       data-testid={`rule-${ex.exerciseId}`}
@@ -527,7 +534,7 @@ export default function ProgramBuilderPage() {
                         const preset = RULE_PRESETS.find((p) => p.type === e.target.value)!;
                         updateExercise(day.dayNumber, i, { rule: preset.make() });
                       }}
-                      className="min-h-9 rounded bg-zinc-800 border border-zinc-700 px-1 text-zinc-100"
+                      className="min-h-9 rounded bg-surface-raised border border-border px-1 text-ink"
                     >
                       {RULE_PRESETS.map((p) => (
                         <option key={p.type} value={p.type}>
@@ -546,7 +553,7 @@ export default function ProgramBuilderPage() {
             type="button"
             data-testid="add-day"
             onClick={addDay}
-            className="w-full min-h-11 rounded-lg bg-zinc-800 border border-zinc-700 font-semibold text-zinc-100 text-sm active:bg-zinc-700"
+            className="w-full min-h-11 rounded-lg bg-surface-raised border border-border font-semibold text-ink text-sm active:bg-surface-raised"
           >
             + ADD DAY
           </button>
@@ -559,7 +566,7 @@ export default function ProgramBuilderPage() {
         </p>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-zinc-950/95 backdrop-blur border-t border-zinc-800">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/95 backdrop-blur border-t border-border">
         <div className="max-w-md mx-auto">
           <button
             type="button"
@@ -581,14 +588,14 @@ export default function ProgramBuilderPage() {
           aria-modal="true"
           aria-label="Import program JSON"
         >
-          <div className="w-full max-w-md rounded-2xl bg-zinc-900 border border-zinc-700 p-4 max-h-[85vh] flex flex-col">
-            <h2 className="text-lg font-black text-zinc-100 mb-2">IMPORT PROGRAM JSON</h2>
+          <div className="w-full max-w-md rounded-2xl bg-surface border border-border p-4 max-h-[85vh] flex flex-col">
+            <h2 className="text-lg font-black text-ink mb-2">IMPORT PROGRAM JSON</h2>
             <textarea
               data-testid="import-text"
               value={importText}
               onChange={(e) => setImportText(e.target.value)}
               placeholder='{"name":"…","goal":"…","weekdays":[1,3,5],"weeks":[{"days":[{"name":"Day 1","exercises":[{"exercise":"Bench Press","sets":3,"reps":"8-12","rpe":8,"rest":120,"rule":{"rule_type":"double","increment_lb":5,"min_reps":8,"max_reps":12,"target_rpe":8}}]}]}]}'
-              className="w-full h-48 rounded-lg bg-zinc-800 border border-zinc-700 p-3 text-xs text-zinc-100 font-mono"
+              className="w-full h-48 rounded-lg bg-surface-raised border border-border p-3 text-xs text-ink font-mono"
             />
             {importError && (
               <p data-testid="import-error" className="mt-2 text-sm text-red-400">
@@ -596,9 +603,9 @@ export default function ProgramBuilderPage() {
               </p>
             )}
             {importPreview && (
-              <div data-testid="import-preview" className="mt-2 rounded-lg bg-zinc-800 border border-zinc-700 p-3 text-sm text-zinc-300">
-                <p className="font-bold text-zinc-100">{importMeta?.name}</p>
-                <p className="text-xs text-zinc-500">
+              <div data-testid="import-preview" className="mt-2 rounded-lg bg-surface-raised border border-border p-3 text-sm text-ink-dim">
+                <p className="font-bold text-ink">{importMeta?.name}</p>
+                <p className="text-xs text-ink-faint">
                   {importPreview.length} weeks ·{' '}
                   {importPreview.reduce((n, w) => n + w.days.length, 0)} days ·{' '}
                   {importPreview.reduce(
@@ -614,7 +621,7 @@ export default function ProgramBuilderPage() {
                 type="button"
                 data-testid="import-validate"
                 onClick={tryImport}
-                className="flex-1 min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 font-bold text-zinc-100 active:bg-zinc-700"
+                className="flex-1 min-h-12 rounded-lg bg-surface-raised border border-border font-bold text-ink active:bg-surface-raised"
               >
                 VALIDATE
               </button>
@@ -630,9 +637,61 @@ export default function ProgramBuilderPage() {
               <button
                 type="button"
                 onClick={() => setImportOpen(false)}
-                className="min-h-12 px-4 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300"
+                className="min-h-12 px-4 rounded-lg bg-surface-raised border border-border text-ink-dim"
               >
                 CLOSE
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {pendingHref && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+          <div className="w-full max-w-sm bg-surface border border-border rounded-2xl p-6">
+            <p className="text-xs font-bold tracking-widest text-ink-faint">COMMITMENT</p>
+            <h2 className="mt-2 text-xl font-extrabold text-ink">
+              How many days this week?
+            </h2>
+            <p className="mt-2 text-sm text-ink-dim">
+              Your contract for the week of {mondayOf(new Date().toISOString().slice(0, 10))}. Hit it
+              every week to keep the streak of kept weeks alive.
+            </p>
+            <div className="mt-5 flex gap-2">
+              {Array.from({ length: COMMITMENT_MAX_DAYS - COMMITMENT_MIN_DAYS + 1 }, (_, i) => {
+                const d = COMMITMENT_MIN_DAYS + i;
+                return (
+                  <button
+                    key={d}
+                    type="button"
+                    onClick={() => setCommitDays(d)}
+                    className={`flex-1 min-h-12 rounded-lg font-bold ${
+                      commitDays === d
+                        ? 'bg-accent text-black'
+                        : 'bg-surface-raised border border-border text-ink-dim'
+                    }`}
+                  >
+                    {d}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="mt-6 flex gap-2">
+              <button
+                type="button"
+                onClick={async () => {
+                  await setCommitment(commitDays, mondayOf(new Date().toISOString().slice(0, 10)));
+                  router.push(pendingHref);
+                }}
+                className="flex-1 min-h-12 rounded-lg bg-accent font-bold text-black active:bg-accent/80"
+              >
+                COMMIT · {commitDays} DAYS
+              </button>
+              <button
+                type="button"
+                onClick={() => router.push(pendingHref)}
+                className="min-h-12 px-4 rounded-lg bg-surface-raised border border-border text-ink-dim"
+              >
+                SKIP
               </button>
             </div>
           </div>

@@ -30,6 +30,28 @@ describe('identity audit', () => {
     const offenders = files.filter((f) => /the lab/i.test(readFileSync(f, 'utf8')));
     expect(offenders, `found in:\n${offenders.join('\n')}`).toEqual([]);
   });
+
+  // Sprint 7.8: ONE family — Nunito. Mono eyebrows are dead.
+  it('Nunito is the single font family (7.8)', () => {
+    const layout = readFileSync(join(SRC, 'app', 'layout.tsx'), 'utf8');
+    expect(layout).toContain("from 'next/font/google'");
+    expect(layout).toContain('Nunito');
+    const otherFamilies = files.filter((f) =>
+      /from 'next\/font\/google'/.test(readFileSync(f, 'utf8')) &&
+      !f.endsWith('layout.tsx'),
+    );
+    expect(otherFamilies, `found in:\n${otherFamilies.join('\n')}`).toEqual([]);
+  });
+
+  it('zero mono-eyebrow classes (7.8: eyebrows are Nunito bold small)', () => {
+    const offenders = files.filter((f) => /\.eyebrow|className="eyebrow|'eyebrow/.test(readFileSync(f, 'utf8')));
+    expect(offenders, `found in:\n${offenders.join('\n')}`).toEqual([]);
+  });
+
+  it('zero zinc palette classes (7.8: token classes only)', () => {
+    const offenders = files.filter((f) => /zinc-\d{2,3}/.test(readFileSync(f, 'utf8')));
+    expect(offenders, `found in:\n${offenders.join('\n')}`).toEqual([]);
+  });
 });
 
 describe('token audit', () => {

@@ -8,7 +8,7 @@ import {
   startWorkout,
   addExercise,
   resetMockSync,
-} from './helpers';
+  freezeClock } from './helpers';
 
 const AI_NAME = 'Argus';
 const START = '2026-08-30';
@@ -259,8 +259,8 @@ test.describe('Argus (Sprint 5)', () => {
       await page.waitForTimeout(150);
     }
     await page.getByTestId('finish-workout').click();
-    await page.getByTestId('finish-modal').waitFor();
-    await page.getByTestId('finish-done').click();
+    await page.getByTestId('celebration-screen').waitFor();
+    await page.getByTestId('celebration-done').click();
     await page.waitForURL('/');
     // The dial lives on the run page; the sweep recomputes progress on open.
     await page.goto(runUrl);
@@ -294,6 +294,7 @@ test.describe('Argus (Sprint 5)', () => {
     await resetMockSync(page);
     await useMockSync(context);
     await mockWger(context);
+    await freezeClock(page);
     await seedChallenge(page, {
       defId: 'def-ai-lc',
       runId: 'run-ai-lc',
@@ -319,8 +320,8 @@ test.describe('Argus (Sprint 5)', () => {
       await page.waitForTimeout(150);
     }
     await page.getByTestId('finish-workout').click();
-    await page.getByTestId('finish-modal').waitFor();
-    await page.getByTestId('finish-done').click();
+    await page.getByTestId('celebration-screen').waitFor();
+    await page.getByTestId('celebration-done').click();
     await page.waitForURL('/');
 
     await page.goto('/challenges');
@@ -331,6 +332,7 @@ test.describe('Argus (Sprint 5)', () => {
     await resetMockSync(page);
     await useMockSync(context);
     await mockWger(context);
+    await freezeClock(page);
     await seedChallenge(page, {
       defId: 'def-ai-dn',
       runId: 'run-ai-dn',
@@ -357,6 +359,7 @@ test.describe('Argus (Sprint 5)', () => {
     await resetMockSync(page);
     await useMockSync(context);
     await mockWger(context);
+    await freezeClock(page);
     await seedChallenge(page, {
       defId: 'def-ai-cl',
       runId: 'run-ai-cl',

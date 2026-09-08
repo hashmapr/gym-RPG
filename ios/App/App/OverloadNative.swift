@@ -2,6 +2,7 @@ import Foundation
 import Capacitor
 import HealthKit
 import ActivityKit
+import WidgetKit
 
 // Sprint 7.5 — OverloadNative: Live Activity rest timer (ActivityKit) +
 // HealthKit reads (bodyweight, sleep). Registered in MainViewController.
@@ -108,6 +109,28 @@ public class OverloadNative: CAPPlugin {
             }
             self.healthStore.execute(query)
         }
+    }
+
+
+    // MARK: - Sprint 7.8 home-screen widgets (App Group bridge)
+
+    /// Writes the widget snapshot into the shared App Group container and
+    /// reloads all widget timelines. Called after finish/sync from the JS
+    /// bridge; a no-op failure never blocks the caller.
+    @objc func updateWidgets(_ call: CAPPluginCall) {
+        guard let defaults = UserDefaults(suiteName: "group.personal.overload.app") else {
+            call.reject("App Group unavailable")
+            return
+        }
+        defaults.set(call.getInt("streak") ?? 0, forKey: "widgetStreak")
+        defaults.set(call.getString("todayTitle") ?? "", forKey: "widgetTodayTitle")
+        defaults.set(call.getString("todaySub") ?? "", forKey: "widgetTodaySub")
+        defaults.set(call.getString("weekVolume") ?? "", forKey: "widgetWeekVolume")
+        defaults.set(Date().timeIntervalSince1970, forKey: "widgetUpdatedAt")
+        #if arch(arm64) || arch(x86_64)
+        WidgetCenter.shared.reloadAllTimelines()
+        #endif
+        call.resolve()
     }
 
     @objc func readSleepHours(_ call: CAPPluginCall) {

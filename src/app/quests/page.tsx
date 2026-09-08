@@ -40,9 +40,9 @@ const KIND_ORDER = ['trial', 'arc', 'deed', 'feat'] as const;
 
 const STATE_STYLE: Record<string, string> = {
   completed: 'border-white/80 bg-white/10 text-white',
-  active: 'border-zinc-600 bg-zinc-900 text-zinc-400',
-  failed: 'border-zinc-800 bg-zinc-950 text-zinc-500',
-  locked: 'border-zinc-800 bg-zinc-950 text-zinc-600',
+  active: 'border-border bg-surface text-ink-dim',
+  failed: 'border-border bg-black text-ink-faint',
+  locked: 'border-border bg-black text-ink-faint',
 };
 
 function QuestCard({ q }: { q: QuestView }) {
@@ -138,7 +138,7 @@ export default function QuestsPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/character" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/character" className="min-h-12 px-2 py-3 text-ink-dim">
           ← Back
         </Link>
         <h1 className="text-lg font-bold font-display">Quests</h1>
@@ -146,7 +146,7 @@ export default function QuestsPage() {
       </header>
 
       {board === null ? (
-        <p className="text-sm text-zinc-400">Gathering…</p>
+        <p className="text-sm text-ink-dim">Gathering…</p>
       ) : (
         KIND_ORDER.map((kind) => {
           const quests = board.filter((q) => q.kind === kind);

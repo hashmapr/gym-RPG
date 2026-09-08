@@ -6,6 +6,25 @@ import type { Page, BrowserContext } from '@playwright/test';
 import { generateFixture, seedSettingsRows } from '../../src/lib/seed/fixture';
 import { buildProgramFixture } from '../../src/lib/seed/program-fixture';
 
+/**
+ * Frozen app "today" for clock-sensitive specs — the fixture's anchor
+ * (SEED_TODAY in src/lib/seed/fixture.ts). Real-clock drift past the frozen
+ * fixture dates (e.g. the program's week-4 window starting 2026-09-07)
+ * collides with today-dated seeded rows; freezing removes the drift.
+ */
+export const E2E_TODAY = '2026-09-05';
+
+/**
+ * Pin Date.now() to the fixture anchor noon (2026-09-05T12:00Z) so the app's
+ * 4AM-UTC training-day boundary yields appToday = 2026-09-05. Uses
+ * clock.setFixedTime (NOT install) — Date is fixed but timers keep running
+ * on the real clock, so sync intervals and debounces still fire. Persists
+ * across navigations and reloads; call before the first goto.
+ */
+export async function freezeClock(page: Page) {
+  await page.clock.setFixedTime(new Date('2026-09-05T12:00:00.000Z'));
+}
+
 /** wger v2 JSON shape for /exerciseinfo/ search results. */
 export function wgerResponse(names: { id: number; name: string; category: string }[]) {
   return {

@@ -111,12 +111,12 @@ export default function RunDetailPage() {
   }, [id, runId]);
 
   if (data === undefined) {
-    return <main className="p-6 text-zinc-400">Loading…</main>;
+    return <main className="p-6 text-ink-dim">Loading…</main>;
   }
   if (data === null) {
     return (
       <main className="p-6">
-        <p className="text-zinc-400 mb-4">Run not found.</p>
+        <p className="text-ink-dim mb-4">Run not found.</p>
         <Link href="/programs" className="text-white">
           ← Programs
         </Link>
@@ -129,7 +129,7 @@ export default function RunDetailPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/programs" className="text-sm text-zinc-400 hover:text-zinc-100">
+        <Link href="/programs" className="text-sm text-ink-dim hover:text-ink">
           ← Programs
         </Link>
         <h1 className="text-lg font-black tracking-tight text-white text-right">
@@ -137,25 +137,25 @@ export default function RunDetailPage() {
         </h1>
       </header>
 
-      <p className="text-sm text-zinc-400 mb-4">
-        Week <span className="text-zinc-100 tabular-nums">{run.current_week}</span> of{' '}
+      <p className="text-sm text-ink-dim mb-4">
+        Week <span className="text-ink tabular-nums">{run.current_week}</span> of{' '}
         <span className="tabular-nums">{totalWeeks}</span> · started{' '}
         <span className="tabular-nums">{run.started_on}</span> ·{' '}
-        <span className={`uppercase font-bold ${run.status === 'active' ? 'text-white' : 'text-zinc-500'}`}>
+        <span className={`uppercase font-bold ${run.status === 'active' ? 'text-white' : 'text-ink-faint'}`}>
           {run.status}
         </span>
       </p>
 
       <section className="mb-6">
-        <h2 className="text-xs uppercase tracking-widest text-zinc-500 mb-2">Calendar</h2>
+        <h2 className="text-xs uppercase tracking-widest text-ink-faint mb-2">Calendar</h2>
         {adherenceByWeek.map(({ week, pct }) => (
-          <div key={week} className="mb-3 rounded-xl bg-zinc-900 border border-zinc-800 p-3">
+          <div key={week} className="mb-3 rounded-xl bg-surface border border-border p-3">
             <div className="flex items-baseline justify-between mb-2">
-              <h3 className="text-sm font-bold text-zinc-100">
+              <h3 className="text-sm font-bold text-ink">
                 WEEK {week}
               </h3>
               {pct !== null && (
-                <span className="text-xs text-zinc-400 tabular-nums" data-testid={`adherence-week-${week}`}>
+                <span className="text-xs text-ink-dim tabular-nums" data-testid={`adherence-week-${week}`}>
                   {pct}%
                 </span>
               )}
@@ -179,15 +179,15 @@ export default function RunDetailPage() {
 
       {progression.length > 0 && (
         <section>
-          <h2 className="text-xs uppercase tracking-widest text-zinc-500 mb-2">
+          <h2 className="text-xs uppercase tracking-widest text-ink-faint mb-2">
             Progression (from audit log)
           </h2>
           {progression.map((entry) => (
-            <div key={entry.name} className="mb-3 rounded-xl bg-zinc-900 border border-zinc-800 p-3">
-              <h3 className="text-sm font-bold text-zinc-100 mb-2">{entry.name}</h3>
+            <div key={entry.name} className="mb-3 rounded-xl bg-surface border border-border p-3">
+              <h3 className="text-sm font-bold text-ink mb-2">{entry.name}</h3>
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-zinc-500 text-xs uppercase tracking-wider">
+                  <tr className="text-ink-faint text-xs uppercase tracking-wider">
                     <th className="text-left py-1">Week</th>
                     <th className="text-right py-1">Target</th>
                     <th className="text-left py-1 pl-3">Reason</th>
@@ -195,12 +195,12 @@ export default function RunDetailPage() {
                 </thead>
                 <tbody>
                   {entry.rows.map((r, i) => (
-                    <tr key={i} data-testid="progression-row" className="border-t border-zinc-800 text-zinc-200">
+                    <tr key={i} data-testid="progression-row" className="border-t border-border text-ink">
                       <td className="py-1.5 tabular-nums">{r.week}</td>
                       <td className="text-right tabular-nums">
                         {r.weight !== null ? `${r.weight} lb` : '—'}
                       </td>
-                      <td className="pl-3 text-xs text-zinc-500">{r.reason}</td>
+                      <td className="pl-3 text-xs text-ink-faint">{r.reason}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -231,12 +231,12 @@ function SessionRow({
         ? { label: 'MISSED', cls: 'bg-red-500/15 border-red-500/40 text-red-300' }
         : session.planned_date != null && session.planned_date <= today
           ? { label: 'DUE', cls: 'bg-white/10 border-white/40 text-white' }
-          : { label: 'UPCOMING', cls: 'bg-zinc-700/40 border-zinc-600 text-zinc-300' };
+          : { label: 'UPCOMING', cls: 'bg-surface-raised/40 border-border text-ink-dim' };
   return (
     <li className="flex items-center justify-between text-sm">
-      <span className="text-zinc-300">
+      <span className="text-ink-dim">
         D{session.day_number} · {session.workout_name}
-        {session.is_deload && <span className="ml-1 text-xs text-zinc-300">DELOAD</span>}
+        {session.is_deload && <span className="ml-1 text-xs text-ink-dim">DELOAD</span>}
         {subs.map(({ fromId, toId }) => {
           const fromName = exerciseName(
             exById.get(fromId) ?? {
@@ -266,7 +266,7 @@ function SessionRow({
             <span
               key={`${fromId}-${toId}`}
               data-testid="substitution-row"
-              className="ml-1 text-xs text-zinc-300"
+              className="ml-1 text-xs text-ink-dim"
             >
               ⇄ {fromName} → {toName}
             </span>
@@ -274,7 +274,7 @@ function SessionRow({
         })}
       </span>
       <span className="flex items-center gap-2">
-        <span className="text-xs text-zinc-500 tabular-nums">{session.planned_date ?? '—'}</span>
+        <span className="text-xs text-ink-faint tabular-nums">{session.planned_date ?? '—'}</span>
         <span className={`rounded border px-1.5 py-0.5 text-[10px] font-bold ${badge.cls}`}>
           {badge.label}
         </span>

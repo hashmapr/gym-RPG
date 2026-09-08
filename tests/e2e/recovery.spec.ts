@@ -4,11 +4,11 @@
 // daily_gate_log, daily_metrics.
 
 import { test, expect, type Page } from '@playwright/test';
-import { useMockSync, seedProgram, mockSyncState, mockWriteCounts } from './helpers';
+import { useMockSync, seedProgram, mockSyncState, mockWriteCounts, freezeClock, E2E_TODAY } from './helpers';
 
-/** Replicates the app's 4AM-UTC training-date boundary. */
+/** Frozen training today — matches the app's 4AM-UTC boundary under freezeClock. */
 function appToday(): string {
-  return new Date(Date.now() - 4 * 3_600_000).toISOString().slice(0, 10);
+  return E2E_TODAY;
 }
 
 const GATE_SESSION_ID = 'e2ee4000-0000-4000-8000-00000000d001';
@@ -136,6 +136,7 @@ test('gate yellow enforce: auto-applies ×0.9 once, never re-mutates', async ({
   context,
 }) => {
   await useMockSync(context);
+  await freezeClock(page);
   const fixture = await seedProgram(page);
   const today = appToday();
   await seedGateSession(page, fixture.program_runs[0].id, today);
@@ -166,6 +167,7 @@ test('gate red: rest/proceed dual buttons, override logs but targets untouched',
   context,
 }) => {
   await useMockSync(context);
+  await freezeClock(page);
   const fixture = await seedProgram(page);
   const today = appToday();
   await seedGateSession(page, fixture.program_runs[0].id, today);
@@ -191,6 +193,7 @@ test('gate red: rest/proceed dual buttons, override logs but targets untouched',
 
 test('gate hrv override: green recovery + HRV crash → yellow', async ({ page, context }) => {
   await useMockSync(context);
+  await freezeClock(page);
   const fixture = await seedProgram(page);
   const today = appToday();
   await seedGateSession(page, fixture.program_runs[0].id, today);
@@ -212,13 +215,17 @@ test('gate hrv override: green recovery + HRV crash → yellow', async ({ page, 
 
 test('suggest-only mode: Apply button gates the treatment', async ({ page, context }) => {
   await useMockSync(context);
+  await freezeClock(page);
   const fixture = await seedProgram(page);
   const today = appToday();
   await seedGateSession(page, fixture.program_runs[0].id, today);
   await seedMetric(page, today, { recovery: 50 });
 
-  // Flip to suggest_only via the settings UI.
+  // Flip to suggest_only via the settings UI. Wait for the one-time seed
+  // hydration FIRST: it bulkPuts seeded settings and would clobber the
+  // toggle write if it lands after the click.
   await page.goto('/settings');
+  await page.waitForFunction(() => localStorage.getItem('lab.e2eSeedPulled') === '1');
   await page.getByTestId('gate-mode-suggest_only').click();
   await expect(page.getByTestId('gate-mode-suggest_only')).toHaveClass(/active|selected|bg-/, { timeout: 5000 }).catch(() => {});
 
@@ -238,15 +245,19 @@ test('suggest-only mode: Apply button gates the treatment', async ({ page, conte
 
 test('briefing renders on home with prompt-version receipt', async ({ page, context }) => {
   await useMockSync(context);
+  await freezeClock(page);
   const fixture = await seedProgram(page);
   const today = appToday();
   await seedGateSession(page, fixture.program_runs[0].id, today);
   await seedMetric(page, today, { recovery: 60 });
 
   await openSeededHome(page);
+  // Sprint 7.8 reskin: the briefing lives inside the collapsed Argus
+  // one-liner <details> — expand it before asserting.
+  await page.getByTestId('argus-one-liner').click();
   await expect(page.getByTestId('briefing-card')).toBeVisible();
   await expect(page.getByTestId('briefing-receipt')).toContainText('briefing-v1');
-  await expect(page.getByTestId('recovery-badge')).toContainText('Recovery 60%');
+  await expect(page.getByTestId('gate-dot')).toContainText('recovery 60%');
 });
 
 test('readonly regression: recovery surfaces write only gate/metric/planned tables', async ({
@@ -254,6 +265,7 @@ test('readonly regression: recovery surfaces write only gate/metric/planned tabl
   context,
 }) => {
   await useMockSync(context);
+  await freezeClock(page);
   const fixture = await seedProgram(page);
   const today = appToday();
   await seedGateSession(page, fixture.program_runs[0].id, today);

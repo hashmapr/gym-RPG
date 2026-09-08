@@ -17,6 +17,8 @@ import { diffDays } from '@/lib/streak';
 import { AI_NAME, ARGUS_ENABLED } from '@/lib/argus/config';
 import { AdaptiveBadge, SuggestionCard } from '@/components/argus/ArgusUI';
 import ChallengeDial from '@/components/challenges/ChallengeDial';
+import EmptyState from '@/components/EmptyState';
+import { APP_MOTTO } from '@/lib/identity';
 import type { ChallengeDef, ChallengeRun } from '@/lib/types';
 
 const TYPE_LABEL: Record<ChallengeDef['challenge_type'], string> = {
@@ -102,7 +104,7 @@ export default function ChallengesPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/" className="min-h-12 px-2 py-3 text-ink-dim">
           ←
         </Link>
         <h1 className="text-xl font-bold">Challenges</h1>
@@ -124,9 +126,15 @@ export default function ChallengesPage() {
 
       {/* Active */}
       <section className="mb-6">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-2">Active</h2>
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-2">Active</h2>
         {active.length === 0 && (
-          <p className="text-sm text-zinc-500 py-4">No active challenges. Pick one below.</p>
+          <EmptyState
+            testid="challenges-empty"
+            title="No active challenges"
+            line={`The starters below are open — ${APP_MOTTO}`}
+            cta="Pick a starter"
+            href="#starters"
+          />
         )}
         <div className="space-y-3">
           {active.map((run) => {
@@ -138,7 +146,7 @@ export default function ChallengesPage() {
               <Link
                 key={run.id}
                 href={challengeRunHref(run.id)}
-                className="flex items-center gap-3 rounded-xl bg-zinc-900 border border-zinc-800 p-4 min-h-12"
+                className="flex items-center gap-3 rounded-xl bg-surface border border-border p-4 min-h-12"
               >
                 <ChallengeDial pct={pct} label={progressLabel(def, run.progress_value)} />
                 <div className="min-w-0 flex-1">
@@ -150,10 +158,10 @@ export default function ChallengesPage() {
                       </span>
                     )}
                   </p>
-                  <p className="text-xs text-zinc-500 tabular-nums">
+                  <p className="text-xs text-ink-faint tabular-nums">
                     {TYPE_LABEL[def.challenge_type]} · target {targetLabel(def)}
                   </p>
-                  <p className="text-xs text-zinc-400 tabular-nums">
+                  <p className="text-xs text-ink-dim tabular-nums">
                     {daysLeft >= 0 ? `${daysLeft} day${daysLeft === 1 ? '' : 's'} left` : 'wrapping up'} ·
                     ends {run.ends_on}
                   </p>
@@ -165,11 +173,11 @@ export default function ChallengesPage() {
       </section>
 
       {/* Joinable starters */}
-      <section className="mb-6">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-2">Start a challenge</h2>
+      <section id="starters" className="mb-6 scroll-mt-20">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-2">Start a challenge</h2>
         <div className="space-y-3">
           {joinable.map((def) => (
-            <div key={def.id} className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+            <div key={def.id} className="rounded-xl bg-surface border border-border p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="font-semibold">
@@ -180,8 +188,8 @@ export default function ChallengesPage() {
                       </span>
                     )}
                   </p>
-                  {def.description && <p className="text-xs text-zinc-500 mt-0.5">{def.description}</p>}
-                  <p className="text-xs text-zinc-400 tabular-nums mt-1">
+                  {def.description && <p className="text-xs text-ink-faint mt-0.5">{def.description}</p>}
+                  <p className="text-xs text-ink-dim tabular-nums mt-1">
                     {TYPE_LABEL[def.challenge_type]} · {targetLabel(def)} · {def.duration_days}d
                   </p>
                 </div>
@@ -203,7 +211,7 @@ export default function ChallengesPage() {
       {/* History */}
       {history.length > 0 && (
         <section className="mb-6">
-          <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-2">History</h2>
+          <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-2">History</h2>
           <div className="space-y-2">
             {history.map((run) => {
               const def = defById.get(run.challenge_def_id);
@@ -213,11 +221,11 @@ export default function ChallengesPage() {
                 <Link
                   key={run.id}
                   href={challengeRunHref(run.id)}
-                  className="flex items-center justify-between rounded-xl bg-zinc-900 border border-zinc-800 p-4 min-h-12"
+                  className="flex items-center justify-between rounded-xl bg-surface border border-border p-4 min-h-12"
                 >
                   <div className="min-w-0">
                     <p className="truncate">{def.name}</p>
-                    <p className="text-xs text-zinc-500 tabular-nums">
+                    <p className="text-xs text-ink-faint tabular-nums">
                       {run.started_on} → {run.ends_on}
                     </p>
                   </div>
@@ -227,7 +235,7 @@ export default function ChallengesPage() {
                         ? 'bg-surface-raised text-white'
                         : run.status === 'failed'
                           ? 'bg-red-950 text-red-400'
-                          : 'bg-zinc-800 text-zinc-400'
+                          : 'bg-surface-raised text-ink-dim'
                     }`}
                   >
                     {run.status === 'completed' ? (early ? 'finished early' : 'completed') : run.status}
@@ -242,13 +250,13 @@ export default function ChallengesPage() {
       {/* Streak raw-rules confirm */}
       {noticeDef && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4">
-          <div className="w-full max-w-md rounded-xl bg-zinc-900 border border-zinc-700 p-4">
+          <div className="w-full max-w-md rounded-xl bg-surface border border-border p-4">
             <h3 className="font-semibold mb-2">Join “{noticeDef.name}”?</h3>
-            <p className="text-sm text-zinc-400 mb-4">{STREAK_RAW_RULES_NOTICE}</p>
+            <p className="text-sm text-ink-dim mb-4">{STREAK_RAW_RULES_NOTICE}</p>
             <div className="flex gap-2">
               <button
                 onClick={() => setNoticeDef(null)}
-                className="flex-1 min-h-12 rounded-lg bg-zinc-800 font-semibold"
+                className="flex-1 min-h-12 rounded-lg bg-surface-raised font-semibold"
               >
                 Cancel
               </button>

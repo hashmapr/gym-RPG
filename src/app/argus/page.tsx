@@ -83,7 +83,7 @@ export default function ArgusPage() {
   if (!ARGUS_ENABLED) {
     return (
       <main className="max-w-md mx-auto p-4 pb-16">
-        <p className="py-8 text-center text-zinc-500">Not available.</p>
+        <p className="py-8 text-center text-ink-faint">Not available.</p>
       </main>
     );
   }
@@ -117,7 +117,7 @@ export default function ArgusPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/" className="min-h-12 px-2 py-3 text-ink-dim">
           ←
         </Link>
         <h1 className="text-xl font-bold" data-testid="argus-title">
@@ -126,23 +126,23 @@ export default function ArgusPage() {
         <span className="w-10" />
       </header>
 
-      <p className="text-sm text-zinc-400 mb-4" data-testid="argus-greeting">
+      <p className="text-sm text-ink-dim mb-4" data-testid="argus-greeting">
         Hey — I'm {AI_NAME}. I read your training history and draft challenges that fit it. You
         always confirm before anything is created.
       </p>
 
       {/* Capabilities */}
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">Capabilities</h2>
+      <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">Capabilities</h2>
         <ul className="space-y-2 text-sm" data-testid="capability-list">
           {CAPABILITIES.map((c) => (
             <li key={c.name} className="flex items-center justify-between">
-              <span className={c.status === 'unlocked' ? '' : 'text-zinc-500'}>{c.name}</span>
+              <span className={c.status === 'unlocked' ? '' : 'text-ink-faint'}>{c.name}</span>
               <span
                 className={`text-xs px-2 py-0.5 rounded-full ${
                   c.status === 'unlocked'
                     ? 'bg-surface-raised text-white'
-                    : 'bg-zinc-800 text-zinc-500'
+                    : 'bg-surface-raised text-ink-faint'
                 }`}
               >
                 {c.note}
@@ -154,8 +154,8 @@ export default function ArgusPage() {
 
       {/* Creation entry */}
       {!preview && (
-        <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-          <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+        <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+          <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
             Draft a challenge
           </h2>
           {chips.length > 0 && (
@@ -164,7 +164,7 @@ export default function ArgusPage() {
                 <button
                   key={chip}
                   onClick={() => setPrompt(chip)}
-                  className="text-xs px-3 py-2 rounded-full bg-zinc-800 text-zinc-300"
+                  className="text-xs px-3 py-2 rounded-full bg-surface-raised text-ink-dim"
                 >
                   {chip}
                 </button>
@@ -176,7 +176,7 @@ export default function ArgusPage() {
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="e.g. a 3-week volume push on my bench"
             rows={3}
-            className="w-full rounded-lg bg-zinc-800 border border-zinc-700 p-3 text-sm mb-3"
+            className="w-full rounded-lg bg-surface-raised border border-border p-3 text-sm mb-3"
             data-testid="argus-prompt"
           />
           <button
@@ -189,7 +189,7 @@ export default function ArgusPage() {
             {busy ? 'Drafting…' : `Ask ${AI_NAME}`}
           </button>
           {!online && (
-            <p className="text-xs text-zinc-500 mt-2" data-testid="offline-note">
+            <p className="text-xs text-ink-faint mt-2" data-testid="offline-note">
               Offline — {AI_NAME} drafting needs a connection. Challenges and pacing keep working.
             </p>
           )}
@@ -203,26 +203,26 @@ export default function ArgusPage() {
           className="rounded-xl bg-surface-raised border border-white/40 p-4 mb-4"
           data-testid="draft-preview"
         >
-          <h2 className="text-sm uppercase tracking-wider text-zinc-400 mb-2">Draft preview</h2>
+          <h2 className="text-sm uppercase tracking-wider text-ink-dim mb-2">Draft preview</h2>
           <p className="font-semibold">{preview.def.name}</p>
           {preview.def.description && (
-            <p className="text-sm text-zinc-200 mt-1">{preview.def.description}</p>
+            <p className="text-sm text-ink mt-1">{preview.def.description}</p>
           )}
-          <p className="text-xs text-zinc-300 tabular-nums mt-2">
+          <p className="text-xs text-ink-dim tabular-nums mt-2">
             {preview.def.duration_days}d ·{' '}
             {preview.def.params.target_lb != null
               ? formatVolume(preview.def.params.target_lb)
               : 'custom target'}
           </p>
           {preview.rationale && (
-            <p className="text-sm text-zinc-200 mt-2 border-t border-border pt-2">
+            <p className="text-sm text-ink mt-2 border-t border-border pt-2">
               {preview.rationale}
             </p>
           )}
 
           {/* Calibration receipt */}
           <div
-            className="rounded-lg bg-surface p-3 mt-3 text-xs text-zinc-200 tabular-nums"
+            className="rounded-lg bg-surface p-3 mt-3 text-xs text-ink tabular-nums"
             data-testid="calibration-receipt"
           >
             <p className="font-semibold mb-1">Calibration receipt</p>
@@ -238,7 +238,7 @@ export default function ArgusPage() {
 
           {preview.policy && (
             <div
-              className="rounded-lg bg-surface p-3 mt-2 text-xs text-zinc-200"
+              className="rounded-lg bg-surface p-3 mt-2 text-xs text-ink"
               data-testid="preview-policy"
             >
               <p className="font-semibold mb-1">Adaptation policy</p>
@@ -259,7 +259,7 @@ export default function ArgusPage() {
               }}
               disabled={busy}
               data-testid="discard-draft"
-              className="flex-1 min-h-12 rounded-lg bg-zinc-800 font-semibold disabled:opacity-50"
+              className="flex-1 min-h-12 rounded-lg bg-surface-raised font-semibold disabled:opacity-50"
             >
               Discard
             </button>
@@ -267,7 +267,7 @@ export default function ArgusPage() {
               onClick={() => generate(prompt)}
               disabled={busy || !online}
               data-testid="regenerate-draft"
-              className="flex-1 min-h-12 rounded-lg bg-zinc-800 font-semibold disabled:opacity-50"
+              className="flex-1 min-h-12 rounded-lg bg-surface-raised font-semibold disabled:opacity-50"
             >
               Regenerate
             </button>

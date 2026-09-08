@@ -102,7 +102,7 @@ export default function ChallengeRunPage() {
   if (!run || !def) {
     return (
       <main className="max-w-md mx-auto p-4 pb-16">
-        <p className="py-8 text-center text-zinc-500">Loading…</p>
+        <p className="py-8 text-center text-ink-faint">Loading…</p>
       </main>
     );
   }
@@ -113,7 +113,7 @@ export default function ChallengeRunPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/challenges" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/challenges" className="min-h-12 px-2 py-3 text-ink-dim">
           ←
         </Link>
         <h1 className="text-xl font-bold truncate px-2">{def.name}</h1>
@@ -150,7 +150,7 @@ export default function ChallengeRunPage() {
           <p className="font-semibold text-white">
             {early ? 'Finished early 🎉' : 'Completed 🎉'}
           </p>
-          <p className="text-xs text-zinc-400 tabular-nums mt-1">
+          <p className="text-xs text-ink-dim tabular-nums mt-1">
             {run.completed_at ? run.completed_at.slice(0, 10) : ''} · {progressLabel(def, run.progress_value)}
           </p>
         </div>
@@ -158,48 +158,48 @@ export default function ChallengeRunPage() {
       {run.status === 'failed' && (
         <div className="rounded-xl bg-red-950 border border-red-800 p-4 mb-4">
           <p className="font-semibold text-red-400">Failed</p>
-          <p className="text-xs text-zinc-400 tabular-nums mt-1">
+          <p className="text-xs text-ink-dim tabular-nums mt-1">
             Final: {progressLabel(def, run.progress_value)} of {targetLabel(def)}
           </p>
         </div>
       )}
 
       {/* Dial + window */}
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4 flex items-center gap-4">
+      <section className="rounded-xl bg-surface border border-border p-4 mb-4 flex items-center gap-4">
         <ChallengeDial pct={pct} size={96} state={state} label={progressLabel(def, run.progress_value)} />
         <div className="text-sm space-y-1 tabular-nums">
-          <p className="text-zinc-400">
+          <p className="text-ink-dim">
             Target{' '}
-            <span className="text-zinc-100 font-semibold" data-testid="effective-target">
+            <span className="text-ink font-semibold" data-testid="effective-target">
               {effective != null && effective !== target ? progressLabel(def, effective) : targetLabel(def)}
             </span>
           </p>
-          <p className="text-zinc-400">
+          <p className="text-ink-dim">
             {run.started_on} → {run.ends_on}
           </p>
           {run.status === 'active' && (
-            <p className="text-zinc-400">
+            <p className="text-ink-dim">
               {daysLeft >= 0 ? `${daysLeft} day${daysLeft === 1 ? '' : 's'} left` : 'wrapping up'}
             </p>
           )}
-          {def.description && <p className="text-xs text-zinc-500 pt-1">{def.description}</p>}
+          {def.description && <p className="text-xs text-ink-faint pt-1">{def.description}</p>}
         </div>
       </section>
 
       {/* Prescriptive ladder */}
       {def.challenge_type === 'prescriptive' && ladder && ladder.length > 0 && (
-        <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-          <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">Ladder</h2>
+        <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+          <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">Ladder</h2>
           <ol className="space-y-2">
             {ladder.map((s) => {
               const t = targetRows.get(s.id);
               return (
                 <li key={s.id} className="flex items-center justify-between text-sm tabular-nums">
-                  <span className="text-zinc-400">
+                  <span className="text-ink-dim">
                     #{s.session_order} · {s.planned_date}
                   </span>
                   <span className="flex items-center gap-2">
-                    <span className="text-zinc-300">
+                    <span className="text-ink-dim">
                       {t ? `${formatWeight(t.target_weight)} × ${t.target_reps}` : '—'}
                     </span>
                     <span
@@ -208,7 +208,7 @@ export default function ChallengeRunPage() {
                           ? 'bg-white text-black'
                           : s.status === 'missed'
                             ? 'bg-red-950 text-red-400'
-                            : 'bg-zinc-800 text-zinc-400'
+                            : 'bg-surface-raised text-ink-dim'
                       }`}
                     >
                       {s.status}
@@ -232,7 +232,7 @@ export default function ChallengeRunPage() {
                 setAmendOpen(true);
               }}
               data-testid="ask-adjust"
-              className="w-full min-h-12 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 font-semibold mb-4"
+              className="w-full min-h-12 rounded-lg bg-surface border border-border text-ink-dim font-semibold mb-4"
             >
               Ask {AI_NAME} to adjust…
             </button>
@@ -247,7 +247,7 @@ export default function ChallengeRunPage() {
             <div className="flex gap-2">
               <button
                 onClick={() => setConfirming(false)}
-                className="flex-1 min-h-12 rounded-lg bg-zinc-800 font-semibold"
+                className="flex-1 min-h-12 rounded-lg bg-surface-raised font-semibold"
               >
                 Keep going
               </button>
@@ -264,7 +264,7 @@ export default function ChallengeRunPage() {
           ) : (
             <button
               onClick={() => setConfirming(true)}
-              className="w-full min-h-12 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 font-semibold"
+              className="w-full min-h-12 rounded-lg bg-surface border border-border text-ink-dim font-semibold"
             >
               Abandon…
             </button>
@@ -281,11 +281,11 @@ export default function ChallengeRunPage() {
       {ARGUS_ENABLED && amendOpen && !pendingAmendment && canAmend && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4">
           <div
-            className="w-full max-w-md rounded-xl bg-zinc-900 border border-zinc-700 p-4"
+            className="w-full max-w-md rounded-xl bg-surface border border-border p-4"
             data-testid="amend-modal"
           >
             <h3 className="font-semibold mb-1">Adjust target</h3>
-            <p className="text-sm text-zinc-400 mb-3">
+            <p className="text-sm text-ink-dim mb-3">
               Forward-only: past checkpoints keep their original targets. Current:{' '}
               <span className="tabular-nums">{progressLabel(def, effective ?? target)}</span>
             </p>
@@ -294,7 +294,7 @@ export default function ChallengeRunPage() {
               inputMode="decimal"
               value={amendValue}
               onChange={(e) => setAmendValue(e.target.value)}
-              className="w-full rounded-lg bg-zinc-800 border border-zinc-700 p-3 text-sm mb-2 tabular-nums"
+              className="w-full rounded-lg bg-surface-raised border border-border p-3 text-sm mb-2 tabular-nums"
               data-testid="amend-input"
             />
             <input
@@ -302,7 +302,7 @@ export default function ChallengeRunPage() {
               value={amendReason}
               onChange={(e) => setAmendReason(e.target.value)}
               placeholder="Reason (optional)"
-              className="w-full rounded-lg bg-zinc-800 border border-zinc-700 p-3 text-sm mb-2"
+              className="w-full rounded-lg bg-surface-raised border border-border p-3 text-sm mb-2"
               data-testid="amend-reason"
             />
             {amendError && <p className="text-sm text-red-400 mb-2">{amendError}</p>}
@@ -312,7 +312,7 @@ export default function ChallengeRunPage() {
                   setAmendOpen(false);
                   setAmendError(null);
                 }}
-                className="flex-1 min-h-12 rounded-lg bg-zinc-800 font-semibold"
+                className="flex-1 min-h-12 rounded-lg bg-surface-raised font-semibold"
               >
                 Cancel
               </button>

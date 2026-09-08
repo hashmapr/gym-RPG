@@ -103,17 +103,17 @@ export default function ExerciseSearch({
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={() => results.length > 0 && setOpen(true)}
-        className="w-full min-h-12 rounded-lg bg-zinc-900 border border-zinc-700 px-4 text-zinc-100 placeholder:text-zinc-500"
+        className="w-full min-h-12 rounded-lg bg-surface border border-border px-4 text-ink placeholder:text-ink-faint"
       />
       {busy && (
-        <span className="absolute right-3 top-3.5 text-xs text-zinc-500">
+        <span className="absolute right-3 top-3.5 text-xs text-ink-faint">
           …
         </span>
       )}
       {open && (results.length > 0 || query.trim().length >= 2) && (
         <ul
           data-testid="exercise-results"
-          className="absolute z-30 mt-1 w-full rounded-lg bg-zinc-900 border border-zinc-700 shadow-xl max-h-72 overflow-y-auto"
+          className="absolute z-30 mt-1 w-full rounded-lg bg-surface border border-border shadow-xl max-h-72 overflow-y-auto"
         >
           {results.map((ex) => (
             <li key={ex.id}>
@@ -125,21 +125,21 @@ export default function ExerciseSearch({
                   setResults([]);
                   setOpen(false);
                 }}
-                className="w-full text-left min-h-12 px-4 py-2 hover:bg-zinc-800 text-zinc-100"
+                className="w-full text-left min-h-12 px-4 py-2 hover:bg-surface-raised text-ink"
               >
                 {exerciseName(ex)}
-                <span className="ml-2 text-xs text-zinc-500">
+                <span className="ml-2 text-xs text-ink-faint">
                   {ex.category}
                 </span>
               </button>
             </li>
           ))}
           {query.trim().length >= 2 && (
-            <li className="border-t border-zinc-800">
+            <li className="border-t border-border">
               <button
                 type="button"
                 onClick={addCustom}
-                className="w-full text-left min-h-12 px-4 py-2 hover:bg-zinc-800 text-white"
+                className="w-full text-left min-h-12 px-4 py-2 hover:bg-surface-raised text-white"
               >
                 + Add custom exercise “{query.trim()}”
               </button>

@@ -278,21 +278,21 @@ export default function ImportPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/" className="min-h-12 px-2 py-3 text-ink-dim">
           ← Back
         </Link>
         <h1 className="text-lg font-bold">Import</h1>
         <span className="w-16" />
       </header>
 
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
+      <section className="rounded-xl bg-surface border border-border p-4 mb-4">
         <h2 className="font-bold mb-2">Hevy CSV export</h2>
-        <p className="text-sm text-zinc-400 mb-3">
-          Training date for today: <span className="text-zinc-200">{today}</span>
+        <p className="text-sm text-ink-dim mb-3">
+          Training date for today: <span className="text-ink">{today}</span>
         </p>
         <div className="flex items-center gap-3 mb-4">
-          <span className="text-sm text-zinc-400">CSV units</span>
-          <div className="flex rounded-lg overflow-hidden border border-zinc-700">
+          <span className="text-sm text-ink-dim">CSV units</span>
+          <div className="flex rounded-lg overflow-hidden border border-border">
             {(['lb', 'kg'] as const).map((u) => (
               <button
                 key={u}
@@ -301,7 +301,7 @@ export default function ImportPage() {
                 className={`min-h-12 px-4 text-sm font-semibold ${
                   settings.hevy_unit === u
                     ? 'bg-white text-black'
-                    : 'bg-zinc-800 text-zinc-300'
+                    : 'bg-surface-raised text-ink-dim'
                 }`}
               >
                 {u.toUpperCase()}
@@ -318,11 +318,11 @@ export default function ImportPage() {
             const f = e.target.files?.[0];
             if (f) void runImport(f);
           }}
-          className="block w-full text-sm text-zinc-300
+          className="block w-full text-sm text-ink-dim
             file:mr-3 file:py-3 file:px-4 file:rounded-lg file:border-0
             file:bg-white file:text-black file:font-semibold file:cursor-pointer"
         />
-        {importing && <p className="mt-3 text-sm text-zinc-400">Importing…</p>}
+        {importing && <p className="mt-3 text-sm text-ink-dim">Importing…</p>}
         {error && (
           <p data-testid="import-error" className="mt-3 text-sm text-red-400">
             {error}
@@ -335,21 +335,21 @@ export default function ImportPage() {
               {result.cardio > 0 && `, ${result.cardio} cardio entries`}.
             </p>
             {result.skipped > 0 && (
-              <p className="text-zinc-300">{result.skipped} rows skipped.</p>
+              <p className="text-ink-dim">{result.skipped} rows skipped.</p>
             )}
             {result.unmatched > 0 && (
-              <p className="text-zinc-300">
+              <p className="text-ink-dim">
                 {result.unmatched} sets skipped — exercise not in library.
               </p>
             )}
           </div>
         )}
-        {status && <p className="mt-3 text-sm text-zinc-400">{status}</p>}
+        {status && <p className="mt-3 text-sm text-ink-dim">{status}</p>}
       </section>
 
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
+      <section className="rounded-xl bg-surface border border-border p-4 mb-4">
         <h2 className="font-bold mb-2">Measurements CSV</h2>
-        <p className="text-sm text-zinc-400 mb-3">
+        <p className="text-sm text-ink-dim mb-3">
           Hevy measurement_data.csv — bodyweight + body fat %.
         </p>
         <input
@@ -361,9 +361,9 @@ export default function ImportPage() {
             const f = e.target.files?.[0];
             if (f) void runMeasurementImport(f);
           }}
-          className="block w-full text-sm text-zinc-300
+          className="block w-full text-sm text-ink-dim
             file:mr-3 file:py-3 file:px-4 file:rounded-lg file:border-0
-            file:bg-zinc-700 file:text-white file:font-semibold file:cursor-pointer"
+            file:bg-surface-raised file:text-white file:font-semibold file:cursor-pointer"
         />
         {measResult != null && (
           <p data-testid="measurements-result" className="mt-3 text-sm text-white font-semibold">
@@ -380,12 +380,12 @@ export default function ImportPage() {
           <h2 className="font-display text-xl font-bold text-white">
             {RPG_COPY.materializedTitle}
           </h2>
-          <p className="mt-2 text-sm text-zinc-300">
+          <p className="mt-2 text-sm text-ink-dim">
             {RPG_COPY.materializedBody(materialized.level, materialized.nodes)}
           </p>
           <Link
             href="/character"
-            className="mt-4 inline-block min-h-12 rounded-xl border border-border bg-zinc-900 px-6 py-3 font-display text-sm font-bold text-white"
+            className="mt-4 inline-block min-h-12 rounded-xl border border-border bg-surface px-6 py-3 font-display text-sm font-bold text-white"
           >
             View character
           </Link>

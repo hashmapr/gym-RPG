@@ -15,10 +15,11 @@ import SetLogger from '@/components/SetLogger';
 import ExerciseSearch from '@/components/ExerciseSearch';
 import SessionTimer from '@/components/SessionTimer';
 import RestTimer from '@/components/RestTimer';
-import FinishWorkoutModal, {
-  computeRecap,
-  type FinishRecap,
-} from '@/components/FinishWorkoutModal';
+import { computeRecap, type FinishRecap } from '@/components/FinishWorkoutModal';
+import { rollOverloadAfterSession } from '@/lib/rpg/overload';
+import { refreshWidgetsFromDb } from '@/lib/native/widgets';
+import { playSound } from '@/lib/sound';
+import CelebrationScreen from '@/components/CelebrationScreen';
 import SwapExerciseModal from '@/components/SwapExerciseModal';
 import RecoveryGate from '@/components/RecoveryGate';
 import { getProgramSessionContext, type ProgramSessionContext } from '@/lib/coach/ui';
@@ -66,6 +67,9 @@ export default function WorkoutPage() {
   );
 
   const [recap, setRecap] = useState<FinishRecap | null>(null);
+  // The live session query drops the session the moment end_time lands, so
+  // the celebration needs the id captured at finish time, not the live row.
+  const [finishedId, setFinishedId] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<SessionFeedback | null>(null);
   const [finishing, setFinishing] = useState(false);
   const [swapFor, setSwapFor] = useState<string | null>(null);
@@ -138,10 +142,17 @@ export default function WorkoutPage() {
       end_time: endTime,
     });
     const fb = await onSessionFinished(session.id, allSets);
+    // Sprint 7.8: the OVERLOAD roll — after the session is banked, before the
+    // celebration reads the boost window.
+    const roll = await rollOverloadAfterSession(session.id);
+    if (roll.rolled) void playSound('overload');
     // Multi-count: one finished session feeds every active prescriptive run.
     await linkPrescriptiveSession(session.id, getTrainingDate(new Date(endTime)));
+    // Sprint 7.8: widgets reflect the fresh session (native shell only).
+    void refreshWidgetsFromDb();
     setFeedback(fb);
     setRecap(r);
+    setFinishedId(session.id);
     setFinishing(false);
   };
 
@@ -179,15 +190,17 @@ export default function WorkoutPage() {
     setSwapFor(null);
   };
 
-  // Once the recap is computed, show only the modal — the session is already
-  // ended at this point, so the page below would render its empty state.
-  if (recap) {
+  // Once the recap is computed, show only the celebration — the session is
+  // already ended at this point (end_time nulls the live query), so the gate
+  // must be the captured recap, not the live session row.
+  if (recap && finishedId) {
     return (
-      <FinishWorkoutModal
+      <CelebrationScreen
+        workoutId={finishedId}
         recap={recap}
-        feedback={feedback}
         onClose={() => {
           setRecap(null);
+          setFinishedId(null);
           router.push('/');
         }}
       />
@@ -195,13 +208,13 @@ export default function WorkoutPage() {
   }
 
   if (session === undefined) {
-    return <main className="p-6 text-zinc-400">Loading…</main>;
+    return <main className="p-6 text-ink-dim">Loading…</main>;
   }
 
   if (!session) {
     return (
       <main className="p-6">
-        <p className="text-zinc-400 mb-4">No active workout.</p>
+        <p className="text-ink-dim mb-4">No active workout.</p>
         <Link
           href="/"
           className="inline-block min-h-12 px-6 py-3 rounded-lg bg-white font-bold text-black"
@@ -216,7 +229,7 @@ export default function WorkoutPage() {
 
   return (
     <main className="pb-24">
-      <header className="sticky top-0 z-20 flex items-center justify-between bg-zinc-950/95 backdrop-blur border-b border-zinc-800 px-4 py-3">
+      <header className="sticky top-0 z-20 flex items-center justify-between bg-black/95 backdrop-blur border-b border-border px-4 py-3">
         <SessionTimer startedAt={session.start_time} />
         <button
           type="button"
@@ -230,7 +243,7 @@ export default function WorkoutPage() {
 
       <div className="p-4 space-y-4">
         {programCtx && (
-          <p className="text-xs uppercase tracking-widest text-zinc-400">
+          <p className="text-xs uppercase tracking-widest text-ink-dim">
             WEEK {programCtx.plannedSession.week_number}
             {programCtx.plannedSession.is_deload ? ' · DELOAD' : ''} ·{' '}
             {programCtx.plannedSession.workout_name}
@@ -320,8 +333,8 @@ function CardioForm({ workoutId }: { workoutId: string }) {
   };
 
   return (
-    <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
-      <h3 className="text-lg font-bold text-zinc-100 mb-3">Cardio</h3>
+    <section className="rounded-xl bg-surface border border-border p-4">
+      <h3 className="text-lg font-bold text-ink mb-3">Cardio</h3>
       <div className="flex gap-2 mb-3">
         {CARDIO_ACTIVITIES.map((a) => (
           <button
@@ -331,7 +344,7 @@ function CardioForm({ workoutId }: { workoutId: string }) {
             className={`flex-1 min-h-12 rounded-lg text-sm font-semibold capitalize ${
               activity === a
                 ? 'bg-white text-black'
-                : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                : 'bg-surface-raised text-ink-dim border border-border'
             }`}
           >
             {a}
@@ -347,9 +360,9 @@ function CardioForm({ workoutId }: { workoutId: string }) {
           aria-label="Minutes"
           value={minutes}
           onChange={(e) => setMinutes(e.target.value)}
-          className="w-20 min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-zinc-100 text-center"
+          className="w-20 min-h-12 rounded-lg bg-surface-raised border border-border px-3 text-ink text-center"
         />
-        <span className="text-zinc-500">:</span>
+        <span className="text-ink-faint">:</span>
         <input
           data-testid="cardio-seconds"
           type="number"
@@ -358,7 +371,7 @@ function CardioForm({ workoutId }: { workoutId: string }) {
           aria-label="Seconds"
           value={seconds}
           onChange={(e) => setSeconds(e.target.value)}
-          className="w-20 min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-zinc-100 text-center"
+          className="w-20 min-h-12 rounded-lg bg-surface-raised border border-border px-3 text-ink text-center"
         />
         <input
           type="number"
@@ -368,7 +381,7 @@ function CardioForm({ workoutId }: { workoutId: string }) {
           aria-label="Distance km"
           value={distance}
           onChange={(e) => setDistance(e.target.value)}
-          className="w-24 min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-zinc-100 text-center"
+          className="w-24 min-h-12 rounded-lg bg-surface-raised border border-border px-3 text-ink text-center"
         />
         <input
           type="number"
@@ -377,7 +390,7 @@ function CardioForm({ workoutId }: { workoutId: string }) {
           aria-label="Average heart rate"
           value={avgHr}
           onChange={(e) => setAvgHr(e.target.value)}
-          className="w-24 min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-zinc-100 text-center"
+          className="w-24 min-h-12 rounded-lg bg-surface-raised border border-border px-3 text-ink text-center"
         />
         <button
           type="button"

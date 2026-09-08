@@ -59,14 +59,14 @@ export default function SwapExerciseModal({
       aria-modal="true"
       aria-label="Swap exercise"
     >
-      <div className="w-full max-w-md rounded-2xl bg-zinc-900 border border-zinc-700 p-4 max-h-[80vh] flex flex-col">
+      <div className="w-full max-w-md rounded-2xl bg-surface border border-border p-4 max-h-[80vh] flex flex-col">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-black text-zinc-100">SWAP EXERCISE</h2>
+          <h2 className="text-lg font-black text-ink">SWAP EXERCISE</h2>
           <button
             type="button"
             data-testid="swap-close"
             onClick={onClose}
-            className="min-h-10 px-3 rounded-lg bg-zinc-800 border border-zinc-700 text-sm text-zinc-300"
+            className="min-h-10 px-3 rounded-lg bg-surface-raised border border-border text-sm text-ink-dim"
           >
             CLOSE
           </button>
@@ -78,9 +78,9 @@ export default function SwapExerciseModal({
           aria-label="Filter exercises"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="mb-3 w-full min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-zinc-100"
+          className="mb-3 w-full min-h-12 rounded-lg bg-surface-raised border border-border px-3 text-ink"
         />
-        <p className="text-xs text-zinc-500 mb-2">
+        <p className="text-xs text-ink-faint mb-2">
           Same category{data?.original?.category ? `: ${data.original.category}` : ''} or saved
           equivalents
         </p>
@@ -91,17 +91,17 @@ export default function SwapExerciseModal({
                 type="button"
                 data-testid={`swap-option-${e.id}`}
                 onClick={() => onPick(e)}
-                className="w-full min-h-12 text-left px-3 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-100 active:bg-zinc-700"
+                className="w-full min-h-12 text-left px-3 rounded-lg bg-surface-raised border border-border text-ink active:bg-surface-raised"
               >
                 {exerciseName(e)}
                 {e.category && (
-                  <span className="ml-2 text-xs text-zinc-500">{e.category}</span>
+                  <span className="ml-2 text-xs text-ink-faint">{e.category}</span>
                 )}
               </button>
             </li>
           ))}
           {candidates.length === 0 && (
-            <li className="text-sm text-zinc-500 px-3 py-2">No matches.</li>
+            <li className="text-sm text-ink-faint px-3 py-2">No matches.</li>
           )}
         </ul>
       </div>

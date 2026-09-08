@@ -117,7 +117,7 @@ describe('Home — today card states', () => {
     expect(screen.queryByTestId('rest-card')).toBeNull();
   });
 
-  it('today has a planned session → TODAY card with name + targets + START', async () => {
+  it('today has a planned session → TODAY card with name + count + START', async () => {
     await seedProgramRun({ todayPlanned: true, restDay: false });
     render(<HomePage />);
     await waitFor(() => expect(screen.getByTestId('today-card')).toBeTruthy());
@@ -125,8 +125,9 @@ describe('Home — today card states', () => {
     await waitFor(() =>
       expect(screen.getByTestId('start-program-session')).toBeTruthy(),
     );
-    // Target line for bench appears in the exercise list.
-    await waitFor(() => expect(screen.getByText(/185 lb/)).toBeTruthy());
+    // 7.8 card: gate dot + exercise count (targets live in the logger now).
+    expect(screen.getByTestId('gate-dot')).toBeTruthy();
+    expect(screen.getByText(/exercise/)).toBeTruthy();
   });
 
   it('rest day → REST DAY card with next session pointer', async () => {
@@ -150,5 +151,58 @@ describe('Home — today card states', () => {
       expect(ws).toBeTruthy();
       expect(ws!.end_time).toBeNull();
     });
+  });
+});
+// Sprint 7.8 density audit (addendum item 4): home renders header + today
+// card + quest board above the fold (3 primary elements) + the compact line
+// below — and nothing that was removed (week tiles, last workout, challenge
+// scroll).
+describe('Home — 7.8 density audit', () => {
+  it('renders exactly header → today card → quest board → compact line, in order', async () => {
+    await seedProgramRun({ todayPlanned: true, restDay: false });
+    await db.rpg_character.put({
+      id: 'self',
+      level: 9,
+      total_xp: 4200,
+      current_streak: 12,
+      strength_xp: 2000,
+      power_xp: 800,
+      conditioning_xp: 600,
+      discipline_xp: 800,
+      best_streak: 15,
+      body_state: 'CUT',
+    });
+    const today = getTrainingDate(new Date());
+    await db.goals.add({
+      id: 'g-density',
+      exercise_id: 'ex-bench',
+      target_weight: 225,
+      target_reps: 5,
+      created_at: nowIso(),
+      achieved_at: null,
+    });
+    await db.daily_quests.bulkPut([
+      { id: 'q1', training_date: today, quest_type: 'log_session', target: 1, progress: 0, completed: false, xp_awarded: 50, created_at: nowIso() },
+      { id: 'q2', training_date: today, quest_type: 'volume', target: 4000, progress: 0, completed: false, xp_awarded: 50, created_at: nowIso() },
+      { id: 'q3', training_date: today, quest_type: 'cardio_minutes', target: 10, progress: 0, completed: false, xp_awarded: 50, created_at: nowIso() },
+    ]);
+    render(<HomePage />);
+    await waitFor(() => expect(screen.getByTestId('quest-board')).toBeTruthy());
+    const order = ['character-chip', 'today-card', 'quest-board', 'compact-line'];
+    const els = order.map((id) => screen.getByTestId(id));
+    for (let i = 0; i < els.length - 1; i++) {
+      expect(
+        els[i].compareDocumentPosition(els[i + 1]) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    }
+  });
+
+  it('removed elements stay removed (week tiles, last workout, challenge scroll)', async () => {
+    await seedProgramRun({ todayPlanned: true, restDay: false });
+    render(<HomePage />);
+    await waitFor(() => expect(screen.getByTestId('today-card')).toBeTruthy());
+    for (const gone of ['week-tiles', 'last-workout', 'challenge-strip', 'week-strip']) {
+      expect(screen.queryByTestId(gone)).toBeNull();
+    }
   });
 });

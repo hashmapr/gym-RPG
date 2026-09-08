@@ -105,19 +105,19 @@ export default function FinishWorkoutModal({
       aria-modal="true"
       aria-label="Workout complete"
     >
-      <div className="w-full max-w-sm rounded-2xl bg-zinc-900 border border-zinc-700 p-6">
+      <div className="w-full max-w-sm rounded-2xl bg-surface border border-border p-6">
         <h2 className="text-2xl font-black text-white mb-4">
           WORKOUT COMPLETE
         </h2>
         <dl className="space-y-3 mb-6">
           {rows.map((r) => (
             <div key={r.label} className="flex justify-between items-baseline">
-              <dt className="text-zinc-400 text-sm uppercase tracking-wider">
+              <dt className="text-ink-dim text-sm uppercase tracking-wider">
                 {r.label}
               </dt>
               <dd
                 data-testid={`recap-${r.label.toLowerCase()}`}
-                className="text-xl font-bold text-zinc-100 tabular-nums"
+                className="text-xl font-bold text-ink tabular-nums"
               >
                 {r.value}
               </dd>
@@ -127,21 +127,21 @@ export default function FinishWorkoutModal({
         {feedback && feedbackRows.length > 0 && (
           <section
             data-testid="progression-feedback"
-            className="mb-6 rounded-xl bg-zinc-800 border border-zinc-700 p-4"
+            className="mb-6 rounded-xl bg-surface-raised border border-border p-4"
           >
-            <h3 className="text-xs uppercase tracking-widest text-zinc-400 mb-2">
+            <h3 className="text-xs uppercase tracking-widest text-ink-dim mb-2">
               NEXT WEEK
             </h3>
             <ul className="space-y-1.5">
               {feedbackRows.map((r) => (
                 <li key={r.name} className="text-sm">
-                  <span className="text-zinc-300 font-semibold">{r.name}</span>
-                  <span className="text-zinc-400"> — {r.line}</span>
+                  <span className="text-ink-dim font-semibold">{r.name}</span>
+                  <span className="text-ink-dim"> — {r.line}</span>
                 </li>
               ))}
             </ul>
             {feedback.deloadSuggested.length > 0 && (
-              <p className="mt-2 text-xs text-zinc-300">
+              <p className="mt-2 text-xs text-ink-dim">
                 3+ consecutive misses — deload suggested
               </p>
             )}

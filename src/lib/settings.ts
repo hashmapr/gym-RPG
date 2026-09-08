@@ -28,6 +28,12 @@ export const DEFAULT_SETTINGS: Settings = {
   notify_streak_nudge: true,
   healthkit_checkin_enabled: true,
   warmups_enabled: true,
+  // Sprint 7.8: The Hook.
+  sound_events: null, // null → all events on (per-event toggles opt out)
+  overload_mode_active_until: null,
+  last_overload_roll_date: null,
+  commitment_days_per_week: null,
+  commitment_week_start: null,
 };
 
 export async function getSettings(): Promise<Settings> {

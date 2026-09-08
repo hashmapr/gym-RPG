@@ -48,6 +48,7 @@ export async function loadRpgData(today?: string): Promise<{
     xp_mode: settings.xp_mode ?? 'auto',
     e1rm_formula: settings.e1rm_formula,
     key_lifts: keyLifts,
+    overload_mode_active_until: settings.overload_mode_active_until ?? null,
   };
   const existingCharacter = (await db.rpg_character.get('self')) ?? null;
 

@@ -9,6 +9,7 @@ import {
   mockWger,
   seedBenchHistory,
   waitForInitialSync,
+  freezeClock,
 } from './helpers';
 
 test('mid-session swap → substitute logged → run detail shows substitution', async ({
@@ -16,6 +17,7 @@ test('mid-session swap → substitute logged → run detail shows substitution',
   context,
 }) => {
   await useMockSync(context);
+  await freezeClock(page);
   await mockWger(context);
   await seedBenchHistory(page);
   // The swap picker lists local exercises of the same category — add the
@@ -56,6 +58,8 @@ test('mid-session swap → substitute logged → run detail shows substitution',
     .click();
   await page.getByTestId('weeks-count').fill('2');
   await page.getByTestId('save-program').click();
+  // Sprint 7.8: the commitment picker gates entry into the run — skip it.
+  await page.getByRole('button', { name: 'SKIP' }).click();
   await page.waitForURL(/\/programs\/.+\/run\/.+/);
   const runUrl = page.url();
 
@@ -93,8 +97,8 @@ test('mid-session swap → substitute logged → run detail shows substitution',
   await expect(page.locator('[data-testid^="badge-"]').first()).toContainText('EXCEEDED');
 
   await page.getByTestId('finish-workout').click();
-  await expect(page.getByTestId('finish-modal')).toBeVisible();
-  await page.getByTestId('finish-done').click();
+  await expect(page.getByTestId('celebration-screen')).toBeVisible();
+  await page.getByTestId('celebration-done').click();
   await page.waitForURL('/');
 
   // --- Run detail: substitution shown, progression applied to the slot -----

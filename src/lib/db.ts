@@ -45,6 +45,7 @@ import type {
   XpLedgerRow,
   MLFeature,
   MLModelRegistryRow,
+  DailyQuest,
 } from './types';
 
 export class LabDB extends Dexie {
@@ -70,6 +71,8 @@ export class LabDB extends Dexie {
   hevy_mappings!: Table<HevyMapping, string>;
   ml_features!: Table<MLFeature, string>;
   ml_model_registry!: Table<MLModelRegistryRow, string>;
+  // Sprint 7.8: daily quests.
+  daily_quests!: Table<DailyQuest, string>;
   // Sprint 4: Challenges + Streak v3.
   challenge_defs!: Table<ChallengeDef, string>;
   challenge_runs!: Table<ChallengeRun, string>;
@@ -170,6 +173,12 @@ export class LabDB extends Dexie {
     this.version(9).stores({
       ml_features: 'set_id',
       ml_model_registry: 'id, model_version, is_active',
+    });
+    // Sprint 7.8: daily quests — one draw per (training_date, quest_type);
+    // the unique pair is enforced by the compound PK-style index. Boost +
+    // commitment state live in settings keys (migration 0010), no new table.
+    this.version(10).stores({
+      daily_quests: 'id, training_date, quest_type, [training_date+quest_type]',
     });
     // P0 sync rule: any mutation to a synced row re-queues it (data layer).
     installRequeueHooks(this, SYNC_TABLE_ORDER);

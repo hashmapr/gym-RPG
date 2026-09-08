@@ -37,9 +37,9 @@ const PLATEAU_LABEL: Record<PlateauEntry['status'], string> = {
 
 const PLATEAU_COLOR: Record<PlateauEntry['status'], string> = {
   progressing: 'text-white',
-  plateau: 'text-zinc-400',
-  regressing: 'text-zinc-300',
-  insufficient_data: 'text-zinc-500',
+  plateau: 'text-ink-dim',
+  regressing: 'text-ink-dim',
+  insufficient_data: 'text-ink-faint',
 };
 
 export default function LabExercisePage() {
@@ -64,7 +64,7 @@ export default function LabExercisePage() {
   if (error) {
     return (
       <main className="p-6">
-        <p className="text-zinc-300">{error}</p>
+        <p className="text-ink-dim">{error}</p>
         <Link href="/lab" className="text-white">
           ← Overload
         </Link>
@@ -72,7 +72,7 @@ export default function LabExercisePage() {
     );
   }
   if (id == null || !detail) {
-    return <main className="p-6 text-zinc-400">Loading…</main>;
+    return <main className="p-6 text-ink-dim">Loading…</main>;
   }
 
   const name = detail.exercise?.name ?? id.slice(0, 8);
@@ -80,7 +80,7 @@ export default function LabExercisePage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/lab" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/lab" className="min-h-12 px-2 py-3 text-ink-dim">
           ← Overload
         </Link>
         <h1 className="text-xl font-bold">{name}</h1>
@@ -89,44 +89,44 @@ export default function LabExercisePage() {
       <SeedBanner />
 
       <div className="mt-4 grid grid-cols-2 gap-3">
-        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4" data-testid="lab-ex-plateau">
-          <p className="text-xs uppercase tracking-wide text-zinc-500">Plateau</p>
+        <div className="rounded-xl bg-surface border border-border p-4" data-testid="lab-ex-plateau">
+          <p className="text-xs uppercase tracking-wide text-ink-faint">Plateau</p>
           {detail.plateau ? (
             <>
               <p className={`mt-1 font-bold ${PLATEAU_COLOR[detail.plateau.status]}`}>
                 {PLATEAU_LABEL[detail.plateau.status]}
               </p>
               {detail.plateau.ratio != null && (
-                <p className="text-sm text-zinc-400 tabular-nums">
+                <p className="text-sm text-ink-dim tabular-nums">
                   ratio {detail.plateau.ratio.toFixed(4)}
                 </p>
               )}
             </>
           ) : (
-            <p className="mt-1 text-zinc-500">—</p>
+            <p className="mt-1 text-ink-faint">—</p>
           )}
         </div>
-        <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-4" data-testid="lab-ex-velocity">
-          <p className="text-xs uppercase tracking-wide text-zinc-500">Velocity</p>
+        <div className="rounded-xl bg-surface border border-border p-4" data-testid="lab-ex-velocity">
+          <p className="text-xs uppercase tracking-wide text-ink-faint">Velocity</p>
           {detail.velocity ? (
             <>
               <p className="mt-1 font-bold tabular-nums">
                 {detail.velocity.slope_per_week > 0 ? '+' : ''}
                 {detail.velocity.slope_per_week.toFixed(4)}/wk
               </p>
-              <p className="text-sm text-zinc-400 tabular-nums">
+              <p className="text-sm text-ink-dim tabular-nums">
                 r² {detail.velocity.r2.toFixed(4)} · {detail.velocity.sessions} sessions
               </p>
             </>
           ) : (
-            <p className="mt-1 text-zinc-500">no trend</p>
+            <p className="mt-1 text-ink-faint">no trend</p>
           )}
         </div>
       </div>
 
       {detail.baseline && (
-        <div className="mt-3 rounded-xl bg-zinc-900 border border-zinc-800 p-4 text-sm text-zinc-400 tabular-nums">
-          <p className="text-xs uppercase tracking-wide text-zinc-500 mb-1">
+        <div className="mt-3 rounded-xl bg-surface border border-border p-4 text-sm text-ink-dim tabular-nums">
+          <p className="text-xs uppercase tracking-wide text-ink-faint mb-1">
             8-week baseline
           </p>
           top weight {detail.baseline.top_weight_mean.toFixed(1)} ±{' '}
@@ -137,10 +137,10 @@ export default function LabExercisePage() {
       )}
 
       <section className="mt-6" data-testid="lab-ex-chart">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-ink-faint">
           e1RM trend
         </h2>
-        <div className="mt-2 h-64 rounded-xl bg-zinc-900 border border-zinc-800 p-2">
+        <div className="mt-2 h-64 rounded-xl bg-surface border border-border p-2">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={detail.e1rm_series}>
               <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke={COLORS.textTertiary} />

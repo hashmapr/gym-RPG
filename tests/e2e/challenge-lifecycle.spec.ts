@@ -57,8 +57,8 @@ test('join → complete → early banner → history', async ({ page, context })
     await page.waitForTimeout(150);
   }
   await page.getByTestId('finish-workout').click();
-  await expect(page.getByTestId('finish-modal')).toBeVisible();
-  await page.getByTestId('finish-done').click();
+  await expect(page.getByTestId('celebration-screen')).toBeVisible();
+  await page.getByTestId('celebration-done').click();
   await page.waitForURL('/');
 
   // --- Resolution sweep runs after sync → early completion -----------------

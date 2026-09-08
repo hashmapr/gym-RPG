@@ -81,7 +81,7 @@ export default function RecoveryGate({ plannedSessionId, isDeload }: Props) {
     return (
       <div
         data-testid="gate-deload"
-        className="rounded-lg bg-zinc-900 border border-zinc-800 px-3 py-2 text-sm text-zinc-400"
+        className="rounded-lg bg-surface border border-border px-3 py-2 text-sm text-ink-dim"
       >
         Deload week — recovery gate skipped
       </div>
@@ -121,7 +121,7 @@ export default function RecoveryGate({ plannedSessionId, isDeload }: Props) {
             <Link
               href="/"
               data-testid="gate-rest"
-              className="flex-1 min-h-12 flex items-center justify-center rounded-lg bg-zinc-800 border border-zinc-700 font-bold text-zinc-100"
+              className="flex-1 min-h-12 flex items-center justify-center rounded-lg bg-surface-raised border border-border font-bold text-ink"
             >
               Rest today
             </Link>

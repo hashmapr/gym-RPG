@@ -33,15 +33,15 @@ const PLATEAU_LABEL: Record<PlateauEntry['status'], string> = {
 
 const PLATEAU_COLOR: Record<PlateauEntry['status'], string> = {
   progressing: 'text-white',
-  plateau: 'text-zinc-400',
-  regressing: 'text-zinc-300',
-  insufficient_data: 'text-zinc-500',
+  plateau: 'text-ink-dim',
+  regressing: 'text-ink-dim',
+  insufficient_data: 'text-ink-faint',
 };
 
 const VELOCITY_COLOR: Record<NonNullable<VelocityEntry>['status'], string> = {
   progressing: 'text-white',
-  stalled: 'text-zinc-400',
-  declining: 'text-zinc-300',
+  stalled: 'text-ink-dim',
+  declining: 'text-ink-dim',
 };
 
 export default function LabPage() {
@@ -69,7 +69,7 @@ export default function LabPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/" className="min-h-12 px-2 py-3 text-ink-dim">
           ← Home
         </Link>
         <h1 className="text-xl font-bold">Overload</h1>
@@ -80,34 +80,34 @@ export default function LabPage() {
       <nav className="mt-4 grid grid-cols-2 gap-3">
         <Link
           href="/lab/compare"
-          className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 text-center font-semibold active:bg-zinc-800"
+          className="rounded-xl bg-surface border border-border p-4 text-center font-semibold active:bg-surface-raised"
         >
           Compare
         </Link>
         <Link
           href="/lab/calendar"
-          className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 text-center font-semibold active:bg-zinc-800"
+          className="rounded-xl bg-surface border border-border p-4 text-center font-semibold active:bg-surface-raised"
         >
           Calendar
         </Link>
         <Link
           href="/goals"
-          className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 text-center font-semibold active:bg-zinc-800"
+          className="rounded-xl bg-surface border border-border p-4 text-center font-semibold active:bg-surface-raised"
         >
           Goals
         </Link>
         <Link
           href="/history"
-          className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 text-center font-semibold active:bg-zinc-800"
+          className="rounded-xl bg-surface border border-border p-4 text-center font-semibold active:bg-surface-raised"
         >
           History
         </Link>
       </nav>
 
-      {error && <p className="mt-4 text-zinc-300 text-sm">{error}</p>}
+      {error && <p className="mt-4 text-ink-dim text-sm">{error}</p>}
 
       <section className="mt-6" data-testid="lab-plateaus">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-ink-faint">
           Plateaus
         </h2>
         <ul className="mt-2 space-y-2">
@@ -115,7 +115,7 @@ export default function LabPage() {
             <li key={id}>
               <Link
                 href={labExerciseHref(id)}
-                className="flex justify-between items-baseline rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-3 active:bg-zinc-800"
+                className="flex justify-between items-baseline rounded-xl bg-surface border border-border px-4 py-3 active:bg-surface-raised"
               >
                 <span className="font-semibold">{nameOf(id)}</span>
                 <span className={`text-sm tabular-nums ${PLATEAU_COLOR[p.status]}`}>
@@ -129,7 +129,7 @@ export default function LabPage() {
       </section>
 
       <section className="mt-6" data-testid="lab-velocity">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-ink-faint">
           Velocity (e1RM / week)
         </h2>
         <ul className="mt-2 space-y-2">
@@ -137,7 +137,7 @@ export default function LabPage() {
             <li key={id}>
               <Link
                 href={labExerciseHref(id)}
-                className="flex justify-between items-baseline rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-3 active:bg-zinc-800"
+                className="flex justify-between items-baseline rounded-xl bg-surface border border-border px-4 py-3 active:bg-surface-raised"
               >
                 <span className="font-semibold">{nameOf(id)}</span>
                 {v ? (
@@ -146,7 +146,7 @@ export default function LabPage() {
                     {v.slope_per_week.toFixed(4)} · {v.status}
                   </span>
                 ) : (
-                  <span className="text-sm text-zinc-500">no trend</span>
+                  <span className="text-sm text-ink-faint">no trend</span>
                 )}
               </Link>
             </li>
@@ -155,22 +155,22 @@ export default function LabPage() {
       </section>
 
       <section className="mt-6" data-testid="lab-anomalies">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-ink-faint">
           Anomalies
         </h2>
         {(anomalies?.sessions.length ?? 0) === 0 &&
         (anomalies?.volume.length ?? 0) === 0 ? (
-          <p className="mt-2 text-sm text-zinc-500">Nothing unusual detected.</p>
+          <p className="mt-2 text-sm text-ink-faint">Nothing unusual detected.</p>
         ) : (
           <ul className="mt-2 space-y-2">
             {(anomalies?.sessions ?? []).map((a) => (
               <li
                 key={`s-${a.session_id}`}
-                className="rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm"
+                className="rounded-xl bg-surface border border-border px-4 py-3 text-sm"
               >
                 <span className="font-semibold">{nameOf(a.exercise_id)}</span> ·{' '}
                 {a.training_date} — top set {a.top_weight} flagged{' '}
-                <span className={a.direction === 'high' ? 'text-white' : 'text-zinc-300'}>
+                <span className={a.direction === 'high' ? 'text-white' : 'text-ink-dim'}>
                   {a.direction}
                 </span>{' '}
                 (z {a.z.toFixed(4)})
@@ -179,10 +179,10 @@ export default function LabPage() {
             {(anomalies?.volume ?? []).map((a) => (
               <li
                 key={`v-${a.week_start}`}
-                className="rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm"
+                className="rounded-xl bg-surface border border-border px-4 py-3 text-sm"
               >
                 Week of {a.week_start} — {a.tonnage} volume flagged{' '}
-                <span className={a.direction === 'high' ? 'text-white' : 'text-zinc-300'}>
+                <span className={a.direction === 'high' ? 'text-white' : 'text-ink-dim'}>
                   {a.direction}
                 </span>{' '}
                 (z {a.z.toFixed(4)})
@@ -193,17 +193,17 @@ export default function LabPage() {
       </section>
 
       <section className="mt-6" data-testid="lab-neglected">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-ink-faint">
           Neglected muscles
         </h2>
         {(landmarks?.neglected.length ?? 0) === 0 ? (
-          <p className="mt-2 text-sm text-zinc-500">Nothing neglected.</p>
+          <p className="mt-2 text-sm text-ink-faint">Nothing neglected.</p>
         ) : (
           <ul className="mt-2 flex flex-wrap gap-2">
             {(landmarks?.neglected ?? []).map((n) => (
               <li
                 key={n.muscle}
-                className="rounded-full bg-zinc-900 border border-zinc-800 px-3 py-1 text-sm"
+                className="rounded-full bg-surface border border-border px-3 py-1 text-sm"
               >
                 {n.muscle} · {n.weeks_zero}w
               </li>
@@ -278,14 +278,14 @@ function RecoveryLabSections() {
   return (
     <>
       <section className="mt-6" data-testid="lab-recovery-correlation">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-ink-faint">
           Recovery ↔ Performance
         </h2>
         {recovery.visible ? (
           <>
-            <p className="mt-1 text-sm text-zinc-400">
+            <p className="mt-1 text-sm text-ink-dim">
               Pearson r:{' '}
-              <span data-testid="lab-recovery-r" className="tabular-nums font-bold text-zinc-200">
+              <span data-testid="lab-recovery-r" className="tabular-nums font-bold text-ink">
                 {recovery.r?.toFixed(4) ?? 'n/a'}
               </span>{' '}
               · n = {recovery.n}
@@ -298,21 +298,21 @@ function RecoveryLabSections() {
             />
           </>
         ) : (
-          <p className="mt-2 text-sm text-zinc-500" data-testid="lab-recovery-insufficient">
+          <p className="mt-2 text-sm text-ink-faint" data-testid="lab-recovery-insufficient">
             Appears at {10}+ matched days (now {recovery.n}).
           </p>
         )}
       </section>
 
       <section className="mt-6" data-testid="lab-sleep-overlay">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-ink-faint">
           Sleep ↔ Volume
         </h2>
         {sleep.visible ? (
           <>
-            <p className="mt-1 text-sm text-zinc-400">
+            <p className="mt-1 text-sm text-ink-dim">
               Pearson r:{' '}
-              <span data-testid="lab-sleep-r" className="tabular-nums font-bold text-zinc-200">
+              <span data-testid="lab-sleep-r" className="tabular-nums font-bold text-ink">
                 {sleep.r?.toFixed(4) ?? 'n/a'}
               </span>{' '}
               · n = {sleep.n}
@@ -325,7 +325,7 @@ function RecoveryLabSections() {
             />
           </>
         ) : (
-          <p className="mt-2 text-sm text-zinc-500" data-testid="lab-sleep-insufficient">
+          <p className="mt-2 text-sm text-ink-faint" data-testid="lab-sleep-insufficient">
             Appears at {10}+ matched days (now {sleep.n}).
           </p>
         )}

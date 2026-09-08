@@ -9,6 +9,7 @@
 import { useEffect } from 'react';
 import { db } from '@/lib/db';
 import { syncAll } from '@/lib/sync/engine';
+import { refreshWidgetsFromDb } from '@/lib/native/widgets';
 import { resolveSyncClient } from '@/lib/sync/client';
 import { maybeRetroCompute } from '@/lib/rpg/retro';
 import { maybePullE2ESeed } from '@/lib/e2e-seed';
@@ -52,6 +53,8 @@ export function runSyncNow(): void {
         runChallengeSweep();
         // Sprint 7: materialize the character once workout data has landed.
         void maybeRetroCompute();
+        // Sprint 7.8: push the widget snapshot after data landed.
+        void refreshWidgetsFromDb();
       }
     } catch (err) {
       useSyncStore

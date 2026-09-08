@@ -23,7 +23,7 @@ export function AdaptiveBadge({ kind }: { kind: 'authored' | 'adaptive' }) {
   return (
     <span
       data-testid={kind === 'authored' ? 'argus-authored-badge' : 'argus-adaptive-badge'}
-      className="shrink-0 text-xs px-2 py-0.5 rounded-full bg-surface-raised text-zinc-300 border border-border"
+      className="shrink-0 text-xs px-2 py-0.5 rounded-full bg-surface-raised text-ink-dim border border-border"
     >
       ✨ {kind === 'authored' ? `${AI_NAME}-authored` : 'Adaptive'}
     </span>
@@ -57,8 +57,8 @@ export function GovernorBanners({ runId }: { runId: string }) {
               a.clamped
                 ? 'bg-warn/10 border-warn/40 text-warn'
                 : (a.post_value ?? 0) >= (a.pre_value ?? 0)
-                  ? 'bg-surface-raised border-border text-zinc-200'
-                  : 'bg-surface-raised border-border text-zinc-200'
+                  ? 'bg-surface-raised border-border text-ink'
+                  : 'bg-surface-raised border-border text-ink'
             }`}
           >
             {(a.post_value ?? 0) >= (a.pre_value ?? 0) ? '🔥 ' : ''}
@@ -70,7 +70,7 @@ export function GovernorBanners({ runId }: { runId: string }) {
       {pending?.map((p) => (
         <div
           key={p.checkpoint_id}
-          className="rounded-xl border border-border bg-surface-raised p-3 text-sm text-zinc-200"
+          className="rounded-xl border border-border bg-surface-raised p-3 text-sm text-ink"
         >
           Checkpoint {p.checkpoint_id} reached — review the proposed adjustment ({AI_NAME} policy).
         </div>
@@ -101,17 +101,17 @@ export function ConfirmAmendmentModal({
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4">
       <div
-        className="w-full max-w-md rounded-xl bg-zinc-900 border border-border p-4"
+        className="w-full max-w-md rounded-xl bg-surface border border-border p-4"
         data-testid="amendment-modal"
       >
         <h3 className="font-semibold mb-1">{AI_NAME} proposes a target adjustment</h3>
-        <p className="text-sm text-zinc-400 mb-3">
+        <p className="text-sm text-ink-dim mb-3">
           Checkpoint {pending.checkpoint_id} of your adaptive policy fired. Confirm to apply, or
           dismiss — either way this checkpoint is consumed.
         </p>
-        <div className="rounded-lg bg-zinc-800 p-3 text-sm tabular-nums mb-3">
+        <div className="rounded-lg bg-surface-raised p-3 text-sm tabular-nums mb-3">
           <div className="flex justify-between">
-            <span className="text-zinc-400">Current target</span>
+            <span className="text-ink-dim">Current target</span>
             <span>{fmtTarget(pending.pre_target)}</span>
           </div>
           <div className="flex justify-between font-semibold text-white">
@@ -124,7 +124,7 @@ export function ConfirmAmendmentModal({
             onClick={() => decide(false)}
             disabled={busy}
             data-testid="deny-amendment"
-            className="flex-1 min-h-12 rounded-lg bg-zinc-800 font-semibold disabled:opacity-50"
+            className="flex-1 min-h-12 rounded-lg bg-surface-raised font-semibold disabled:opacity-50"
           >
             Dismiss
           </button>
@@ -148,28 +148,28 @@ export function PolicyView({ run }: { run: ChallengeRun }) {
   const policy = run.adaptation_policy;
   if (!policy) return null;
   return (
-    <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
+    <section className="rounded-xl bg-surface border border-border p-4 mb-4">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between min-h-8 text-sm"
         data-testid="toggle-policy"
       >
-        <span className="uppercase tracking-wider text-zinc-500">Adaptation policy</span>
-        <span className="text-zinc-400">{open ? 'hide' : 'show'}</span>
+        <span className="uppercase tracking-wider text-ink-faint">Adaptation policy</span>
+        <span className="text-ink-dim">{open ? 'hide' : 'show'}</span>
       </button>
       {open && (
         <div className="mt-3 space-y-2 text-sm tabular-nums" data-testid="policy-body">
-          <p className="text-zinc-400">
+          <p className="text-ink-dim">
             v{policy.version} · {policy.execution} · max{' '}
             {Math.max(...policy.checkpoints.map((c) => c.max_fires))} adjustment
             {policy.checkpoints.every((c) => c.max_fires === 1) ? '' : 's'} per checkpoint
           </p>
           {policy.checkpoints.map((cp) => (
-            <div key={cp.id} className="rounded-lg bg-zinc-800 p-3">
+            <div key={cp.id} className="rounded-lg bg-surface-raised p-3">
               <p className="font-semibold">
                 {cp.id} · fires at {cp.at_pct}% through the window
               </p>
-              <p className="text-zinc-400 text-xs mt-1">
+              <p className="text-ink-dim text-xs mt-1">
                 {cp.threshold_pct > 0 ? 'ahead' : 'behind'} by ≥{Math.abs(cp.threshold_pct)}% vs
                 required pace → {cp.action.pct > 0 ? 'raise' : 'ease'} remaining by{' '}
                 {Math.abs(cp.action.pct)}% · bounds {policy.bounds.final_min_pct}–
@@ -215,14 +215,14 @@ export function SuggestionCard({ onAccepted }: { onAccepted?: (runId: string) =>
     >
       <div className="flex items-center gap-2 mb-1">
         <AdaptiveBadge kind="authored" />
-        <span className="text-xs text-zinc-400">weekly suggestion</span>
+        <span className="text-xs text-ink-dim">weekly suggestion</span>
       </div>
       <p className="font-semibold">{suggestion.draft.def.name}</p>
       {suggestion.rationale && (
-        <p className="text-sm text-zinc-200 mt-1">{suggestion.rationale}</p>
+        <p className="text-sm text-ink mt-1">{suggestion.rationale}</p>
       )}
       {target != null && (
-        <p className="text-xs text-zinc-300 tabular-nums mt-1">
+        <p className="text-xs text-ink-dim tabular-nums mt-1">
           {suggestion.draft.def.duration_days}d · {formatVolume(target)}
         </p>
       )}
@@ -235,7 +235,7 @@ export function SuggestionCard({ onAccepted }: { onAccepted?: (runId: string) =>
           }}
           disabled={busy}
           data-testid="dismiss-suggestion"
-          className="flex-1 min-h-12 rounded-lg bg-zinc-800 font-semibold disabled:opacity-50"
+          className="flex-1 min-h-12 rounded-lg bg-surface-raised font-semibold disabled:opacity-50"
         >
           Dismiss
         </button>

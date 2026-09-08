@@ -49,14 +49,14 @@ export default function ChallengeDial({ pct, size = 72, label, sub, state = 'act
           y="50%"
           dominantBaseline="central"
           textAnchor="middle"
-          className="fill-zinc-100 font-semibold"
+          className="fill-ink font-semibold"
           style={{ fontSize: size * 0.24, fontVariantNumeric: 'tabular-nums' }}
         >
           {Math.round(clamped * 100)}%
         </text>
       </svg>
-      {label && <span className="mt-1 text-xs text-zinc-400 text-center tabular-nums">{label}</span>}
-      {sub && <span className="text-[10px] text-zinc-500 text-center tabular-nums">{sub}</span>}
+      {label && <span className="mt-1 text-xs text-ink-dim text-center tabular-nums">{label}</span>}
+      {sub && <span className="text-[10px] text-ink-faint text-center tabular-nums">{sub}</span>}
     </div>
   );
 }

@@ -15,8 +15,8 @@ const BRANCHES: SkillBranch[] = ['STRENGTH', 'POWER', 'DISCIPLINE', 'CONDITIONIN
 
 const STATE_STYLE: Record<string, string> = {
   completed: 'border-white/80 bg-white/10 text-white',
-  available: 'border-zinc-600 bg-zinc-900 text-zinc-400',
-  locked: 'border-zinc-800 bg-zinc-950 text-zinc-600',
+  available: 'border-border bg-surface text-ink-dim',
+  locked: 'border-border bg-black text-ink-faint',
 };
 
 function NodeCard({ ev }: { ev: SkillEvaluation }) {
@@ -70,7 +70,7 @@ export default function SkillTreePage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/character" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/character" className="min-h-12 px-2 py-3 text-ink-dim">
           ← Back
         </Link>
         <h1 className="text-lg font-bold font-display">Skill Tree</h1>
@@ -78,7 +78,7 @@ export default function SkillTreePage() {
       </header>
 
       {evals === null ? (
-        <p className="text-sm text-zinc-400">Evaluating…</p>
+        <p className="text-sm text-ink-dim">Evaluating…</p>
       ) : (
         BRANCHES.map((branch) => {
           const nodes = evals
@@ -90,7 +90,7 @@ export default function SkillTreePage() {
             <section key={branch} className="mb-6" data-testid={`branch-${branch}`}>
               <h2 className="font-display mb-2 flex items-baseline justify-between text-sm font-bold text-white">
                 <span>{RPG_COPY.stats[branch.toLowerCase() as keyof typeof RPG_COPY.stats]}</span>
-                <span className="text-xs text-zinc-500">
+                <span className="text-xs text-ink-faint">
                   {done}/{nodes.length}
                 </span>
               </h2>

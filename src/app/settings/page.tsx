@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useSettings, saveSettings } from '@/lib/settings';
+import { SOUND_EVENTS, SOUND_EVENT_LABELS } from '@/lib/sound';
 import { downloadExport, downloadHevyCsvExport } from '@/lib/export';
 import { resolveSyncClient } from '@/lib/sync/client';
 import { abandonRun } from '@/lib/coach/run';
@@ -55,7 +56,7 @@ export default function SettingsPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/" className="min-h-12 px-2 py-3 text-ink-dim">
           ← Home
         </Link>
         <h1 className="text-xl font-bold">Settings</h1>
@@ -64,16 +65,16 @@ export default function SettingsPage() {
 
       {/* AI section */}
       {ARGUS_ENABLED && (
-        <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4" data-testid="argus-settings">
-          <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">{AI_NAME}</h2>
+        <section className="rounded-xl bg-surface border border-border p-4 mb-4" data-testid="argus-settings">
+          <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">{AI_NAME}</h2>
           <div className="flex items-center justify-between text-sm mb-3">
-            <span className="text-zinc-400">Provider</span>
+            <span className="text-ink-dim">Provider</span>
             <span className="tabular-nums" data-testid="argus-provider">
               {online ? 'anthropic · online' : 'offline'}
             </span>
           </div>
           <div className="flex items-center justify-between text-sm mb-3">
-            <span className="text-zinc-400">Prompt version</span>
+            <span className="text-ink-dim">Prompt version</span>
             <span className="tabular-nums">{PROMPT_VERSION}</span>
           </div>
           <button
@@ -96,29 +97,29 @@ export default function SettingsPage() {
             {suggestBusy ? 'Drafting…' : `Draft this week's ${AI_NAME} suggestion`}
           </button>
           {!online && (
-            <p className="mt-2 text-xs text-zinc-500">
+            <p className="mt-2 text-xs text-ink-faint">
               Offline — suggestions need a connection.
             </p>
           )}
           {suggestError && <p className="mt-2 text-sm text-red-400">{suggestError}</p>}
 
-          <h3 className="text-xs uppercase tracking-wider text-zinc-500 mt-4 mb-2">
+          <h3 className="text-xs uppercase tracking-wider text-ink-faint mt-4 mb-2">
             Generation history
           </h3>
           {generationLogs && generationLogs.length === 0 && (
-            <p className="text-xs text-zinc-500">No generations yet.</p>
+            <p className="text-xs text-ink-faint">No generations yet.</p>
           )}
           <ul className="space-y-1 text-xs tabular-nums" data-testid="generation-history">
             {generationLogs?.map((log) => (
               <li key={log.id} className="flex items-center justify-between gap-2">
-                <span className="text-zinc-400 truncate">{log.created_at.slice(0, 16).replace('T', ' ')}</span>
+                <span className="text-ink-dim truncate">{log.created_at.slice(0, 16).replace('T', ' ')}</span>
                 <span
                   className={
                     log.outcome === 'accepted'
                       ? 'text-white'
                       : log.outcome === 'error'
                         ? 'text-red-400'
-                        : 'text-zinc-500'
+                        : 'text-ink-faint'
                   }
                 >
                   {log.outcome}
@@ -129,8 +130,8 @@ export default function SettingsPage() {
         </section>
       )}
 
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+      <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
           Day boundary
         </h2>
         <div className="flex gap-2">
@@ -143,20 +144,20 @@ export default function SettingsPage() {
               className={`flex-1 min-h-12 rounded-lg font-semibold ${
                 settings.day_boundary_hour === h
                   ? 'bg-white text-black'
-                  : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                  : 'bg-surface-raised text-ink-dim border border-border'
               }`}
             >
               {h}:00
             </button>
           ))}
         </div>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-ink-faint">
           Workouts before this hour count toward the previous day.
         </p>
       </section>
 
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+      <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
           Rest timer default
         </h2>
         <div className="flex gap-2">
@@ -168,7 +169,7 @@ export default function SettingsPage() {
               className={`flex-1 min-h-12 rounded-lg font-semibold text-sm ${
                 settings.rest_default_seconds === s
                   ? 'bg-white text-black'
-                  : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                  : 'bg-surface-raised text-ink-dim border border-border'
               }`}
             >
               {s >= 60 ? `${s / 60}m` : `${s}s`}
@@ -177,8 +178,8 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+      <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
           Alerts
         </h2>
         <label className="flex items-center justify-between min-h-12">
@@ -191,6 +192,37 @@ export default function SettingsPage() {
             className="w-6 h-6 accent-white"
           />
         </label>
+        {settings.sound_enabled && (
+          <div className="mt-2 border-t border-border pt-2" data-testid="sound-events">
+            {SOUND_EVENTS.map((ev) => {
+              const on = settings.sound_events?.[ev] !== false;
+              return (
+                <label
+                  key={ev}
+                  className="flex items-center justify-between min-h-11 pl-3"
+                >
+                  <span className="text-sm text-ink-dim">
+                    {SOUND_EVENT_LABELS[ev]}
+                  </span>
+                  <input
+                    type="checkbox"
+                    data-testid={`sound-event-${ev}`}
+                    checked={on}
+                    onChange={(e) =>
+                      saveSettings({
+                        sound_events: {
+                          ...(settings.sound_events ?? {}),
+                          [ev]: e.target.checked,
+                        },
+                      })
+                    }
+                    className="w-5 h-5 accent-white"
+                  />
+                </label>
+              );
+            })}
+          </div>
+        )}
         <label className="flex items-center justify-between min-h-12">
           <span>Vibration</span>
           <input
@@ -206,10 +238,10 @@ export default function SettingsPage() {
       </section>
 
       <section
-        className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4"
+        className="rounded-xl bg-surface border border-border p-4 mb-4"
         data-testid="native-notifications-section"
       >
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
           Notifications
         </h2>
         <label className="flex items-center justify-between min-h-12">
@@ -274,8 +306,8 @@ export default function SettingsPage() {
         </label>
       </section>
 
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+      <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
           Logger
         </h2>
         <label className="flex items-center justify-between min-h-12">
@@ -290,8 +322,8 @@ export default function SettingsPage() {
         </label>
       </section>
 
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+      <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
           RPE
         </h2>
         <label className="flex items-center justify-between min-h-12">
@@ -318,8 +350,8 @@ export default function SettingsPage() {
         </label>
       </section>
 
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+      <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
           e1RM formula
         </h2>
         <div className="grid grid-cols-2 gap-2">
@@ -331,7 +363,7 @@ export default function SettingsPage() {
               className={`min-h-12 rounded-lg font-semibold ${
                 settings.e1rm_formula === f.value
                   ? 'bg-white text-black'
-                  : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                  : 'bg-surface-raised text-ink-dim border border-border'
               }`}
             >
               {f.label}
@@ -340,8 +372,8 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+      <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
           Sync backend
         </h2>
         <div className="flex gap-2">
@@ -353,14 +385,14 @@ export default function SettingsPage() {
               className={`flex-1 min-h-12 rounded-lg font-semibold capitalize ${
                 syncMode === m
                   ? 'bg-white text-black'
-                  : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                  : 'bg-surface-raised text-ink-dim border border-border'
               }`}
             >
               {m}
             </button>
           ))}
         </div>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-ink-faint">
           Current: {resolveSyncClient().name}
         </p>
       </section>
@@ -373,8 +405,8 @@ export default function SettingsPage() {
 
       <CheckInSection />
 
-      <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+      <section className="rounded-xl bg-surface border border-border p-4">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
           Data
         </h2>
         <button
@@ -385,7 +417,7 @@ export default function SettingsPage() {
             setExported(true);
             setTimeout(() => setExported(false), 2000);
           }}
-          className="w-full min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 font-semibold"
+          className="w-full min-h-12 rounded-lg bg-surface-raised border border-border font-semibold"
         >
           {exported ? 'Exported ✓' : 'Export all data (JSON)'}
         </button>
@@ -397,7 +429,7 @@ export default function SettingsPage() {
             setExportedCsv(true);
             setTimeout(() => setExportedCsv(false), 2000);
           }}
-          className="w-full min-h-12 mt-2 rounded-lg bg-zinc-800 border border-zinc-700 font-semibold"
+          className="w-full min-h-12 mt-2 rounded-lg bg-surface-raised border border-border font-semibold"
         >
           {exportedCsv ? 'Exported ✓' : 'Export CSV (Hevy-compatible)'}
         </button>
@@ -429,15 +461,15 @@ function AbandonProgramSection() {
   };
 
   return (
-    <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-      <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+    <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+      <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
         Program
       </h2>
-      <p className="text-sm text-zinc-300 mb-3">
+      <p className="text-sm text-ink-dim mb-3">
         Active: <span className="font-semibold">{activeRun.program.name}</span>
       </p>
       {done && (
-        <p data-testid="abandoned-note" className="text-sm text-zinc-300 mb-2">
+        <p data-testid="abandoned-note" className="text-sm text-ink-dim mb-2">
           Program abandoned. Adherence frozen.
         </p>
       )}
@@ -452,7 +484,7 @@ function AbandonProgramSection() {
         </button>
       ) : (
         <div data-testid="abandon-confirm">
-          <p className="text-sm text-zinc-300 mb-3">
+          <p className="text-sm text-ink-dim mb-3">
             Abandoning stops the calendar and freezes adherence. This cannot be
             undone. Abandon “{activeRun.program.name}”?
           </p>
@@ -469,7 +501,7 @@ function AbandonProgramSection() {
               type="button"
               data-testid="abandon-no"
               onClick={() => setConfirming(false)}
-              className="flex-1 min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 font-semibold text-zinc-100"
+              className="flex-1 min-h-12 rounded-lg bg-surface-raised border border-border font-semibold text-ink"
             >
               CANCEL
             </button>
@@ -512,35 +544,35 @@ function StreakSection() {
   }
 
   return (
-    <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4">
-      <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">Streak</h2>
+    <section className="rounded-xl bg-surface border border-border p-4 mb-4">
+      <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">Streak</h2>
       <div className="flex items-center justify-between tabular-nums mb-2">
-        <span className="text-zinc-400">Current streak</span>
+        <span className="text-ink-dim">Current streak</span>
         <span className="font-semibold">{display.streak} days</span>
       </div>
       <div className="flex items-center justify-between tabular-nums mb-2">
-        <span className="text-zinc-400">Best</span>
+        <span className="text-ink-dim">Best</span>
         <span>{display.best} days</span>
       </div>
       <div className="flex items-center justify-between tabular-nums mb-2">
-        <span className="text-zinc-400">Freeze bank</span>
+        <span className="text-ink-dim">Freeze bank</span>
         <span>
           {display.bank}/{display.bank_cap}
-          {display.bank_full && <span className="text-zinc-500"> (full)</span>}
+          {display.bank_full && <span className="text-ink-faint"> (full)</span>}
         </span>
       </div>
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-ink-faint">
         {display.granted_this_month} freeze{display.granted_this_month === 1 ? '' : 's'} granted this month
         {display.on_vacation_until && ` · on vacation until ${display.on_vacation_until}`}
         {bank > 0 && ` · ${bank} consumed`}
       </p>
 
-      <h3 className="text-sm uppercase tracking-wider text-zinc-500 mt-4 mb-2">Vacation mode</h3>
+      <h3 className="text-sm uppercase tracking-wider text-ink-faint mt-4 mb-2">Vacation mode</h3>
       {(vacations ?? []).length > 0 && (
         <ul className="space-y-1 mb-2">
           {(vacations ?? []).map((v) => (
             <li key={v.id} className="flex items-center justify-between text-sm tabular-nums">
-              <span className="text-zinc-300">
+              <span className="text-ink-dim">
                 {v.start_date} → {v.end_date}
               </span>
               <button
@@ -558,20 +590,20 @@ function StreakSection() {
           type="date"
           value={start}
           onChange={(e) => setStart(e.target.value)}
-          className="flex-1 min-h-12 rounded-lg bg-zinc-900 border border-zinc-800 px-2 text-sm tabular-nums"
+          className="flex-1 min-h-12 rounded-lg bg-surface border border-border px-2 text-sm tabular-nums"
           aria-label="Vacation start"
         />
         <input
           type="date"
           value={end}
           onChange={(e) => setEnd(e.target.value)}
-          className="flex-1 min-h-12 rounded-lg bg-zinc-900 border border-zinc-800 px-2 text-sm tabular-nums"
+          className="flex-1 min-h-12 rounded-lg bg-surface border border-border px-2 text-sm tabular-nums"
           aria-label="Vacation end"
         />
         <button
           onClick={addVacationPeriod}
           disabled={!start || !end}
-          className="px-4 min-h-12 rounded-lg bg-zinc-800 border border-zinc-700 font-semibold disabled:opacity-50"
+          className="px-4 min-h-12 rounded-lg bg-surface-raised border border-border font-semibold disabled:opacity-50"
         >
           Add
         </button>
@@ -633,9 +665,9 @@ function WhoopSection() {
   };
 
   return (
-    <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4" data-testid="whoop-section">
-      <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">WHOOP</h2>
-      <p className="text-sm text-zinc-300 mb-3" data-testid="whoop-status">
+    <section className="rounded-xl bg-surface border border-border p-4 mb-4" data-testid="whoop-section">
+      <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">WHOOP</h2>
+      <p className="text-sm text-ink-dim mb-3" data-testid="whoop-status">
         {connected == null ? 'Checking…' : connected ? 'Connected' : 'Not connected'}
         {settings.whoop_last_synced_at
           ? ` · last sync ${new Date(settings.whoop_last_synced_at).toLocaleString()}`
@@ -669,7 +701,7 @@ function WhoopSection() {
               data-testid="whoop-disconnect"
               disabled={busy}
               onClick={disconnect}
-              className="min-h-12 px-4 rounded-lg bg-zinc-800 border border-zinc-700 font-semibold text-zinc-300 disabled:opacity-50"
+              className="min-h-12 px-4 rounded-lg bg-surface-raised border border-border font-semibold text-ink-dim disabled:opacity-50"
             >
               Disconnect
             </button>
@@ -677,7 +709,7 @@ function WhoopSection() {
         )}
       </div>
       {note && (
-        <p className="mt-2 text-xs text-zinc-400" data-testid="whoop-note">
+        <p className="mt-2 text-xs text-ink-dim" data-testid="whoop-note">
           {note}
         </p>
       )}
@@ -688,10 +720,10 @@ function WhoopSection() {
 function RecoverySection() {
   const settings = useSettings();
   return (
-    <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4" data-testid="recovery-settings">
-      <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">Recovery gate</h2>
+    <section className="rounded-xl bg-surface border border-border p-4 mb-4" data-testid="recovery-settings">
+      <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">Recovery gate</h2>
 
-      <p className="text-sm text-zinc-300 mb-2">Gate mode</p>
+      <p className="text-sm text-ink-dim mb-2">Gate mode</p>
       <div className="flex gap-2 mb-4">
         {(['enforce', 'suggest_only'] as const).map((m) => (
           <button
@@ -702,7 +734,7 @@ function RecoverySection() {
             className={`flex-1 min-h-12 rounded-lg text-sm font-semibold ${
               settings.gate_mode === m
                 ? 'bg-white text-black'
-                : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                : 'bg-surface-raised text-ink-dim border border-border'
             }`}
           >
             {m === 'enforce' ? 'Enforce' : 'Suggest only'}
@@ -710,7 +742,7 @@ function RecoverySection() {
         ))}
       </div>
 
-      <label className="flex items-center justify-between text-sm text-zinc-300">
+      <label className="flex items-center justify-between text-sm text-ink-dim">
         <span>Gate on manual check-ins</span>
         <button
           type="button"
@@ -719,7 +751,7 @@ function RecoverySection() {
           data-testid="manual-gate-toggle"
           onClick={() => saveSettings({ manual_gate_enabled: !settings.manual_gate_enabled })}
           className={`w-12 h-7 rounded-full relative transition-colors ${
-            settings.manual_gate_enabled ? 'bg-white' : 'bg-zinc-700'
+            settings.manual_gate_enabled ? 'bg-white' : 'bg-surface-raised'
           }`}
         >
           <span
@@ -729,7 +761,7 @@ function RecoverySection() {
           />
         </button>
       </label>
-      <p className="mt-2 text-xs text-zinc-500">
+      <p className="mt-2 text-xs text-ink-faint">
         WHOOP data always gates. Manual check-ins only gate when this is on.
       </p>
     </section>
@@ -770,10 +802,10 @@ function CheckInSection() {
   };
 
   const field =
-    'min-h-12 w-full rounded-lg bg-zinc-800 border border-zinc-700 px-3 text-zinc-100';
+    'min-h-12 w-full rounded-lg bg-surface-raised border border-border px-3 text-ink';
   return (
-    <section className="rounded-xl bg-zinc-900 border border-zinc-800 p-4 mb-4" data-testid="checkin-section">
-      <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-3">
+    <section className="rounded-xl bg-surface border border-border p-4 mb-4" data-testid="checkin-section">
+      <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-3">
         Daily check-in · {today}
       </h2>
       <div className="grid grid-cols-2 gap-2 mb-3">
@@ -790,7 +822,7 @@ function CheckInSection() {
       >
         {saved ? 'Saved ✓' : 'Save check-in'}
       </button>
-      <p className="mt-2 text-xs text-zinc-500">
+      <p className="mt-2 text-xs text-ink-faint">
         WHOOP data wins for the same day.
       </p>
     </section>

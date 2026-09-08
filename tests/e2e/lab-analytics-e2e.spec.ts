@@ -13,6 +13,7 @@ import {
   mockSyncState,
   seedFixture,
   mockWriteCounts,
+  freezeClock,
 } from './helpers';
 
 const BENCH = 'a1000000-0000-4000-8000-000000000001';
@@ -112,6 +113,7 @@ test('achieving a goal: log the target set → goal card flips to Achieved', asy
 }) => {
   await useMockSync(context);
   await mockWger(context);
+  await freezeClock(page);
   await seedFixture(page);
 
   // The wger search caches a NEW local exercise (fresh UUID) — the goal
@@ -194,7 +196,7 @@ test('achieving a goal: log the target set → goal card flips to Achieved', asy
   await page.goto('/workout');
   await logSet(page, 'Barbell Bench Press', '260', '5');
   await page.getByTestId('finish-workout').click();
-  await page.getByTestId('finish-done').click();
+  await page.getByTestId('celebration-done').click();
   await page.waitForURL('/');
 
   // The goal card now shows Achieved (local Dexie state wins the merge).

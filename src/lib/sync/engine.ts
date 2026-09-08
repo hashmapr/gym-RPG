@@ -73,6 +73,9 @@ export const SYNC_TABLE_ORDER: TableName[] = [
   // above); the registry is independent. Sync up only.
   'ml_features',
   'ml_model_registry',
+  // Sprint 7.8 (The Hook): the daily quest draw is an independent table
+  // (progress/completion are derived from data already synced above).
+  'daily_quests',
 ];
 
 export const DEFAULT_BATCH_SIZE = 200;

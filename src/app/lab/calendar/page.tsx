@@ -15,11 +15,11 @@ type CalendarResponse = {
 
 // 0 → no sets; scale by quartile-ish steps of the day's volume.
 function heatClass(volume: number, max: number): string {
-  if (volume <= 0) return 'bg-zinc-900 border-zinc-800';
+  if (volume <= 0) return 'bg-surface border-border';
   const t = volume / max;
-  if (t < 0.25) return 'bg-zinc-800 border-zinc-700';
-  if (t < 0.5) return 'bg-zinc-600 border-zinc-500';
-  if (t < 0.75) return 'bg-zinc-400 border-zinc-300';
+  if (t < 0.25) return 'bg-surface-raised border-border';
+  if (t < 0.5) return 'bg-surface-raised border-border';
+  if (t < 0.75) return 'bg-ink-dim border-ink-dim';
   return 'bg-white border-white';
 }
 
@@ -53,20 +53,20 @@ export default function CalendarPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/lab" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/lab" className="min-h-12 px-2 py-3 text-ink-dim">
           ← Overload
         </Link>
         <h1 className="text-xl font-bold">Calendar</h1>
         <span className="w-16" />
       </header>
       <SeedBanner />
-      {error && <p className="mt-4 text-zinc-300 text-sm">{error}</p>}
+      {error && <p className="mt-4 text-ink-dim text-sm">{error}</p>}
 
       <section className="mt-4" data-testid="calendar-heatmap">
         <div className="space-y-1">
           {weeks.map((w) => (
             <div key={w.week_start} className="flex items-center gap-1">
-              <span className="w-16 shrink-0 text-[10px] text-zinc-500 tabular-nums">
+              <span className="w-16 shrink-0 text-[10px] text-ink-faint tabular-nums">
                 {w.week_start.slice(5)}
               </span>
               <div className="flex flex-1 gap-1">
@@ -84,7 +84,7 @@ export default function CalendarPage() {
       </section>
 
       <section className="mt-6" data-testid="calendar-weeks">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-zinc-500">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-ink-faint">
           Weekly tonnage
         </h2>
         <ul className="mt-2 space-y-2">
@@ -94,12 +94,12 @@ export default function CalendarPage() {
             .map((w) => (
               <li
                 key={w.week_start}
-                className="flex justify-between items-baseline rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-3 text-sm"
+                className="flex justify-between items-baseline rounded-xl bg-surface border border-border px-4 py-3 text-sm"
               >
                 <span className="tabular-nums">{w.week_start}</span>
                 <span className="tabular-nums">
                   {Math.round(w.tonnage)} · {w.sets} sets
-                  {!w.complete && <span className="ml-2 text-zinc-500">(partial)</span>}
+                  {!w.complete && <span className="ml-2 text-ink-faint">(partial)</span>}
                 </span>
               </li>
             ))}

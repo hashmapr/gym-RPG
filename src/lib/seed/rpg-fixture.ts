@@ -136,7 +136,8 @@ export function buildRpgData(today: string = SEED_TODAY): RpgData {
       target_bodyweight_lb: RPG_TARGET_BODYWEIGHT_LB,
       xp_mode: 'auto',
       e1rm_formula: 'consensus',
-      key_lifts: RPG_KEY_LIFTS,
+      overload_mode_active_until: null,
+    key_lifts: RPG_KEY_LIFTS,
     },
     today,
   };

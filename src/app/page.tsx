@@ -1,11 +1,10 @@
 'use client';
 
-import { COLORS } from '@/lib/tokens';
-import { challengeRunHref } from '@/lib/links';
-
-// HOME — Sprint 7.6 (The Face) composition, exact order:
-// 1. header row (wordmark + character chip)  2. today card  3. START/RESUME CTA
-// 4. challenges strip  5. week tiles  6. last workout. Empty states designed.
+// HOME — Sprint 7.8 (The Space). Density-audited composition, exact order:
+// 1. header (wordmark + character ring/flame)  2. today card (gate dot, Argus
+// one-liner, START inside)  3. quest board  — above the fold (3 primary
+// elements) — then one compact line. REMOVED vs 7.6: week tiles, challenges
+// scroll, last-workout card, suggestion card. Empty states designed.
 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -13,50 +12,35 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useState } from 'react';
 import { db, getActiveSession, newId, nowIso } from '@/lib/db';
 import { getTrainingDate } from '@/lib/day-boundary';
-import { sessionVolume } from '@/lib/volume';
-import { formatVolume, formatDateTime } from '@/lib/format';
 import { useSettings } from '@/lib/settings';
 import { getTodayCard, linkPlannedSession, syncRunProgress, sweepMissedSessions } from '@/lib/coach/run';
 import { exerciseName } from '@/lib/wger';
-import { diffDays } from '@/lib/streak';
-import { starterDefs } from '@/lib/challenges/service';
 import { ARGUS_ENABLED } from '@/lib/argus/config';
 import { ML_V1_ACTIVE } from '@/lib/ml/registry';
-import { SuggestionCard } from '@/components/argus/ArgusUI';
-import ChallengeDial from '@/components/challenges/ChallengeDial';
-import { RecoveryBadge, RecoverySparkline, BriefingCard, ManualCheckIn, HealthKitCheckInFill } from '@/components/RecoveryHome';
+import { ManualCheckIn, HealthKitCheckInFill, RecoverySparkline, BriefingCard } from '@/components/RecoveryHome';
+import { QuestBoard } from '@/components/home/QuestBoard';
 import { maybeRetroCompute } from '@/lib/rpg/retro';
 import { xpToNextLevel } from '@/lib/rpg/levels';
-import { RPG_COPY } from '@/lib/rpg/copy';
-import { APP_WORDMARK, APP_MOTTO } from '@/lib/identity';
+import { APP_WORDMARK } from '@/lib/identity';
+import { COLORS } from '@/lib/tokens';
 import type { TodayCard } from '@/lib/coach/run';
-import type { WorkoutSession, RPGCharacter, ChallengeDef, ChallengeRun } from '@/lib/types';
+import type { WorkoutSession, RPGCharacter, DailyMetric, AIBriefing } from '@/lib/types';
 
 export default function HomePage() {
   const router = useRouter();
   const settings = useSettings();
   const active = useLiveQuery(() => getActiveSession(), []);
-  const lastSession = useLiveQuery(async () => {
-    const sessions = await db.workout_sessions
-      .orderBy('start_time')
-      .reverse()
-      .filter((s) => s.end_time !== null)
-      .limit(1)
-      .toArray();
-    return sessions[0] ?? null;
-  }, []);
-  const lastSets = useLiveQuery(async () => {
-    if (!lastSession) return [];
-    return db.workout_sets.where('workout_id').equals(lastSession.id).toArray();
-  }, [lastSession?.id]);
   const character = useLiveQuery(() => db.rpg_character.get('self'), []) as
     | RPGCharacter
     | undefined;
+  const hasAnySession = useLiveQuery(
+    () => db.workout_sessions.limit(1).count(),
+    [],
+  );
 
   const today = getTrainingDate(new Date(), settings.day_boundary_hour);
   const [todayCard, setTodayCard] = useState<TodayCard | null>(null);
   const [cardExercises, setCardExercises] = useState<{ name: string; target: string }[]>([]);
-  const charProg = character ? xpToNextLevel(character.total_xp) : null;
 
   useEffect(() => {
     let cancelled = false;
@@ -143,130 +127,92 @@ export default function HomePage() {
 
   return (
     <main className="pb-8">
-      {/* 1. Header row: wordmark + character chip */}
+      {/* 1. Header: wordmark + character ring + streak flame */}
       <header className="flex items-center justify-between gap-3 py-4">
-        <h1 className="flex items-center gap-2 font-display text-xl font-bold tracking-[0.2em] text-white">
-          <span aria-hidden className="text-base">◉</span>
+        <h1 className="flex items-center gap-2 text-xl font-black tracking-[0.2em] text-ink">
+          <span aria-hidden className="text-accent">◉</span>
           {APP_WORDMARK}
         </h1>
         {character && <CharacterChip character={character} />}
       </header>
 
-      {/* Weekly suggestion nudge (AI) */}
-      {ARGUS_ENABLED && (
-        <SuggestionCard
-          onAccepted={(runId) => {
-            if (runId) router.push(challengeRunHref(runId));
-          }}
-        />
-      )}
-
-      {/* 2. Today card: recovery badge + planned/freeform */}
-      {active ? null : todayCard?.state === 'today' && todayCard.plannedSession ? (
-        <section
-          data-testid="today-card"
-          className="rounded-2xl bg-surface border border-border p-4"
+      {/* 2. Today card: gate dot + title + count + Argus one-liner + START */}
+      {active ? (
+        <Link
+          href="/workout"
+          data-testid="resume-workout"
+          className="btn-chunky block w-full px-4 py-6 text-center text-xl tracking-wide"
         >
-          <p className="eyebrow text-zinc-400 mb-1">
-            TODAY · WEEK {todayCard.run?.current_week}
-            {todayCard.plannedSession.is_deload ? ' · DELOAD' : ''}
-          </p>
-          <div className="mb-3">
-            <RecoveryBadge today={today} />
-          </div>
-          {/* Sprint 8a: forecast chip stub — hidden until ML_V1_ACTIVE (8b). */}
-          {ML_V1_ACTIVE && (
-            <p
-              data-testid="forecast-chip"
-              className="mb-3 text-xs text-zinc-500"
-            >
-              Forecast: ready
-            </p>
-          )}
-          <h2 className="font-display text-xl font-bold text-zinc-100 mb-3">
-            {todayCard.plannedSession.workout_name}
-          </h2>
-          <ul className="space-y-1.5 mb-4">
-            {cardExercises.map((row) => (
-              <li key={row.name} className="flex justify-between text-sm">
-                <span className="text-zinc-300">{row.name}</span>
-                <span className="text-zinc-500 tabular-nums">{row.target}</span>
-              </li>
-            ))}
-          </ul>
-          <button
-            type="button"
-            data-testid="start-program-session"
-            onClick={startProgramSession}
-            className="w-full min-h-14 rounded-md bg-white font-black text-lg tracking-wide text-black active:bg-white/80"
-          >
-            START
-          </button>
-        </section>
+          RESUME WORKOUT
+        </Link>
       ) : todayCard?.state === 'rest' ? (
         <section
           data-testid="rest-card"
           className="rounded-2xl bg-surface border border-border p-4 text-center"
         >
-          <p className="font-display text-xl font-bold text-zinc-100 tracking-wide">
+          <p className="text-xl font-black tracking-wide text-ink">
             REST DAY
           </p>
           {todayCard.nextSession && (
-            <p className="mt-1 text-sm text-zinc-400">
-              Next session: <span className="text-zinc-200">{todayCard.nextSession.name}</span> on{' '}
-              <span className="text-zinc-200 tabular-nums">{todayCard.nextSession.date}</span>
+            <p className="mt-1 text-sm text-ink-dim">
+              Next: <span className="text-ink">{todayCard.nextSession.name}</span> on{' '}
+              <span className="text-ink tabular-nums">{todayCard.nextSession.date}</span>
             </p>
           )}
           <button
             type="button"
             data-testid="start-workout"
             onClick={start}
-            className="mt-4 w-full min-h-12 rounded-md border border-border bg-transparent font-bold text-white active:bg-white/10"
+            className="btn-chunky-neutral mt-4 w-full min-h-12"
           >
             TRAIN ANYWAY (FREEFORM)
           </button>
         </section>
-      ) : null}
-
-      {/* 3. START / RESUME — the one big white CTA */}
-      {active ? (
-        <Link
-          href="/workout"
-          data-testid="resume-workout"
-          className="block w-full min-h-20 rounded-md bg-white text-black font-black text-xl tracking-wide text-center py-6 active:bg-white/80"
-        >
-          RESUME WORKOUT
-        </Link>
-      ) : !todayCard?.plannedSession && todayCard?.state !== 'rest' ? (
-        <button
-          type="button"
-          data-testid="start-workout"
-          onClick={start}
-          className="w-full min-h-20 rounded-md bg-white font-black text-xl tracking-wide text-black py-6 active:bg-white/80"
-        >
-          START WORKOUT
-        </button>
+      ) : todayCard?.state === 'today' && todayCard.plannedSession ? (
+        <TodayCardPlanned
+          todayCard={todayCard as TodayCard & {
+            state: 'today';
+            plannedSession: NonNullable<TodayCard['plannedSession']>;
+          }}
+          exercises={cardExercises}
+          today={today}
+          onStart={startProgramSession}
+        />
+      ) : todayCard !== null ? (
+        <section className="rounded-2xl bg-surface border border-border p-4">
+          <GateDot today={today} />
+          <h2 className="mt-2 text-xl font-black text-ink">FREEFORM SESSION</h2>
+          <p className="mt-1 text-sm text-ink-dim">No program running — every set still counts.</p>
+          <button
+            type="button"
+            data-testid="start-workout"
+            onClick={start}
+            className="btn-chunky mt-4 w-full min-h-14 text-lg"
+          >
+            START
+          </button>
+        </section>
       ) : null}
 
       {/* Empty state: no program → builder / starter teaser */}
       {noProgram && (
         <section
           data-testid="no-program-teaser"
-          className="mt-4 rounded-xl bg-surface border border-border p-4 text-sm"
+          className="mt-4 rounded-2xl bg-surface border border-border p-4 text-sm"
         >
-          <p className="text-zinc-300">
+          <p className="text-ink-dim">
             No program running. Build your own, or start from a proven template.
           </p>
           <div className="mt-3 flex gap-3">
             <Link
               href="/programs/new"
-              className="min-h-12 flex-1 rounded-md border border-border bg-transparent px-3 py-3 text-center font-semibold text-white active:bg-white/10"
+              className="btn-chunky-neutral min-h-12 flex-1 text-center"
             >
               Build a program
             </Link>
             <Link
               href="/programs"
-              className="min-h-12 flex-1 rounded-md border border-border bg-transparent px-3 py-3 text-center text-zinc-300 active:bg-white/10"
+              className="min-h-12 flex-1 rounded-md border border-border bg-transparent px-3 py-3 text-center font-bold text-ink-dim active:bg-white/5"
             >
               Browse programs
             </Link>
@@ -274,77 +220,154 @@ export default function HomePage() {
         </section>
       )}
 
-      <p className="mt-3 text-center text-sm text-zinc-500">
+      {/* 3. Quest board (above the fold, third primary element) */}
+      <QuestBoard today={today} />
+
+      {/* One compact line: trials + deeds, linking out */}
+      <CompactLine />
+
+      <p className="mt-3 text-center text-xs text-ink-faint">
         Training day: <span data-testid="training-date">{today}</span>
-        <span className="text-zinc-600"> · boundary {settings.day_boundary_hour}:00</span>
       </p>
 
-      {/* 4. Challenges strip: horizontal scroll, or designed teaser */}
-      <ChallengeStrip today={today} />
-
-      {/* 5. Week tiles */}
-      <WeekTiles today={today} />
-
-      {/* 6. Last workout summary (or onboarding nudge) */}
-      {lastSession ? (
-        <section className="mt-4 rounded-xl bg-surface border border-border p-4">
-          <div className="flex items-baseline justify-between mb-2">
-            <h2 className="eyebrow text-zinc-500">
-              Last workout
-            </h2>
-            <Link
-              href={`/history/${lastSession.id}`}
-              className="text-sm text-white"
-            >
-              Details →
-            </Link>
-          </div>
-          <p className="text-zinc-300">
-            {formatDateTime(lastSession.start_time)}
-          </p>
-          <p className="mt-1 text-sm text-zinc-400">
-            <span data-testid="last-volume" className="tabular-nums">
-              {formatVolume(sessionVolume(lastSets ?? []))}
-            </span>{' '}
-            volume · {(lastSets ?? []).length} sets
-          </p>
-        </section>
-      ) : (
+      {/* Empty state: first-workout nudge */}
+      {hasAnySession === 0 && (
         <section
           data-testid="no-history-nudge"
-          className="mt-4 rounded-xl bg-surface border border-border p-4 text-sm text-zinc-400"
+          className="mt-4 rounded-2xl bg-surface border border-border p-4 text-sm text-ink-dim"
         >
-          <p className="font-semibold text-zinc-200">Your log is empty.</p>
+          <p className="font-extrabold text-ink">Your log is empty.</p>
           <p className="mt-1">
             Import your Hevy history to materialize your character, or just start
             lifting — every set counts from the first one.
           </p>
           <Link
             href="/import"
-            className="mt-3 inline-block min-h-12 rounded-md border border-border bg-transparent px-4 py-3 font-semibold text-white active:bg-white/10"
+            className="btn-chunky-neutral mt-3 inline-block min-h-12 px-4"
           >
             Import history
           </Link>
         </section>
       )}
 
-      {/* Recovery surfaces: sparkline + briefing, expandable */}
-      <details className="mt-4 rounded-xl bg-surface border border-border p-4">
-        <summary className="cursor-pointer list-none">
-          <span className="eyebrow text-zinc-500">
-            Recovery &amp; briefing
-          </span>
-        </summary>
-        <RecoverySparkline today={today} />
-        <BriefingCard today={today} />
-        <ManualCheckIn today={today} />
-        <HealthKitCheckInFill today={today} />
-      </details>
+      {/* Sprint 8a: forecast chip stub — hidden until ML_V1_ACTIVE (8b). */}
+      {ML_V1_ACTIVE && (
+        <p data-testid="forecast-chip" className="mt-2 text-center text-xs text-ink-faint">
+          Forecast: ready
+        </p>
+      )}
     </main>
   );
 }
 
-/** Character chip: LV ring · streak 🔥 · freezes ❄️. */
+/** Gate dot: today's recovery as a single colored dot (green/amber/red/dim). */
+function GateDot({ today }: { today: string }) {
+  const metric = useLiveQuery(
+    () => db.daily_metrics.get(today),
+    [today],
+  ) as DailyMetric | undefined;
+  const pct = metric?.recovery_percentage ?? null;
+  const color =
+    pct === null ? COLORS.textTertiary : pct >= 67 ? COLORS.good : pct >= 34 ? COLORS.warn : COLORS.bad;
+  const label = pct === null ? 'no check-in' : `recovery ${pct}%`;
+  return (
+    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-ink-dim" data-testid="gate-dot" data-level={pct === null ? 'none' : pct >= 67 ? 'green' : pct >= 34 ? 'yellow' : 'red'}>
+      <span aria-hidden className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
+      {label}
+    </span>
+  );
+}
+
+/** Today card (planned): gate dot, title, exercise count, Argus one-liner, START. */
+function TodayCardPlanned({
+  todayCard,
+  exercises,
+  today,
+  onStart,
+}: {
+  todayCard: TodayCard;
+  exercises: { name: string; target: string }[];
+  today: string;
+  onStart: () => void;
+}) {
+  const [briefing, setBriefing] = useState<AIBriefing | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    if (!ARGUS_ENABLED) return;
+    (async () => {
+      try {
+        const { briefing: b } = await import('@/lib/argus/briefing').then(({ getDailyBriefing }) =>
+          getDailyBriefing(today),
+        );
+        if (!cancelled) setBriefing(b);
+      } catch {
+        // offline — one-liner simply doesn't render
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [today]);
+
+  const planned = todayCard.plannedSession!;
+  const oneLiner = briefing?.content.split(/(?<=[.!?])\s/)[0] ?? null;
+
+  return (
+    <section
+      data-testid="today-card"
+      className="rounded-2xl bg-surface border border-border p-4"
+    >
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-ink-faint">
+          TODAY · WEEK {todayCard.run?.current_week}
+          {planned.is_deload ? ' · DELOAD' : ''}
+        </p>
+        <GateDot today={today} />
+      </div>
+      <h2 className="mt-2 text-xl font-black text-ink">
+        {planned.workout_name}
+      </h2>
+      <p className="mt-0.5 text-sm text-ink-dim">
+        {exercises.length} exercise{exercises.length === 1 ? '' : 's'}
+      </p>
+
+      {/* Argus one-liner → expandable briefing receipt */}
+      {oneLinerOrReceipt(oneLiner, today)}
+
+      <button
+        type="button"
+        data-testid="start-program-session"
+        onClick={onStart}
+        className="btn-chunky mt-4 w-full min-h-14 text-lg"
+      >
+        START
+      </button>
+    </section>
+  );
+}
+
+function oneLinerOrReceipt(oneLiner: string | null, today: string) {
+  if (!oneLiner) return null;
+  return (
+    <details className="mt-3">
+      <summary className="cursor-pointer list-none">
+        <span className="text-sm text-ink-dim" data-testid="argus-one-liner">
+          <span aria-hidden className="mr-1 text-accent">▲</span>
+          {oneLiner}
+        </span>
+        <span className="ml-2 text-xs text-ink-faint">more</span>
+      </summary>
+      <div className="mt-3 space-y-3 border-t border-border pt-3">
+        <RecoverySparkline today={today} />
+        <BriefingCard today={today} />
+        <ManualCheckIn today={today} />
+        <HealthKitCheckInFill today={today} />
+      </div>
+    </details>
+  );
+}
+
+/** Character chip: LV ring (accent fill) · streak flame · freezes. */
 function CharacterChip({ character }: { character: RPGCharacter }) {
   const charProg = xpToNextLevel(character.total_xp);
   const freezes = useLiveQuery(
@@ -372,156 +395,42 @@ function CharacterChip({ character }: { character: RPGCharacter }) {
             cy={size / 2}
             r={r}
             fill="none"
-            stroke={COLORS.textPrimary}
+            stroke={COLORS.accent}
             strokeWidth={stroke}
             strokeDasharray={`${c * Math.max(0, Math.min(1, pct))} ${c}`}
             strokeLinecap="round"
           />
         </svg>
-        <span className="font-display text-xs font-bold text-white tabular-nums">
+        <span className="text-xs font-black text-ink tabular-nums">
           {character.level}
         </span>
       </span>
-      <span className="text-xs text-zinc-300 tabular-nums">🔥 {character.current_streak}</span>
-      <span className="text-xs text-zinc-400 tabular-nums" data-testid="freeze-count">
+      <span className="text-xs font-bold text-ink tabular-nums">🔥 {character.current_streak}</span>
+      <span className="text-xs text-ink-dim tabular-nums" data-testid="freeze-count">
         ❄️ {freezes ?? 0}
       </span>
     </Link>
   );
 }
 
-/** Active challenges as a horizontal scroll strip; designed teaser when none. */
-function ChallengeStrip({ today }: { today: string }) {
-  const runs = useLiveQuery(
-    () => db.challenge_runs.where('status').equals('active').toArray(),
-    [],
-  );
-  const defs = useLiveQuery(() => db.challenge_defs.toArray(), []);
-  if (!runs || !defs) return null;
-  const defById = new Map(defs.map((d) => [d.id, d]));
-
-  if (runs.length === 0) {
-    const starters = starterDefs().slice(0, 3);
-    return (
-      <section
-        data-testid="challenges-teaser"
-        className="mt-4 rounded-xl bg-surface border border-border p-4"
-      >
-        <div className="flex items-baseline justify-between">
-          <h2 className="eyebrow text-zinc-500">Challenges</h2>
-          <Link href="/challenges" className="text-sm text-white">
-            Browse →
-          </Link>
-        </div>
-        <p className="mt-2 text-sm text-zinc-300">
-          {starters.map((d: ChallengeDef) => d.name).join(' · ')}
-        </p>
-        <p className="mt-1 text-xs text-zinc-500">{APP_MOTTO}</p>
-      </section>
-    );
-  }
-
+/** One compact line: active trials + open deeds, linking to the board. */
+function CompactLine() {
+  const counts = useLiveQuery(async () => {
+    const [runs, goals] = await Promise.all([
+      db.challenge_runs.where('status').equals('active').count(),
+      db.goals.filter((g) => g.achieved_at === null).count(),
+    ]);
+    return { trials: runs, deeds: goals };
+  }, []);
+  if (!counts || (counts.trials === 0 && counts.deeds === 0)) return null;
+  const parts: string[] = [];
+  if (counts.trials > 0) parts.push(`${counts.trials} trial${counts.trials === 1 ? '' : 's'} running`);
+  if (counts.deeds > 0) parts.push(`${counts.deeds} deed${counts.deeds === 1 ? '' : 's'} open`);
   return (
-    <section className="mt-4">
-      <div className="flex items-baseline justify-between mb-2">
-        <h2 className="eyebrow text-zinc-500">Challenges</h2>
-        <Link href="/challenges" className="text-sm text-white">
-          All →
-        </Link>
-      </div>
-      <div data-testid="challenge-strip" className="flex gap-3 overflow-x-auto pb-1">
-        {runs.map((run: ChallengeRun) => {
-          const def = defById.get(run.challenge_def_id);
-          if (!def) return null;
-          const target = targetOf(def);
-          const pct = target > 0 ? run.progress_value / target : 0;
-          const daysLeft = diffDays(run.ends_on, today);
-          return (
-            <Link
-              key={run.id}
-              href={challengeRunHref(run.id)}
-              className="flex min-w-44 items-center gap-3 rounded-xl bg-surface border border-border p-3"
-            >
-              <ChallengeDial pct={pct} size={56} label={`${Math.round(pct * 100)}%`} />
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-zinc-200">{def.name}</p>
-                <p className="text-xs text-zinc-500 tabular-nums">
-                  {daysLeft >= 0 ? `${daysLeft}d left` : 'wrapping up'}
-                </p>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function targetOf(def: ChallengeDef): number {
-  const p = def.params as { target_volume?: number; target_miles?: number; target_n?: number; target_hours?: number; min_sessions_per_week?: number; mode?: string };
-  switch (def.challenge_type) {
-    case 'volume':
-      return p.target_volume ?? 0;
-    case 'distance':
-      return p.target_miles ?? 0;
-    case 'cardio_time':
-      return (p.target_hours ?? 0) * 3600;
-    case 'pr_count':
-      return p.target_n ?? 0;
-    case 'streak':
-      return p.mode === 'weekly' ? (p.min_sessions_per_week ?? 0) * Math.ceil(def.duration_days / 7) : def.duration_days;
-    default:
-      return 0;
-  }
-}
-
-/** Week tiles: sessions · volume · PRs · streak (rolling 7 days). */
-function WeekTiles({ today }: { today: string }) {
-  const [stats, setStats] = useState<{ sessions: number; volume: number; prs: number } | null>(null);
-  const character = useLiveQuery(() => db.rpg_character.get('self'), []) as
-    | RPGCharacter
-    | undefined;
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      const from = new Date(Date.parse(`${today}T00:00:00Z`) - 6 * 86_400_000)
-        .toISOString()
-        .slice(0, 10);
-      const sessions = await db.workout_sessions
-        .where('start_time')
-        .between(`${from}T00:00:00.000Z`, `${today}T23:59:59.999Z`)
-        .filter((s) => s.end_time !== null)
-        .toArray();
-      const ids = new Set(sessions.map((s) => s.id));
-      const sets = await db.workout_sets.toArray();
-      const volume = sets
-        .filter((s) => ids.has(s.workout_id))
-        .reduce((acc, s) => acc + (s.weight ?? 0) * (s.reps ?? 0), 0);
-      const ledger = await db.xp_ledger.toArray();
-      const prs = ledger.filter(
-        (row) => row.source_kind === 'pr' && row.earned_at.slice(0, 10) >= from && row.earned_at.slice(0, 10) <= today,
-      ).length;
-      if (!cancelled) setStats({ sessions: sessions.length, volume, prs });
-    })().catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [today]);
-
-  return (
-    <section data-testid="week-tiles" className="mt-4 grid grid-cols-4 gap-2">
-      {[
-        { label: 'Sessions', value: stats ? String(stats.sessions) : '—' },
-        { label: 'Volume', value: stats ? formatVolume(stats.volume) : '—' },
-        { label: 'PRs', value: stats ? String(stats.prs) : '—' },
-        { label: 'Streak', value: character ? `${character.current_streak}🔥` : '—' },
-      ].map((tile) => (
-        <div key={tile.label} className="rounded-xl bg-surface border border-border p-3 text-center">
-          <p className="font-display text-lg font-bold text-white tabular-nums">{tile.value}</p>
-          <p className="eyebrow text-zinc-500">{tile.label}</p>
-        </div>
-      ))}
-    </section>
+    <p className="mt-4 text-center text-xs text-ink-faint" data-testid="compact-line">
+      <Link href="/challenges" className="underline-offset-2 hover:underline">
+        {parts.join(' · ')} →
+      </Link>
+    </p>
   );
 }

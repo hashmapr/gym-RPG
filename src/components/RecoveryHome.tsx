@@ -27,7 +27,7 @@ const LEVEL_STYLES: Record<string, string> = {
   green: 'bg-good/10 border-good/40 text-good',
   yellow: 'bg-warn/10 border-warn/40 text-warn',
   red: 'bg-bad/10 border-bad/40 text-bad',
-  none: 'bg-zinc-900 border-zinc-800 text-zinc-400',
+  none: 'bg-surface border-border text-ink-dim',
 };
 
 /** Today's recovery badge for the today-card. */
@@ -67,8 +67,8 @@ export function RecoverySparkline({ today }: { today: string }) {
   const ys = (v: number) => h - (v / 100) * h;
   const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${xs(i).toFixed(1)},${ys(p.recovery_percentage as number).toFixed(1)}`).join(' ');
   return (
-    <section className="mt-6 rounded-xl bg-zinc-900 border border-zinc-800 p-4">
-      <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-2">
+    <section className="mt-6 rounded-xl bg-surface border border-border p-4">
+      <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-2">
         Recovery · 30 days
       </h2>
       <svg
@@ -115,7 +115,7 @@ export function BriefingCard({ today }: { today: string }) {
       return (
         <section
           data-testid="briefing-banner-off"
-          className="mt-6 rounded-xl bg-zinc-900 border border-zinc-800 p-4 text-sm text-zinc-400"
+          className="mt-6 rounded-xl bg-surface border border-border p-4 text-sm text-ink-dim"
         >
           Briefings are offline — recovery gates still apply.
         </section>
@@ -124,14 +124,14 @@ export function BriefingCard({ today }: { today: string }) {
     return null;
   }
   return (
-    <section className="mt-6 rounded-xl bg-zinc-900 border border-zinc-800 p-4">
+    <section className="mt-6 rounded-xl bg-surface border border-border p-4">
       <div className="flex items-baseline justify-between mb-2">
-        <h2 className="text-sm uppercase tracking-wider text-zinc-500">Daily briefing</h2>
-        <span className="text-xs text-zinc-600" data-testid="briefing-receipt">
+        <h2 className="text-sm uppercase tracking-wider text-ink-faint">Daily briefing</h2>
+        <span className="text-xs text-ink-faint" data-testid="briefing-receipt">
           {briefing.prompt_version}
         </span>
       </div>
-      <p data-testid="briefing-card" className="text-sm text-zinc-300 leading-relaxed">
+      <p data-testid="briefing-card" className="text-sm text-ink-dim leading-relaxed">
         {briefing.content}
       </p>
       <Link href="/lab" className="mt-2 inline-block text-xs text-white">
@@ -185,7 +185,7 @@ export function ManualCheckIn({ today }: { today: string }) {
       data-testid="manual-checkin"
       className="mt-3 rounded-xl bg-surface-raised border border-border p-3"
     >
-      <p className="text-sm text-zinc-400 mb-2">
+      <p className="text-sm text-ink-dim mb-2">
         No recovery data today. Log a manual check-in:
       </p>
       <div className="flex gap-2">
@@ -198,7 +198,7 @@ export function ManualCheckIn({ today }: { today: string }) {
           value={recovery}
           onChange={(e) => setRecovery(e.target.value)}
           aria-label="Recovery percentage"
-          className="min-h-12 w-28 rounded-lg bg-base border border-border px-3 text-zinc-100 tabular-nums"
+          className="min-h-12 w-28 rounded-lg bg-base border border-border px-3 text-ink tabular-nums"
         />
         <button
           type="button"

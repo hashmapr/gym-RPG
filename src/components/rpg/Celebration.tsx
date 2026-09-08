@@ -37,8 +37,8 @@ export function Celebration({
         >
           {title}
         </div>
-        <p className="mt-3 text-sm text-zinc-300">{body}</p>
-        <p className="mt-6 text-xs text-zinc-500">{RPG_COPY.celebration(title)}</p>
+        <p className="mt-3 text-sm text-ink-dim">{body}</p>
+        <p className="mt-6 text-xs text-ink-faint">{RPG_COPY.celebration(title)}</p>
       </div>
     </div>
   );

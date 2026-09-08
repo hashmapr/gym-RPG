@@ -36,9 +36,9 @@ test('offline workout syncs all sets with original timestamps on reconnect', asy
 
   // Finish while offline — recap modal appears.
   await page.getByTestId('finish-workout').click();
-  await expect(page.getByTestId('finish-modal')).toBeVisible();
-  await expect(page.getByTestId('recap-sets')).toHaveText('5');
-  await page.getByTestId('finish-done').click();
+  await expect(page.getByTestId('celebration-screen')).toBeVisible();
+  await expect(page.getByTestId('celebration-sets')).toHaveText('5 sets');
+  await page.getByTestId('celebration-done').click();
   await page.waitForURL('/');
 
   // Reconnect → sync fires → mock backend has all 5 sets.

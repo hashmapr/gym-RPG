@@ -129,6 +129,7 @@ test('readonly-regression: browsing writes only ml_* beyond the known tables', a
     'user_skills',
     'skill_nodes',
     'xp_ledger',
+    'daily_quests',
     'settings',
   ];
   for (const [table, delta] of Object.entries(after)) {

@@ -36,12 +36,12 @@ export default function ExerciseDetailPage() {
   }, [id]);
 
   if (data === undefined) {
-    return <main className="p-6 text-zinc-400">Loading…</main>;
+    return <main className="p-6 text-ink-dim">Loading…</main>;
   }
   if (!data) {
     return (
       <main className="p-6">
-        <p className="text-zinc-400">Exercise not found.</p>
+        <p className="text-ink-dim">Exercise not found.</p>
         <Link href="/history" className="text-white">
           ← History
         </Link>
@@ -65,7 +65,7 @@ export default function ExerciseDetailPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/history" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/history" className="min-h-12 px-2 py-3 text-ink-dim">
           ← Back
         </Link>
         <h1 className="text-lg font-bold">{exerciseName(exercise)}</h1>
@@ -73,7 +73,7 @@ export default function ExerciseDetailPage() {
       </header>
 
       {best && (
-        <p className="mb-4 text-sm text-zinc-400">
+        <p className="mb-4 text-sm text-ink-dim">
           Best set:{' '}
           <span data-testid="best-set" className="text-white font-bold">
             {formatWeight(best.weight as number)} × {best.reps}
@@ -82,8 +82,8 @@ export default function ExerciseDetailPage() {
       )}
 
       {chartData.length > 1 && (
-        <section className="mb-6 rounded-xl bg-zinc-900 border border-zinc-800 p-3">
-          <h2 className="text-sm uppercase tracking-wider text-zinc-500 mb-2">
+        <section className="mb-6 rounded-xl bg-surface border border-border p-3">
+          <h2 className="text-sm uppercase tracking-wider text-ink-faint mb-2">
             e1RM trend
           </h2>
           <div data-testid="e1rm-chart" className="h-48">
@@ -113,7 +113,7 @@ export default function ExerciseDetailPage() {
 
       <table className="w-full text-sm">
         <thead>
-          <tr className="text-zinc-500 text-xs uppercase tracking-wider">
+          <tr className="text-ink-faint text-xs uppercase tracking-wider">
             <th className="text-left py-1">Date</th>
             <th className="text-right py-1">Set</th>
             <th className="text-right py-1">e1RM</th>
@@ -126,13 +126,13 @@ export default function ExerciseDetailPage() {
                 ? e1rm(s.weight, s.reps, settings.e1rm_formula)
                 : null;
             return (
-              <tr key={s.id} className="border-t border-zinc-800">
-                <td className="py-1.5 text-zinc-400">{formatDate(s.timestamp.slice(0, 10))}</td>
-                <td className="text-right tabular-nums text-zinc-200">
+              <tr key={s.id} className="border-t border-border">
+                <td className="py-1.5 text-ink-dim">{formatDate(s.timestamp.slice(0, 10))}</td>
+                <td className="text-right tabular-nums text-ink">
                   {s.weight !== null ? formatWeight(s.weight) : 'BW'} ×{' '}
                   {s.reps ?? '—'}
                 </td>
-                <td className="text-right tabular-nums text-zinc-400">
+                <td className="text-right tabular-nums text-ink-dim">
                   {est !== null ? formatE1RM(est) : '—'}
                 </td>
               </tr>

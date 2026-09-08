@@ -85,26 +85,26 @@ export default function GoalsPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/lab" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/lab" className="min-h-12 px-2 py-3 text-ink-dim">
           ← Overload
         </Link>
         <h1 className="text-xl font-bold">Goals</h1>
         <span className="w-16" />
       </header>
       <SeedBanner />
-      {error && <p className="mt-4 text-zinc-300 text-sm">{error}</p>}
+      {error && <p className="mt-4 text-ink-dim text-sm">{error}</p>}
 
       <ul className="mt-4 space-y-3" data-testid="goals-list">
         {rows.map((g) => (
           <li
             key={g.key}
-            className="rounded-xl bg-zinc-900 border border-zinc-800 p-4"
+            className="rounded-xl bg-surface border border-border p-4"
             data-testid="goal-card"
             data-achieved={g.achieved ? 'true' : 'false'}
           >
             <div className="flex justify-between items-baseline">
               <span className="font-bold">{g.exerciseName}</span>
-              <span className="text-sm tabular-nums text-zinc-400">
+              <span className="text-sm tabular-nums text-ink-dim">
                 {formatWeight(g.target_weight)} × {g.target_reps}
               </span>
             </div>
@@ -114,14 +114,14 @@ export default function GoalsPage() {
               </p>
             ) : (
               <>
-                <div className="mt-3 h-2 rounded-full bg-zinc-800 overflow-hidden">
+                <div className="mt-3 h-2 rounded-full bg-surface-raised overflow-hidden">
                   <div
                     className="h-full bg-white rounded-full"
                     style={{ width: `${Math.min(100, g.progress_pct)}%` }}
                     data-testid="goal-progress"
                   />
                 </div>
-                <p className="mt-2 text-sm text-zinc-400 tabular-nums">
+                <p className="mt-2 text-sm text-ink-dim tabular-nums">
                   {g.progress_pct.toFixed(1)}% of target
                   {g.eta_weeks != null && ` · ETA ${g.eta_weeks.toFixed(1)} weeks`}
                   {g.projection === 'no_reliable_projection' && ' · no reliable projection'}
@@ -131,7 +131,7 @@ export default function GoalsPage() {
           </li>
         ))}
         {forecast !== null && localGoals !== undefined && rows.length === 0 && (
-          <li className="text-zinc-500 text-center py-8">No goals yet.</li>
+          <li className="text-ink-faint text-center py-8">No goals yet.</li>
         )}
       </ul>
     </main>

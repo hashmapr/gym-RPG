@@ -10,6 +10,7 @@ import { programRunHref } from '@/lib/links';
 import { adherencePct } from '@/lib/coach/engine';
 import { getTrainingDate } from '@/lib/day-boundary';
 import { useSettings } from '@/lib/settings';
+import EmptyState from '@/components/EmptyState';
 import type { Program, ProgramRun } from '@/lib/types';
 
 export default function ProgramsPage() {
@@ -52,7 +53,7 @@ export default function ProgramsPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/" className="text-sm text-zinc-400 hover:text-zinc-100">
+        <Link href="/" className="text-sm text-ink-dim hover:text-ink">
           ← Home
         </Link>
         <h1 className="text-xl font-black tracking-tight text-white">
@@ -67,12 +68,16 @@ export default function ProgramsPage() {
         </Link>
       </header>
 
-      {runs === undefined && <p className="text-zinc-400">Loading…</p>}
+      {runs === undefined && <p className="text-ink-dim">Loading…</p>}
 
       {runs !== undefined && active.length === 0 && past.length === 0 && (
-        <p className="text-zinc-400 text-center mt-10">
-          No programs yet. Create one to start training with the coach.
-        </p>
+        <EmptyState
+          testid="programs-empty"
+          title="No programs yet"
+          line="Build an Arc with the coach — progressive weeks, auto-deload, one decision per day."
+          cta="Open the builder"
+          href="/programs/new"
+        />
       )}
 
       {active.map((r) => (
@@ -80,7 +85,7 @@ export default function ProgramsPage() {
       ))}
 
       {past.length > 0 && (
-        <h2 className="mt-6 mb-2 text-xs uppercase tracking-widest text-zinc-500">
+        <h2 className="mt-6 mb-2 text-xs uppercase tracking-widest text-ink-faint">
           Past runs
         </h2>
       )}
@@ -113,30 +118,30 @@ function RunCard({
     <Link
       href={programRunHref(data.program.id, data.run.id)}
       data-testid={testid}
-      className="block mt-3 rounded-xl bg-zinc-900 border border-zinc-800 p-4 active:bg-zinc-800"
+      className="block mt-3 rounded-xl bg-surface border border-border p-4 active:bg-surface-raised"
     >
       <div className="flex items-baseline justify-between">
-        <h3 className="text-lg font-bold text-zinc-100">{data.program.name}</h3>
+        <h3 className="text-lg font-bold text-ink">{data.program.name}</h3>
         <span
           className={`text-xs font-bold uppercase tracking-wide ${
             data.run.status === 'active'
               ? 'text-white'
               : data.run.status === 'abandoned'
                 ? 'text-red-400'
-                : 'text-zinc-500'
+                : 'text-ink-faint'
           }`}
         >
           {data.run.status}
         </span>
       </div>
       {active && (
-        <p className="mt-1 text-sm text-zinc-400">
-          Week <span className="text-zinc-100 tabular-nums">{data.run.current_week}</span> of{' '}
+        <p className="mt-1 text-sm text-ink-dim">
+          Week <span className="text-ink tabular-nums">{data.run.current_week}</span> of{' '}
           <span className="tabular-nums">{data.totalWeeks}</span>
           {data.adherence !== null && (
             <>
               {' '}· adherence{' '}
-              <span className="text-zinc-100 tabular-nums" data-testid="adherence-pct">
+              <span className="text-ink tabular-nums" data-testid="adherence-pct">
                 {data.adherence}%
               </span>
             </>
@@ -144,12 +149,12 @@ function RunCard({
         </p>
       )}
       {active && data.nextName && (
-        <p className="mt-0.5 text-sm text-zinc-500">
+        <p className="mt-0.5 text-sm text-ink-faint">
           Next: {data.nextName} on <span className="tabular-nums">{data.nextDate}</span>
         </p>
       )}
       {!active && (
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-ink-faint">
           Started <span className="tabular-nums">{data.run.started_on}</span>
         </p>
       )}

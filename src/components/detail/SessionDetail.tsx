@@ -36,12 +36,12 @@ export default function SessionDetailPage() {
   }, [id]);
 
   if (data === undefined) {
-    return <main className="p-6 text-zinc-400">Loading…</main>;
+    return <main className="p-6 text-ink-dim">Loading…</main>;
   }
   if (!data) {
     return (
       <main className="p-6">
-        <p className="text-zinc-400">Session not found.</p>
+        <p className="text-ink-dim">Session not found.</p>
         <Link href="/history" className="text-white">
           ← History
         </Link>
@@ -54,7 +54,7 @@ export default function SessionDetailPage() {
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/history" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/history" className="min-h-12 px-2 py-3 text-ink-dim">
           ← History
         </Link>
         <h1 className="text-xl font-bold">
@@ -62,11 +62,11 @@ export default function SessionDetailPage() {
         </h1>
         <span className="w-20" />
       </header>
-      <p className="text-sm text-zinc-500 mb-4">
+      <p className="text-sm text-ink-faint mb-4">
         {formatDateTime(session.start_time)} →{' '}
         {session.end_time ? formatDateTime(session.end_time) : '—'}
       </p>
-      <p className="text-sm text-zinc-400 mb-4 tabular-nums">
+      <p className="text-sm text-ink-dim mb-4 tabular-nums">
         Total volume:{' '}
         <span data-testid="detail-volume">
           {formatVolume(sessionVolume(data.sets))}
@@ -78,7 +78,7 @@ export default function SessionDetailPage() {
           return (
             <section
               key={exerciseId}
-              className="rounded-xl bg-zinc-900 border border-zinc-800 p-4"
+              className="rounded-xl bg-surface border border-border p-4"
             >
               <h2 className="font-bold mb-2">
                 {ex ? exerciseName(ex) : 'Unknown exercise'}
@@ -99,13 +99,13 @@ export default function SessionDetailPage() {
                         ),
                       ).isPR;
                     return (
-                      <tr key={s.id} className="border-t border-zinc-800">
-                        <td className="py-1.5 text-zinc-500">{s.set_order}</td>
-                        <td className="tabular-nums text-zinc-200">
+                      <tr key={s.id} className="border-t border-border">
+                        <td className="py-1.5 text-ink-faint">{s.set_order}</td>
+                        <td className="tabular-nums text-ink">
                           {s.weight !== null ? formatWeight(s.weight) : 'BW'} ×{' '}
                           {s.reps ?? '—'}
                         </td>
-                        <td className="text-right tabular-nums text-zinc-500">
+                        <td className="text-right tabular-nums text-ink-faint">
                           {s.rpe ?? ''}
                         </td>
                         <td className="text-right">

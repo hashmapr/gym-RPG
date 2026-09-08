@@ -73,6 +73,9 @@ export function mockUpsert(
   for (const row of rows) t.set(keyOf(row), row); // last-write-wins
   const s = mockStore();
   s.writeCounts.set(table, (s.writeCounts.get(table) ?? 0) + rows.length);
+  const log = (s as { writeLog?: Array<{ table: string; keys: string[]; at: number }> }).writeLog ?? [];
+  log.push({ table, keys: rows.map((r) => String(r.id ?? r.date ?? '?')), at: Date.now() });
+  (s as { writeLog?: unknown }).writeLog = log;
   return rows.length;
 }
 

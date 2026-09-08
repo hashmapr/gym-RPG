@@ -9,6 +9,7 @@ import {
   mockWger,
   seedBenchHistory,
   waitForInitialSync,
+  freezeClock,
 } from './helpers';
 
 test('create program → exceed bench target → week 2 shows 190 lb', async ({
@@ -16,6 +17,7 @@ test('create program → exceed bench target → week 2 shows 190 lb', async ({
   context,
 }) => {
   await useMockSync(context);
+  await freezeClock(page);
   await mockWger(context);
   await seedBenchHistory(page);
   await waitForInitialSync(page);
@@ -42,6 +44,8 @@ test('create program → exceed bench target → week 2 shows 190 lb', async ({
 
   await page.getByTestId('weeks-count').fill('2');
   await page.getByTestId('save-program').click();
+  // Sprint 7.8: the commitment picker gates entry into the run — skip it.
+  await page.getByRole('button', { name: 'SKIP' }).click();
   await page.waitForURL(/\/programs\/.+\/run\/.+/);
   const runUrl = page.url();
 
@@ -70,8 +74,8 @@ test('create program → exceed bench target → week 2 shows 190 lb', async ({
   );
 
   await page.getByTestId('finish-workout').click();
-  await expect(page.getByTestId('finish-modal')).toBeVisible();
-  await page.getByTestId('finish-done').click();
+  await expect(page.getByTestId('celebration-screen')).toBeVisible();
+  await page.getByTestId('celebration-done').click();
   await page.waitForURL('/');
 
   // --- Week 2 materialized by the engine at 190 lb ------------------------

@@ -38,9 +38,9 @@ test('PR banner, history badges, and best-set highlight', async ({
 
   // Finish so the session lands in history.
   await page.getByTestId('finish-workout').click();
-  await expect(page.getByTestId('finish-modal')).toBeVisible();
-  await expect(page.getByTestId('recap-prs')).toHaveText('2');
-  await page.getByTestId('finish-done').click();
+  await expect(page.getByTestId('celebration-screen')).toBeVisible();
+  await expect(page.getByTestId('celebration-prs').locator('span')).toHaveCount(2);
+  await page.getByTestId('celebration-done').click();
   await page.waitForURL('/');
 
   // History detail: 2 PR badges (185×5 first-set + 190×5 heaviest).

@@ -15,7 +15,7 @@ export default function OfflineIndicator() {
     <div
       role="status"
       data-testid="offline-indicator"
-      className="fixed top-0 inset-x-0 z-50 flex items-center justify-center gap-2 bg-zinc-200 text-black text-sm font-semibold py-1.5 px-4"
+      className="fixed top-0 inset-x-0 z-50 flex items-center justify-center gap-2 bg-ink text-black text-sm font-semibold py-1.5 px-4"
     >
       {online ? (
         <span>Syncing…</span>

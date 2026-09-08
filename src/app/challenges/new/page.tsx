@@ -27,7 +27,7 @@ export default function NewChallengePage() {
     <Suspense
       fallback={
         <main className="max-w-md mx-auto p-4 pb-16">
-          <p className="py-8 text-center text-zinc-500">Loading…</p>
+          <p className="py-8 text-center text-ink-faint">Loading…</p>
         </main>
       }
     >
@@ -119,12 +119,12 @@ function NewChallengeInner() {
   }
 
   const inputCls =
-    'w-full min-h-12 rounded-lg bg-zinc-900 border border-zinc-800 px-3 text-zinc-100 tabular-nums';
+    'w-full min-h-12 rounded-lg bg-surface border border-border px-3 text-ink tabular-nums';
 
   return (
     <main className="max-w-md mx-auto p-4 pb-16">
       <header className="flex items-center justify-between py-4">
-        <Link href="/challenges" className="min-h-12 px-2 py-3 text-zinc-400">
+        <Link href="/challenges" className="min-h-12 px-2 py-3 text-ink-dim">
           ←
         </Link>
         <h1 className="text-xl font-bold">New challenge</h1>
@@ -133,20 +133,20 @@ function NewChallengeInner() {
 
       <div className="space-y-4">
         {argusDef && ARGUS_ENABLED && (
-          <p className="text-xs text-zinc-300 bg-surface-raised border border-border rounded-lg px-3 py-2">
+          <p className="text-xs text-ink-dim bg-surface-raised border border-border rounded-lg px-3 py-2">
             ✨ Drafted by {AI_NAME} — adaptation policy attached. Review and start it.
           </p>
         )}
         <div>
-          <label className="text-sm text-zinc-400 mb-1 block">Name</label>
+          <label className="text-sm text-ink-dim mb-1 block">Name</label>
           <input className={inputCls} value={name} onChange={(e) => setName(e.target.value)} placeholder="Deadlift December" />
         </div>
         <div>
-          <label className="text-sm text-zinc-400 mb-1 block">Description (optional)</label>
+          <label className="text-sm text-ink-dim mb-1 block">Description (optional)</label>
           <input className={inputCls} value={description} onChange={(e) => setDescription(e.target.value)} />
         </div>
         <div>
-          <label className="text-sm text-zinc-400 mb-1 block">Type</label>
+          <label className="text-sm text-ink-dim mb-1 block">Type</label>
           <select
             className={inputCls}
             value={type}
@@ -161,7 +161,7 @@ function NewChallengeInner() {
           </select>
         </div>
         <div>
-          <label className="text-sm text-zinc-400 mb-1 block">Duration (days, 1–365)</label>
+          <label className="text-sm text-ink-dim mb-1 block">Duration (days, 1–365)</label>
           <input
             className={inputCls}
             type="number"
@@ -175,41 +175,41 @@ function NewChallengeInner() {
 
         {type === 'volume' && (
           <div>
-            <label className="text-sm text-zinc-400 mb-1 block">Volume target (lb)</label>
+            <label className="text-sm text-ink-dim mb-1 block">Volume target (lb)</label>
             <input className={inputCls} type="number" value={targetLb} disabled={!!argusDef} onChange={(e) => setTargetLb(e.target.value)} />
           </div>
         )}
         {type === 'session_count' && (
           <div>
-            <label className="text-sm text-zinc-400 mb-1 block">Sessions</label>
+            <label className="text-sm text-ink-dim mb-1 block">Sessions</label>
             <input className={inputCls} type="number" value={targetSessions} onChange={(e) => setTargetSessions(e.target.value)} />
           </div>
         )}
         {type === 'pr_count' && (
           <div>
-            <label className="text-sm text-zinc-400 mb-1 block">PRs</label>
+            <label className="text-sm text-ink-dim mb-1 block">PRs</label>
             <input className={inputCls} type="number" value={targetPrs} onChange={(e) => setTargetPrs(e.target.value)} />
           </div>
         )}
         {type === 'distance' && (
           <div>
-            <label className="text-sm text-zinc-400 mb-1 block">Miles</label>
+            <label className="text-sm text-ink-dim mb-1 block">Miles</label>
             <input className={inputCls} type="number" step="0.1" value={targetMiles} onChange={(e) => setTargetMiles(e.target.value)} />
           </div>
         )}
         {type === 'streak' && (
           <div className="space-y-3">
-            <label className="flex items-center gap-2 text-sm text-zinc-300">
+            <label className="flex items-center gap-2 text-sm text-ink-dim">
               <input type="checkbox" checked={weeklyMode} onChange={(e) => setWeeklyMode(e.target.checked)} className="w-5 h-5" />
               Weekly mode (X sessions per week)
             </label>
             {weeklyMode && (
               <div>
-                <label className="text-sm text-zinc-400 mb-1 block">Sessions per week</label>
+                <label className="text-sm text-ink-dim mb-1 block">Sessions per week</label>
                 <input className={inputCls} type="number" value={minPerWeek} onChange={(e) => setMinPerWeek(e.target.value)} />
               </div>
             )}
-            <p className="text-xs text-zinc-500">Streak challenges run on raw rules — freezes and vacation mode don’t apply inside the window.</p>
+            <p className="text-xs text-ink-faint">Streak challenges run on raw rules — freezes and vacation mode don’t apply inside the window.</p>
           </div>
         )}
 

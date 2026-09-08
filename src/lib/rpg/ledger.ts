@@ -45,12 +45,15 @@ import { computeStats, highWater, trainingDateOf, type ComputedStats } from './s
 import { xpRpeValue } from '../ml/rpe-estimator';
 import { evaluateSkillTree, type ExtraFacts, type SkillEvaluation } from './skill-tree';
 import { levelForXp } from './levels';
+import { applyBoostToLedger } from './overload';
 
 export interface RpgSettingsSlice {
   target_bodyweight_lb: number | null;
   xp_mode: 'auto' | BodyState;
   e1rm_formula: E1RMFormula;
   key_lifts: Record<string, string>;
+  /** Sprint 7.8: OVERLOAD MODE boost window end (null = inactive). */
+  overload_mode_active_until: string | null;
 }
 
 export interface RpgData {
@@ -406,11 +409,16 @@ export function computeRpg(data: RpgData): RpgComputation {
   }
 
   // ---- 10. Sort ledger, derive level-ups ----
-  ledger.sort((a, b) => a.earned_at.localeCompare(b.earned_at) || a.id.localeCompare(b.id));
+  // Sprint 7.8: OVERLOAD MODE boost — ×2 for rows inside the 24h window,
+  // applied AFTER rpe_factor/type/mode (stacking order locked). Quest rows
+  // are written by the quest sweep (deterministic ids) and survive recompute
+  // via bulkPut; the boost applies to them too when earned in-window.
+  const boostedLedger = applyBoostToLedger(ledger, settings.overload_mode_active_until);
+  boostedLedger.sort((a, b) => a.earned_at.localeCompare(b.earned_at) || a.id.localeCompare(b.id));
   const levelUps: { level: number; at: string }[] = [];
   let cum = 0;
   let level = 1;
-  for (const r of ledger) {
+  for (const r of boostedLedger) {
     cum += r.xp;
     const newLevel = levelForXp(cum);
     if (newLevel > level) {
@@ -420,7 +428,7 @@ export function computeRpg(data: RpgData): RpgComputation {
   }
 
   // ---- 11. Character (high-water marks — never decrease) ----
-  const totalXp = ledger.reduce((s, r) => s + r.xp, 0);
+  const totalXp = boostedLedger.reduce((s, r) => s + r.xp, 0);
   const prev = data.existingCharacter;
   const cur = currentBodyState(series);
   const character: RPGCharacter = {
@@ -437,7 +445,7 @@ export function computeRpg(data: RpgData): RpgComputation {
   };
 
   return {
-    ledger,
+    ledger: boostedLedger,
     skills,
     evaluations,
     character,

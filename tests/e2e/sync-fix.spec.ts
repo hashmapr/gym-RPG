@@ -49,7 +49,7 @@ test('finishing a synced session re-pushes end_time and analytics reflect it', a
   // Finish → end_time update on an ALREADY-SYNCED row must re-queue it.
   await page.goto('/workout');
   await page.getByTestId('finish-workout').click();
-  await page.getByTestId('finish-done').click();
+  await page.getByTestId('celebration-done').click();
   await page.waitForURL('/');
 
   await page.reload();
